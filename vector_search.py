@@ -5,12 +5,10 @@ import os
 import re
 import hashlib
 from docx import Document
+from pathlib import Path
 
 # 初始化SentenceTransformer模型
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-
-# 设置文件存储路径
-content_storage_path = r"E:\Docker\milvus\content"
 
 # 设置集合名称和维度
 collection_name = "text_search"
@@ -33,8 +31,7 @@ def create_collection_if_not_exists():
             FieldSchema(name="filename", dtype=DataType.VARCHAR, max_length=256),
             FieldSchema(name="chapter_title", dtype=DataType.VARCHAR, max_length=300), # 新增字段
             FieldSchema(name="subsection_title", dtype=DataType.VARCHAR, max_length=300), # 新增字段            
-            FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535, nullable=True),  # 设置 content 为可空
-            FieldSchema(name="content_file_path", dtype=DataType.VARCHAR, max_length=1024)  # 新增 content_file_path 字段
+            FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535, nullable=True)  # 设置 content 为可空            
         ]
 
         # 创建集合模式
@@ -118,14 +115,6 @@ def text_to_vector(text):
     return normalized_vector.tolist()  # 转换为Python列表，确保所有元素都是浮点数
 
 def save_content_to_disk(content, file_hash):
-    """将文件内容保存到硬盘，并返回文件路径"""
-    file_path = os.path.join(content_storage_path, f"{file_hash}.txt")
-    try:
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-        return file_path
-    except Exception as e:
-        print(f"Error saving content to disk: {e}")
         return None
     
 def split_text_into_structured_parts(content):
@@ -251,11 +240,7 @@ def insert_text_files(file_dir, app):
                             "file_hash": chap_hash,
                             "filename": f"{filename}_chap{chap_idx}",
                             "chapter_title": chapter['title'],
-                            "subsection_title": "[章节主内容]",
-                            "content_file_path": save_content_to_disk(
-                                chapter['content'], 
-                                chap_hash
-                            ),
+                            "subsection_title": "[章节主内容]",                        
                             "content": chapter['content']
                         })
                 
@@ -275,11 +260,7 @@ def insert_text_files(file_dir, app):
                             "file_hash": sub_hash,
                             "filename": f"{filename}_chap{chap_idx}_sec{sub_idx}",
                             "chapter_title": chapter['title'],
-                            "subsection_title": subsection['title'][:300],
-                            "content_file_path": save_content_to_disk(
-                                subsection['content'], 
-                                sub_hash
-                            ),
+                            "subsection_title": subsection['title'][:300],                            
                             "content": subsection['content']
                         })
                         
@@ -300,51 +281,33 @@ def insert_text_files(file_dir, app):
             raise
 
 def search_similar_texts(query_text, top_k=10):
-    """在Milvus中搜索最相似的文档并返回完整的段落内容"""
+    """在Milvus中搜索最相似的文档并返回完整内容"""
     query_vector = text_to_vector(query_text)
     search_params = {
         "metric_type": "COSINE",
-        "params": {"nprobe": 10}  # 增加 nprobe 提高查询的范围
+        "params": {"nprobe": 10}
     }
 
-    # 执行搜索
+    # 执行搜索（不再请求content_file_path字段）
     results = collection.search(
         data=[query_vector], 
         anns_field="embedding", 
         param=search_params, 
         limit=top_k, 
-        output_fields=["id", "file_hash", "filename", "chapter_title", "subsection_title", "content_file_path", "content"]
+        output_fields=["id", "file_hash", "filename", "chapter_title", "subsection_title", "content"]
     )
 
     similar_docs = []
     for hits in results:
-        for hit in hits:   
-            file_hash = hit.entity.get("file_hash")
-            file_path = hit.entity.get("content_file_path")
-            chapter_title = hit.entity.get("chapter_title")
-            subsection_title = hit.entity.get("subsection_title")
-            content = hit.entity.get("content")  # 直接从hit中获取content
-
-            # 根据 content_file_path 加载实际的文本内容
-            if file_path and os.path.exists(file_path):
-                try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        content = f.read()
-                except Exception as e:
-                    print(f"Error reading file {file_path}: {e}")
-                    content = "Content not available"
-            else:
-                content = "Content not available"
-                print(f"Failed to load content for file_hash: {file_hash} from path: {file_path}")
-
-            # 构建返回的相似文档信息
+        for hit in hits:
+            # 直接使用Milvus中存储的content（不再检查文件路径）
             similar_docs.append({
                 "id": hit.id,
-                "file_hash": file_hash,
+                "file_hash": hit.entity.get("file_hash"),
                 "filename": hit.entity.get("filename"),
-                "chapter_title": chapter_title,
-                "subsection_title": subsection_title,
-                "content": content,
+                "chapter_title": hit.entity.get("chapter_title"),
+                "subsection_title": hit.entity.get("subsection_title"),
+                "content": hit.entity.get("content"),  # 直接从Milvus获取
                 "distance": hit.distance
             })
     return similar_docs
