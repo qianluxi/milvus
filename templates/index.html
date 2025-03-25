@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milvus Text Search</title>
+    <style>
+        /* ... (CSS样式保持不变) ... */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Milvus Text Search</h1>
+
+        <div class="form-group">
+            <h2>Upload Files</h2>
+            <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="files" multiple>
+                <button type="submit">Upload and Process</button>
+            </form>
+        </div>
+
+        <div class="form-group">
+            <h2>Search Similar Texts</h2>
+            <form id="search-form" action="/search" method="post">
+                <input type="text" name="query" placeholder="Enter search query">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="results">
+            <h2>Search Results</h2>
+            <ul id="results-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        // 处理搜索表单的提交
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/search', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsList = document.getElementById('results-list');
+                resultsList.innerHTML = '';
+
+                if (data.error) {
+                    resultsList.innerHTML = `<li>${data.error}</li>`;
+                } else {
+                    data.forEach(result => {
+                        resultsList.innerHTML += `
+                            <li>
+                                <strong>ID:</strong> ${result.id}<br>
+                                <strong>距离:</strong> ${result.distance.toFixed(4)}<br>
+                                <strong>文件名:</strong> ${result.filename}<br>
+                                <strong>文件哈希:</strong> ${result.file_hash}<br>
+                                <strong>内容:</strong> 
+                                <span class="content-preview">${result.content.substring(0, 100)}...</span>
+                                <span class="full-content">${result.content}</span>
+                                <button class="toggle-button" onclick="toggleContent(this)">查看更多</button>
+                            </li>`;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        // 处理文件上传表单的提交
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+
+        // 切换内容显示
+        function toggleContent(button) {
+            const contentPreview = button.previousElementSibling.previousElementSibling;
+            const fullContent = button.previousElementSibling;
+
+            if (fullContent.style.display === "none") {
+                fullContent.style.display = "inline";
+                contentPreview.style.display = "none";
+                button.textContent = "收起";
+            } else {
+                fullContent.style.display = "none";
+                contentPreview.style.display = "inline";
+                button.textContent = "查看更多";
+            }
+        }
+    </script>
+</body>
+</html>
