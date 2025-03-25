@@ -1,0 +1,10 @@
+/* static/styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.result-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
