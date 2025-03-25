@@ -30,7 +30,7 @@ def create_collection_if_not_exists():
             FieldSchema(name="file_hash", dtype=DataType.VARCHAR, max_length=256),
             FieldSchema(name="filename", dtype=DataType.VARCHAR, max_length=256),
             FieldSchema(name="chapter_title", dtype=DataType.VARCHAR, max_length=300), # 新增字段
-            FieldSchema(name="subsection_title", dtype=DataType.VARCHAR, max_length=300), # 新增字段            
+            FieldSchema(name="subsection_title", dtype=DataType.VARCHAR, max_length=500), # 新增字段            
             FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535, nullable=True)  # 设置 content 为可空            
         ]
 
@@ -240,7 +240,7 @@ def insert_text_files(file_dir, app):
                             "file_hash": chap_hash,
                             "filename": f"{filename}_chap{chap_idx}",
                             "chapter_title": chapter['title'],
-                            "subsection_title": "[章节主内容]",                        
+                            "subsection_title": chapter['title'][:100],                        
                             "content": chapter['content']
                         })
                 
@@ -260,7 +260,7 @@ def insert_text_files(file_dir, app):
                             "file_hash": sub_hash,
                             "filename": f"{filename}_chap{chap_idx}_sec{sub_idx}",
                             "chapter_title": chapter['title'],
-                            "subsection_title": subsection['title'][:300],                            
+                            "subsection_title": subsection['title'][:100],                            
                             "content": subsection['content']
                         })
                         
@@ -306,7 +306,7 @@ def search_similar_texts(query_text, top_k=10):
                 "file_hash": hit.entity.get("file_hash"),
                 "filename": hit.entity.get("filename"),
                 "chapter_title": hit.entity.get("chapter_title"),
-                "subsection_title": hit.entity.get("subsection_title"),
+                "subsection_title": hit.entity.get("subsection_title")[:100],
                 "content": hit.entity.get("content"),  # 直接从Milvus获取
                 "distance": hit.distance
             })
