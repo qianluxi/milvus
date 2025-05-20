@@ -1,110 +1,256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milvus Text Search</title>
+    <title>增强版文档检索系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* ... (CSS样式保持不变) ... */
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        .result-card {
+            margin-bottom: 20px;
+            border-left: 4px solid #0d6efd;
+            transition: all 0.3s;
+        }
+        .result-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .similarity-badge {
+            background-color: #198754;
+        }
+        .file-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .search-options {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .progress-container {
+            display: none;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Milvus Text Search</h1>
-
-        <div class="form-group">
-            <h2>Upload Files</h2>
-            <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="files" multiple>
-                <button type="submit">Upload and Process</button>
-            </form>
+        <h1 class="text-center my-4">增强版文档检索系统</h1>
+        
+        <!-- 搜索区域 -->
+        <div class="search-container">
+            <div class="search-options">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" id="queryInput" class="form-control" placeholder="输入搜索内容...">
+                    </div>
+                    <div class="col-md-4">
+                        <button id="searchBtn" class="btn btn-primary w-100">搜索</button>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="rerankSwitch" checked>
+                            <label class="form-check-label" for="rerankSwitch">启用高级重排序</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" id="keywordFilter" class="form-control" placeholder="关键词过滤(可选)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                </div>
+                <p class="text-center mt-2">正在处理搜索请求...</p>
+            </div>
+            
+            <div id="resultsContainer"></div>
         </div>
-
-        <div class="form-group">
-            <h2>Search Similar Texts</h2>
-            <form id="search-form" action="/search" method="post">
-                <input type="text" name="query" placeholder="Enter search query">
-                <button type="submit">Search</button>
+        
+        <!-- 上传区域 -->
+        <div class="search-container mt-5">
+            <h3>文档上传</h3>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input class="form-control" type="file" id="fileUpload" multiple accept=".docx">
+                </div>
+                <button type="submit" class="btn btn-success">上传并处理文档</button>
             </form>
-        </div>
-
-        <div class="results">
-            <h2>Search Results</h2>
-            <ul id="results-list"></ul>
+            <div class="alert alert-info mt-3" role="alert">
+                支持上传Word文档(.docx)，系统将自动解析文档内容并建立索引。
+            </div>
         </div>
     </div>
 
-    <script>
-        // 处理搜索表单的提交
-        document.getElementById('search-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
+    <!-- 结果模板 -->
+    <template id="resultTemplate">
+        <div class="card result-card">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <div class="file-info mb-2">
+                    <span class="source-file"></span>
+                    <span class="similarity-badge badge rounded-pill float-end"></span>
+                </div>
+                <div class="card-text result-content"></div>
+                <div class="chapter-info text-muted mt-2"></div>
+            </div>
+        </div>
+    </template>
 
-            fetch('/search', {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 搜索功能
+            document.getElementById('searchBtn').addEventListener('click', performSearch);
+            document.getElementById('queryInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+            
+            // 文件上传
+            document.getElementById('uploadForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                uploadFiles();
+            });
+        });
+        
+        function performSearch() {
+            const query = document.getElementById('queryInput').value.trim();
+            const useRerank = document.getElementById('rerankSwitch').checked;
+            const keyword = document.getElementById('keywordFilter').value.trim();
+            
+            if (!query) {
+                alert('请输入搜索内容');
+                return;
+            }
+            
+            const resultsContainer = document.getElementById('resultsContainer');
+            const progressContainer = document.getElementById('progressContainer');
+            
+            resultsContainer.innerHTML = '';
+            progressContainer.style.display = 'block';
+            
+            // 构建请求数据
+            const formData = new FormData();
+            formData.append('query', query);
+            
+            // 确定使用哪种搜索方式
+            const endpoint = keyword ? '/hybrid_search' : '/search';
+            
+            fetch(endpoint, {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('搜索失败');
+                return response.json();
+            })
             .then(data => {
-                const resultsList = document.getElementById('results-list');
-                resultsList.innerHTML = '';
-
+                progressContainer.style.display = 'none';
+                
                 if (data.error) {
-                    resultsList.innerHTML = `<li>${data.error}</li>`;
-                } else {
-                    data.forEach(result => {
-                        resultsList.innerHTML += `
-                            <li>
-                                <strong>ID:</strong> ${result.id}<br>
-                                <strong>距离:</strong> ${result.distance.toFixed(4)}<br>
-                                <strong>文件名:</strong> ${result.filename}<br>
-                                <strong>文件哈希:</strong> ${result.file_hash}<br>
-                                <strong>内容:</strong> 
-                                <span class="content-preview">${result.content.substring(0, 100)}...</span>
-                                <span class="full-content">${result.content}</span>
-                                <button class="toggle-button" onclick="toggleContent(this)">查看更多</button>
-                            </li>`;
-                    });
+                    resultsContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+                    return;
                 }
+                
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = '<div class="alert alert-warning">没有找到匹配的结果</div>';
+                    return;
+                }
+                
+                displayResults(data);
             })
             .catch(error => {
-                console.error('Error:', error);
+                progressContainer.style.display = 'none';
+                resultsContainer.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+                console.error('搜索错误:', error);
             });
-        });
-
-        // 处理文件上传表单的提交
-        document.getElementById('upload-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-
+        }
+        
+        function displayResults(results) {
+            const template = document.getElementById('resultTemplate');
+            const container = document.getElementById('resultsContainer');
+            
+            results.forEach(result => {
+                const clone = template.content.cloneNode(true);
+                const card = clone.querySelector('.card');
+                
+                // 设置结果内容
+                clone.querySelector('.card-title').textContent = result.subsection_title || '无标题';
+                clone.querySelector('.source-file').textContent = `来源: ${result.filename}`;
+                
+                // 显示相似度分数
+                const score = result.rerank_score || result.distance;
+                const similarityBadge = clone.querySelector('.similarity-badge');
+                similarityBadge.textContent = `相关度: ${score.toFixed(3)}`;
+                
+                // 根据分数设置颜色
+                const scorePercent = score * 100;
+                if (scorePercent > 70) {
+                    similarityBadge.style.backgroundColor = '#198754';
+                } else if (scorePercent > 40) {
+                    similarityBadge.style.backgroundColor = '#fd7e14';
+                } else {
+                    similarityBadge.style.backgroundColor = '#6c757d';
+                }
+                
+                // 显示内容摘要
+                const content = result.content || '无内容';
+                const preview = content.length > 200 ? content.substring(0, 200) + '...' : content;
+                clone.querySelector('.result-content').textContent = preview;
+                
+                // 显示章节信息
+                if (result.chapter_title) {
+                    clone.querySelector('.chapter-info').textContent = `所属章节: ${result.chapter_title}`;
+                }
+                
+                container.appendChild(clone);
+            });
+        }
+        
+        function uploadFiles() {
+            const fileInput = document.getElementById('fileUpload');
+            const files = fileInput.files;
+            
+            if (files.length === 0) {
+                alert('请选择要上传的文件');
+                return;
+            }
+            
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            
+            const progressContainer = document.getElementById('progressContainer');
+            progressContainer.style.display = 'block';
+            
             fetch('/upload', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('上传失败');
+                return response.json();
+            })
             .then(data => {
-                alert(data.message || data.error);
+                progressContainer.style.display = 'none';
+                alert(data.message || '文件上传并处理成功');
+                fileInput.value = ''; // 清空文件选择
             })
             .catch(error => {
-                console.error('Error:', error);
+                progressContainer.style.display = 'none';
+                alert(error.message || '文件处理失败');
+                console.error('上传错误:', error);
             });
-        });
-
-
-        // 切换内容显示
-        function toggleContent(button) {
-            const contentPreview = button.previousElementSibling.previousElementSibling;
-            const fullContent = button.previousElementSibling;
-
-            if (fullContent.style.display === "none") {
-                fullContent.style.display = "inline";
-                contentPreview.style.display = "none";
-                button.textContent = "收起";
-            } else {
-                fullContent.style.display = "none";
-                contentPreview.style.display = "inline";
-                button.textContent = "查看更多";
-            }
         }
     </script>
 </body>
