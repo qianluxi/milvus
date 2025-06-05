@@ -1,0 +1,1006 @@
+2025-06-03 23:05:20,797 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inquiry.modelscope.cn
+2025-06-03 23:05:20,891 - VectorSearchSystem - ERROR - ”Ú√˚Ω‚Œˆ ß∞‹
+2025-06-03 23:05:20,892 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 1/5  ß∞‹: Œﬁ∑®¡¨Ω”µΩAPI∑˛ŒÒ∆˜
+2025-06-03 23:05:20,892 - VectorSearchSystem - WARNING - µ»¥˝ 1 √Î∫Û÷ÿ ‘...
+2025-06-03 23:05:21,893 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inquiry.modelscope.cn
+2025-06-03 23:05:21,893 - VectorSearchSystem - ERROR - ”Ú√˚Ω‚Œˆ ß∞‹
+2025-06-03 23:05:21,893 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 2/5  ß∞‹: Œﬁ∑®¡¨Ω”µΩAPI∑˛ŒÒ∆˜
+2025-06-03 23:05:21,894 - VectorSearchSystem - WARNING - µ»¥˝ 2 √Î∫Û÷ÿ ‘...
+2025-06-03 23:05:23,895 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inquiry.modelscope.cn
+2025-06-03 23:05:23,896 - VectorSearchSystem - ERROR - ”Ú√˚Ω‚Œˆ ß∞‹
+2025-06-03 23:05:23,896 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 3/5  ß∞‹: Œﬁ∑®¡¨Ω”µΩAPI∑˛ŒÒ∆˜
+2025-06-03 23:05:23,896 - VectorSearchSystem - WARNING - µ»¥˝ 4 √Î∫Û÷ÿ ‘...
+2025-06-03 23:05:27,896 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inquiry.modelscope.cn
+2025-06-03 23:05:28,065 - VectorSearchSystem - ERROR - ”Ú√˚Ω‚Œˆ ß∞‹
+2025-06-03 23:05:28,066 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 4/5  ß∞‹: Œﬁ∑®¡¨Ω”µΩAPI∑˛ŒÒ∆˜
+2025-06-03 23:05:28,066 - VectorSearchSystem - WARNING - µ»¥˝ 8 √Î∫Û÷ÿ ‘...
+2025-06-03 23:05:36,066 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inquiry.modelscope.cn
+2025-06-03 23:05:36,074 - VectorSearchSystem - ERROR - ”Ú√˚Ω‚Œˆ ß∞‹
+2025-06-03 23:05:36,075 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 5/5  ß∞‹: Œﬁ∑®¡¨Ω”µΩAPI∑˛ŒÒ∆˜
+2025-06-03 23:05:36,075 - VectorSearchSystem - WARNING - µ»¥˝ 16 √Î∫Û÷ÿ ‘...
+2025-06-03 23:05:52,076 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inquiry.modelscope.cn
+2025-06-03 23:05:52,082 - VectorSearchSystem - ERROR - ”Ú√˚Ω‚Œˆ ß∞‹
+2025-06-03 23:05:52,082 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 6/5  ß∞‹: Œﬁ∑®¡¨Ω”µΩAPI∑˛ŒÒ∆˜
+2025-06-03 23:05:52,082 - VectorSearchSystem - CRITICAL - À˘”–≥ı ºªØ≥¢ ‘æ˘ ß∞‹
+2025-06-03 23:15:27,011 - VectorSearchSystem - INFO -  π”√APIª˘¥°URL: https://api-inference.modelscope.cn/v1/
+2025-06-03 23:15:27,059 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-03 23:15:27,066 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-03 23:15:27,096 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-03 23:15:27,212 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 1/5  ß∞‹: Invalid `http_client` argument; Expected an instance of `httpx.Client` but got <class 'requests.sessions.Session'>
+2025-06-03 23:15:27,213 - VectorSearchSystem - WARNING - µ»¥˝ 1 √Î∫Û÷ÿ ‘...
+2025-06-03 23:15:28,252 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-03 23:15:28,253 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-03 23:15:28,302 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-03 23:15:28,415 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 2/5  ß∞‹: Invalid `http_client` argument; Expected an instance of `httpx.Client` but got <class 'requests.sessions.Session'>
+2025-06-03 23:15:28,415 - VectorSearchSystem - WARNING - µ»¥˝ 2 √Î∫Û÷ÿ ‘...
+2025-06-03 23:15:30,456 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-03 23:15:30,456 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-03 23:15:30,485 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-03 23:15:30,595 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 3/5  ß∞‹: Invalid `http_client` argument; Expected an instance of `httpx.Client` but got <class 'requests.sessions.Session'>
+2025-06-03 23:15:30,595 - VectorSearchSystem - WARNING - µ»¥˝ 4 √Î∫Û÷ÿ ‘...
+2025-06-03 23:15:34,628 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-03 23:15:34,629 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-03 23:15:34,658 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-03 23:15:34,769 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 4/5  ß∞‹: Invalid `http_client` argument; Expected an instance of `httpx.Client` but got <class 'requests.sessions.Session'>
+2025-06-03 23:15:34,770 - VectorSearchSystem - WARNING - µ»¥˝ 8 √Î∫Û÷ÿ ‘...
+2025-06-03 23:15:42,806 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-03 23:15:42,807 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-03 23:15:42,834 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-03 23:15:42,943 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 5/5  ß∞‹: Invalid `http_client` argument; Expected an instance of `httpx.Client` but got <class 'requests.sessions.Session'>
+2025-06-03 23:15:42,943 - VectorSearchSystem - WARNING - µ»¥˝ 16 √Î∫Û÷ÿ ‘...
+2025-06-03 23:15:58,980 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-03 23:15:58,981 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-03 23:15:59,011 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-03 23:15:59,121 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 6/5  ß∞‹: Invalid `http_client` argument; Expected an instance of `httpx.Client` but got <class 'requests.sessions.Session'>
+2025-06-03 23:15:59,122 - VectorSearchSystem - CRITICAL - À˘”–≥ı ºªØ≥¢ ‘æ˘ ß∞‹
+2025-06-04 21:21:43,801 - VectorSearchSystem - INFO -  π”√APIª˘¥°URL: https://api-inference.modelscope.cn/v1/
+2025-06-04 21:21:43,844 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 21:21:43,879 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 39.99.133.195
+2025-06-04 21:21:43,919 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 39.99.133.195:443
+2025-06-04 21:21:44,081 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000022455044220>, 'json_data': {'input': ['test'], 'model': 'Qwen/Qwen2.5-Coder-32B-Instruct', 'encoding_format': 'base64'}}
+2025-06-04 21:21:44,083 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 21:21:44,084 - httpcore.connection - DEBUG - connect_tcp.started host='api-inference.modelscope.cn' port=443 local_address=None timeout=45 socket_options=None
+2025-06-04 21:21:44,132 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000224550612D0>
+2025-06-04 21:21:44,133 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022454F08560> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 21:21:44,231 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000022455061550>
+2025-06-04 21:21:44,232 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:44,233 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 21:21:44,233 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 21:21:44,233 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 21:21:44,234 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:44,284 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 13:21:43 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490433035136365e0743114d5252f0130c5eb70dafea6f8f93f0;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 21:21:44,290 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 21:21:44,290 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 21:21:44,307 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 21:21:44,307 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 21:21:44,308 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 21:21:44,308 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 13:21:43 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490433035136365e0743114d5252f0130c5eb70dafea6f8f93f0;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 21:21:44,308 - openai._base_client - DEBUG - request_id: None
+2025-06-04 21:21:44,309 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 21:21:44,311 - openai._base_client - DEBUG - Not retrying
+2025-06-04 21:21:44,312 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 21:21:44,312 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:44,313 - httpcore.connection - DEBUG - close.started
+2025-06-04 21:21:44,313 - httpcore.connection - DEBUG - close.complete
+2025-06-04 21:21:44,314 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 1/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:44,314 - VectorSearchSystem - WARNING - µ»¥˝ 1 √Î∫Û÷ÿ ‘...
+2025-06-04 21:21:45,352 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 21:21:45,353 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 39.99.133.195
+2025-06-04 21:21:45,382 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 39.99.133.195:443
+2025-06-04 21:21:45,496 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x00000224550D1300>, 'json_data': {'input': ['test'], 'model': 'Qwen/Qwen2.5-Coder-32B-Instruct', 'encoding_format': 'base64'}}
+2025-06-04 21:21:45,497 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 21:21:45,497 - httpcore.connection - DEBUG - connect_tcp.started host='api-inference.modelscope.cn' port=443 local_address=None timeout=45 socket_options=None
+2025-06-04 21:21:45,552 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000224550D52D0>
+2025-06-04 21:21:45,552 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022455096960> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 21:21:45,619 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000224550D5290>
+2025-06-04 21:21:45,620 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:45,620 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 21:21:45,620 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 21:21:45,621 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 21:21:45,621 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:45,661 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 13:21:44 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490433048912664e07e5285bed0b1c0bfb25a29cfb621ee71f77;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 21:21:45,662 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 21:21:45,663 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 21:21:45,663 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 21:21:45,663 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 21:21:45,664 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 21:21:45,664 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 13:21:44 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490433048912664e07e5285bed0b1c0bfb25a29cfb621ee71f77;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 21:21:45,664 - openai._base_client - DEBUG - request_id: None
+2025-06-04 21:21:45,664 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 21:21:45,665 - openai._base_client - DEBUG - Not retrying
+2025-06-04 21:21:45,665 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 21:21:45,665 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:45,666 - httpcore.connection - DEBUG - close.started
+2025-06-04 21:21:45,666 - httpcore.connection - DEBUG - close.complete
+2025-06-04 21:21:45,666 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 2/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:45,667 - VectorSearchSystem - WARNING - µ»¥˝ 2 √Î∫Û÷ÿ ‘...
+2025-06-04 21:21:47,715 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 21:21:47,715 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 39.99.133.195
+2025-06-04 21:21:47,749 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 39.99.133.195:443
+2025-06-04 21:21:47,862 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x00000224550F05E0>, 'json_data': {'input': ['test'], 'model': 'Qwen/Qwen2.5-Coder-32B-Instruct', 'encoding_format': 'base64'}}
+2025-06-04 21:21:47,863 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 21:21:47,864 - httpcore.connection - DEBUG - connect_tcp.started host='api-inference.modelscope.cn' port=443 local_address=None timeout=45 socket_options=None
+2025-06-04 21:21:47,897 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000224550F4E10>
+2025-06-04 21:21:47,897 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022455096B10> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 21:21:47,964 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000224550F4DD0>
+2025-06-04 21:21:47,964 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:47,965 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 21:21:47,965 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 21:21:47,965 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 21:21:47,965 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:48,005 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 13:21:47 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490433072368898e0658e06ec959cf73c7aed42787cd8b51059d;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 21:21:48,006 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 21:21:48,006 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 21:21:48,006 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 21:21:48,006 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 21:21:48,006 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 21:21:48,007 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 13:21:47 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490433072368898e0658e06ec959cf73c7aed42787cd8b51059d;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 21:21:48,008 - openai._base_client - DEBUG - request_id: None
+2025-06-04 21:21:48,008 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 21:21:48,009 - openai._base_client - DEBUG - Not retrying
+2025-06-04 21:21:48,010 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 21:21:48,010 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:48,011 - httpcore.connection - DEBUG - close.started
+2025-06-04 21:21:48,011 - httpcore.connection - DEBUG - close.complete
+2025-06-04 21:21:48,011 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 3/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:48,012 - VectorSearchSystem - WARNING - µ»¥˝ 4 √Î∫Û÷ÿ ‘...
+2025-06-04 21:21:52,060 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 21:21:52,061 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 39.99.133.195
+2025-06-04 21:21:52,127 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 39.99.133.195:443
+2025-06-04 21:21:52,244 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x00000224550F37E0>, 'json_data': {'input': ['test'], 'model': 'Qwen/Qwen2.5-Coder-32B-Instruct', 'encoding_format': 'base64'}}
+2025-06-04 21:21:52,244 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 21:21:52,245 - httpcore.connection - DEBUG - connect_tcp.started host='api-inference.modelscope.cn' port=443 local_address=None timeout=45 socket_options=None
+2025-06-04 21:21:52,283 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000022455108A10>
+2025-06-04 21:21:52,284 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022455096CC0> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 21:21:52,358 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000224551089D0>
+2025-06-04 21:21:52,358 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:52,359 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 21:21:52,359 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 21:21:52,359 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 21:21:52,360 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 21:21:52,404 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 13:21:51 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490433116301316e0664072200cebdbc605ec23b636a90fecdce;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 21:21:52,405 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 21:21:52,406 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 21:21:52,406 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 21:21:52,406 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 21:21:52,406 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 21:21:52,407 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 13:21:51 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490433116301316e0664072200cebdbc605ec23b636a90fecdce;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 21:21:52,407 - openai._base_client - DEBUG - request_id: None
+2025-06-04 21:21:52,407 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 21:21:52,408 - openai._base_client - DEBUG - Not retrying
+2025-06-04 21:21:52,408 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 21:21:52,408 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:52,435 - httpcore.connection - DEBUG - close.started
+2025-06-04 21:21:52,435 - httpcore.connection - DEBUG - close.complete
+2025-06-04 21:21:52,436 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 4/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:21:52,436 - VectorSearchSystem - WARNING - µ»¥˝ 8 √Î∫Û÷ÿ ‘...
+2025-06-04 21:22:00,485 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 21:22:00,486 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 39.99.133.195
+2025-06-04 21:22:00,515 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 39.99.133.195:443
+2025-06-04 21:22:00,627 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x00000224551168E0>, 'json_data': {'input': ['test'], 'model': 'Qwen/Qwen2.5-Coder-32B-Instruct', 'encoding_format': 'base64'}}
+2025-06-04 21:22:00,628 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 21:22:00,630 - httpcore.connection - DEBUG - connect_tcp.started host='api-inference.modelscope.cn' port=443 local_address=None timeout=45 socket_options=None
+2025-06-04 21:22:00,671 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002245511C490>
+2025-06-04 21:22:00,672 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022455096E70> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 21:22:00,755 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002245511C450>
+2025-06-04 21:22:00,756 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 21:22:00,756 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 21:22:00,756 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 21:22:00,756 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 21:22:00,757 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 21:22:00,805 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 13:22:00 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490433200353092e07a7ee021a41947187d4645e237e146723e5;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 21:22:00,818 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 21:22:00,818 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 21:22:00,819 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 21:22:00,819 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 21:22:00,819 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 21:22:00,819 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 13:22:00 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490433200353092e07a7ee021a41947187d4645e237e146723e5;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 21:22:00,819 - openai._base_client - DEBUG - request_id: None
+2025-06-04 21:22:00,820 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 21:22:00,821 - openai._base_client - DEBUG - Not retrying
+2025-06-04 21:22:00,821 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 21:22:00,821 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:22:00,822 - httpcore.connection - DEBUG - close.started
+2025-06-04 21:22:00,823 - httpcore.connection - DEBUG - close.complete
+2025-06-04 21:22:00,823 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 5/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:22:00,823 - VectorSearchSystem - WARNING - µ»¥˝ 16 √Î∫Û÷ÿ ‘...
+2025-06-04 21:22:16,857 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 21:22:16,857 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 39.99.133.195
+2025-06-04 21:22:16,890 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 39.99.133.195:443
+2025-06-04 21:22:17,003 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000022455129B20>, 'json_data': {'input': ['test'], 'model': 'Qwen/Qwen2.5-Coder-32B-Instruct', 'encoding_format': 'base64'}}
+2025-06-04 21:22:17,004 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 21:22:17,005 - httpcore.connection - DEBUG - connect_tcp.started host='api-inference.modelscope.cn' port=443 local_address=None timeout=45 socket_options=None
+2025-06-04 21:22:17,042 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000022455123F10>
+2025-06-04 21:22:17,043 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000022455096F90> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 21:22:17,119 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000022455123ED0>
+2025-06-04 21:22:17,120 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 21:22:17,120 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 21:22:17,120 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 21:22:17,121 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 21:22:17,121 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 21:22:17,168 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 13:22:16 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490433363911639e08ee3d5976971ea82f702512eaba1d07d521;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 21:22:17,169 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 21:22:17,170 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 21:22:17,170 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 21:22:17,170 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 21:22:17,171 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 21:22:17,171 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 13:22:16 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490433363911639e08ee3d5976971ea82f702512eaba1d07d521;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 21:22:17,171 - openai._base_client - DEBUG - request_id: None
+2025-06-04 21:22:17,171 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 21:22:17,172 - openai._base_client - DEBUG - Not retrying
+2025-06-04 21:22:17,172 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 21:22:17,173 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:22:17,173 - httpcore.connection - DEBUG - close.started
+2025-06-04 21:22:17,173 - httpcore.connection - DEBUG - close.complete
+2025-06-04 21:22:17,174 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 6/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 21:22:17,174 - VectorSearchSystem - CRITICAL - À˘”–≥ı ºªØ≥¢ ‘æ˘ ß∞‹
+2025-06-04 22:25:26,277 - VectorSearchSystem - INFO -  π”√APIª˘¥°URL: https://api-inference.modelscope.cn/v1/
+2025-06-04 22:25:26,328 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:25:26,338 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:25:26,380 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:25:26,385 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000021FFE1C8180>, 'json_data': {'input': ['test'], 'model': 'damo/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:25:26,386 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:25:26,387 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:25:26,388 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE1CED90>
+2025-06-04 22:25:26,388 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:26,389 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:26,389 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:26,389 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:26,390 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:26,390 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:25:26 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:25:26,390 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000021FFE088440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:25:26,487 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE1A2A90>
+2025-06-04 22:25:26,487 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:26,488 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:26,488 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:25:26,488 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:26,488 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:26,525 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:25:25 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4c5617490471257093230ecec6303b0ee3eb74773cbf1b6d85ee59ca07;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:25:26,527 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:25:26,527 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:25:26,527 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:25:26,528 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:25:26,528 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:25:26,528 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:25:25 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4c5617490471257093230ecec6303b0ee3eb74773cbf1b6d85ee59ca07;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:25:26,529 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:25:26,529 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:25:26,531 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:25:26,531 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:25:26,532 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:26,532 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 1/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:26,533 - VectorSearchSystem - WARNING - µ»¥˝ 1 √Î∫Û÷ÿ ‘...
+2025-06-04 22:25:32,537 - VectorSearchSystem - ERROR - Œﬁ∑®∑√Œ ª•¡™Õ¯
+2025-06-04 22:25:32,537 - VectorSearchSystem - ERROR - Œﬁ∑®¡¨Ω”µΩª•¡™Õ¯
+2025-06-04 22:25:32,538 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 2/5  ß∞‹: Õ¯¬Á¡¨Ω”≤ªø…”√
+2025-06-04 22:25:32,538 - VectorSearchSystem - WARNING - µ»¥˝ 2 √Î∫Û÷ÿ ‘...
+2025-06-04 22:25:34,587 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:25:34,588 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:25:34,632 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:25:34,632 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000021FFE1CA520>, 'json_data': {'input': ['test'], 'model': 'damo/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:25:34,634 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:25:34,635 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:25:34,636 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE246190>
+2025-06-04 22:25:34,636 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:34,636 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:34,636 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:34,637 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:34,637 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:34,637 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:25:34 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:25:34,637 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000021FFE088440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:25:34,748 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE246350>
+2025-06-04 22:25:34,748 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:34,749 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:34,749 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:25:34,749 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:34,750 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:34,791 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:25:33 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:25:34,792 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:25:34,792 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:25:34,793 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:25:34,793 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:25:34,793 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:25:34,793 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:25:33 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:25:34,793 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:25:34,794 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:25:34,794 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:25:34,794 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:25:34,795 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:34,795 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 3/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:34,795 - VectorSearchSystem - WARNING - µ»¥˝ 4 √Î∫Û÷ÿ ‘...
+2025-06-04 22:25:38,829 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:25:38,830 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:25:38,858 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:25:38,859 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000021FFE1CAA20>, 'json_data': {'input': ['test'], 'model': 'damo/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:25:38,860 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:25:38,861 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:38,861 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:38,862 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:25:38,863 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:38,863 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:38,901 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:25:38 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:25:38,901 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:25:38,901 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:25:38,902 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:25:38,902 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:25:38,902 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:25:38,902 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:25:38 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:25:38,902 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:25:38,903 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:25:38,947 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:25:38,948 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:25:38,948 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:38,948 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 4/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:38,949 - VectorSearchSystem - WARNING - µ»¥˝ 8 √Î∫Û÷ÿ ‘...
+2025-06-04 22:25:46,987 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:25:46,987 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:25:47,020 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:25:47,021 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000021FFE1CAE80>, 'json_data': {'input': ['test'], 'model': 'damo/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:25:47,022 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:25:47,023 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:25:47,024 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE236F90>
+2025-06-04 22:25:47,024 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:47,024 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:47,025 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:47,025 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:47,025 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:25:47,025 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:25:47 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:25:47,026 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000021FFE088440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:25:47,139 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE246890>
+2025-06-04 22:25:47,139 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:47,140 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:25:47,140 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:25:47,140 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:25:47,141 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:25:47,184 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:25:46 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:25:47,185 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:25:47,185 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:25:47,186 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:25:47,186 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:25:47,186 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:25:47,186 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:25:46 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:25:47,186 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:25:47,187 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:25:47,187 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:25:47,188 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:25:47,188 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:47,188 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 5/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:25:47,189 - VectorSearchSystem - WARNING - µ»¥˝ 16 √Î∫Û÷ÿ ‘...
+2025-06-04 22:26:03,226 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:26:03,227 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:26:03,263 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:26:03,264 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000021FFE1CA700>, 'json_data': {'input': ['test'], 'model': 'damo/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:26:03,265 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:26:03,266 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:26:03,266 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE25DAD0>
+2025-06-04 22:26:03,266 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:26:03,267 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:26:03,267 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:26:03,267 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:26:03,267 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:26:03,267 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:26:03 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:26:03,267 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000021FFE088440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:26:03,370 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021FFE25CC10>
+2025-06-04 22:26:03,370 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:26:03,370 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:26:03,371 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:26:03,371 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:26:03,371 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:26:03,408 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:26:02 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:26:03,409 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:26:03,410 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:26:03,410 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:26:03,411 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:26:03,411 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:26:03,411 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:26:02 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:26:03,412 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:26:03,412 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:26:03,414 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:26:03,414 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:26:03,414 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:26:03,415 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 6/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:26:03,415 - VectorSearchSystem - CRITICAL - À˘”–≥ı ºªØ≥¢ ‘æ˘ ß∞‹
+2025-06-04 22:29:49,092 - VectorSearchSystem - INFO -  π”√APIª˘¥°URL: https://api-inference.modelscope.cn/v1/
+2025-06-04 22:29:49,129 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:29:49,142 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:29:49,184 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:29:49,186 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001FEE2458180>, 'json_data': {'input': ['test'], 'model': 'iic/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:29:49,187 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:29:49,188 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:29:49,189 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001FEE24721D0>
+2025-06-04 22:29:49,189 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:29:49,189 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:29:49,190 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:29:49,190 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:29:49,190 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:29:49,191 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:29:49 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:29:49,191 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001FEE2318440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:29:49,312 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001FEE247CFD0>
+2025-06-04 22:29:49,312 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:49,312 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:29:49,313 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:29:49,313 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:29:49,313 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:49,358 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:29:48 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4c5617490473885401290ecd348e55788605f75834c0257ba8af0e0aa2;path=/;HttpOnly;Max-Age=1800'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:29:49,359 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:29:49,359 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:29:49,360 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:29:49,360 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:29:49,360 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:29:49,361 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:29:48 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4c5617490473885401290ecd348e55788605f75834c0257ba8af0e0aa2;path=/;HttpOnly;Max-Age=1800', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:29:49,362 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:29:49,362 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:29:49,365 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:29:49,365 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:29:49,366 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:49,367 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 1/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:49,367 - VectorSearchSystem - WARNING - µ»¥˝ 1 √Î∫Û÷ÿ ‘...
+2025-06-04 22:29:50,406 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:29:50,407 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:29:50,441 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:29:50,442 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001FEE245A520>, 'json_data': {'input': ['test'], 'model': 'iic/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:29:50,443 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:29:50,444 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:50,444 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:29:50,446 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:29:50,447 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:29:50,447 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:50,487 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:29:49 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:29:50,487 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:29:50,487 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:29:50,488 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:29:50,488 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:29:50,488 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:29:50,488 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:29:49 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:29:50,489 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:29:50,489 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:29:50,490 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:29:50,490 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:29:50,490 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:50,490 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 2/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:50,491 - VectorSearchSystem - WARNING - µ»¥˝ 2 √Î∫Û÷ÿ ‘...
+2025-06-04 22:29:52,832 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:29:52,833 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:29:52,880 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:29:52,881 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001FEE245AB60>, 'json_data': {'input': ['test'], 'model': 'iic/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:29:52,882 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:29:52,883 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:52,884 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:29:52,884 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:29:52,884 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:29:52,884 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:52,924 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:29:52 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:29:52,925 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:29:52,926 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:29:52,926 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:29:52,926 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:29:52,926 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:29:52,926 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:29:52 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:29:52,927 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:29:52,927 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:29:52,928 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:29:52,928 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:29:52,928 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:52,928 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 3/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:52,929 - VectorSearchSystem - WARNING - µ»¥˝ 4 √Î∫Û÷ÿ ‘...
+2025-06-04 22:29:56,983 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:29:56,984 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:29:57,022 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:29:57,023 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001FEE245ADE0>, 'json_data': {'input': ['test'], 'model': 'iic/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:29:57,024 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:29:57,025 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:57,026 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:29:57,027 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:29:57,027 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:29:57,027 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:29:57,069 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:29:56 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:29:57,070 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:29:57,071 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:29:57,071 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:29:57,071 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:29:57,071 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:29:57,071 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:29:56 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:29:57,072 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:29:57,072 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:29:57,073 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:29:57,073 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:29:57,073 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:57,074 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 4/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:29:57,075 - VectorSearchSystem - WARNING - µ»¥˝ 8 √Î∫Û÷ÿ ‘...
+2025-06-04 22:30:05,115 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:30:05,115 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:30:05,155 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:30:05,156 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001FEE245B100>, 'json_data': {'input': ['test'], 'model': 'iic/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:30:05,157 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:30:05,158 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:30:05,159 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001FEE24ED710>
+2025-06-04 22:30:05,159 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:30:05,160 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:30:05,160 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:30:05,161 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:30:05,161 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:30:05,162 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:30:05 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:30:05,163 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001FEE2318440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:30:05,261 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001FEE24EFB90>
+2025-06-04 22:30:05,261 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:30:05,261 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:30:05,261 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:30:05,262 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:30:05,262 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:30:05,300 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:30:04 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:30:05,300 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:30:05,301 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:30:05,301 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:30:05,301 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:30:05,302 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:30:05,302 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:30:04 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:30:05,303 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:30:05,303 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:30:05,304 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:30:05,304 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:30:05,304 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:30:05,304 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 5/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:30:05,305 - VectorSearchSystem - WARNING - µ»¥˝ 16 √Î∫Û÷ÿ ‘...
+2025-06-04 22:30:21,345 - VectorSearchSystem - INFO - ’˝‘⁄Ω‚Œˆ”Ú√˚: api-inference.modelscope.cn
+2025-06-04 22:30:21,345 - VectorSearchSystem - INFO - Ω‚Œˆ≥…π¶: api-inference.modelscope.cn -> 47.92.141.220
+2025-06-04 22:30:21,390 - VectorSearchSystem - INFO - TCP¡¨Ω”≥…π¶: 47.92.141.220:443
+2025-06-04 22:30:21,391 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001FEE2459080>, 'json_data': {'input': ['test'], 'model': 'iic/nlp_gte_sentence-embedding_chinese-base', 'encoding_format': 'base64'}}
+2025-06-04 22:30:21,392 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings
+2025-06-04 22:30:21,392 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=45 socket_options=None
+2025-06-04 22:30:21,393 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001FEE24F07D0>
+2025-06-04 22:30:21,393 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:30:21,394 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:30:21,394 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 22:30:21,394 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:30:21,394 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 22:30:21,394 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 22:30:21 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 22:30:21,395 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001FEE2318440> server_hostname='api-inference.modelscope.cn' timeout=45
+2025-06-04 22:30:21,485 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001FEE24F0C90>
+2025-06-04 22:30:21,485 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 22:30:21,485 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 22:30:21,486 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 22:30:21,486 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 22:30:21,486 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 22:30:21,522 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 404, b'Not Found', [(b'Date', b'Wed, 04 Jun 2025 14:30:20 GMT'), (b'Content-Type', b'text/html'), (b'Content-Length', b'146'), (b'Connection', b'keep-alive'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains')])
+2025-06-04 22:30:21,522 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/embeddings "HTTP/1.1 404 Not Found"
+2025-06-04 22:30:21,523 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 22:30:21,523 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 22:30:21,524 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 22:30:21,524 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 22:30:21,524 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/embeddings "404 Not Found" Headers({'date': 'Wed, 04 Jun 2025 14:30:20 GMT', 'content-type': 'text/html', 'content-length': '146', 'connection': 'keep-alive', 'strict-transport-security': 'max-age=15724800; includeSubDomains'})
+2025-06-04 22:30:21,524 - openai._base_client - DEBUG - request_id: None
+2025-06-04 22:30:21,524 - openai._base_client - DEBUG - Encountered httpx.HTTPStatusError
+Traceback (most recent call last):
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\openai\_base_client.py", line 1002, in _request
+    response.raise_for_status()
+  File "d:\ProgramData\anaconda3\envs\milvus311\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '404 Not Found' for url 'https://api-inference.modelscope.cn/v1/embeddings'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-06-04 22:30:21,525 - openai._base_client - DEBUG - Not retrying
+2025-06-04 22:30:21,525 - openai._base_client - DEBUG - Re-raising status error
+2025-06-04 22:30:21,526 - VectorSearchSystem - ERROR - œÚ¡øªØ ß∞‹: NotFoundError - <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:30:21,526 - VectorSearchSystem - ERROR - ≥ı ºªØ≥¢ ‘ 6/5  ß∞‹: <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+2025-06-04 22:30:21,526 - VectorSearchSystem - CRITICAL - À˘”–≥ı ºªØ≥¢ ‘æ˘ ß∞‹
+2025-06-04 23:06:37,796 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:06:38,048 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:06:38,109 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:06:38,362 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:06:38,563 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-06-04 23:06:38,771 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-06-04 23:06:38,782 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:06:38,987 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:06:39,027 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:06:39,203 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:06:39,392 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-06-04 23:06:39,617 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-06-04 23:06:50,168 - VectorSearchSystem - INFO - ≥ı ºªØModelScope◊Èº˛...
+2025-06-04 23:06:50,551 - VectorSearchSystem - INFO - «∂»Îƒ£–Õ≤‚ ‘≥…π¶£¨œÚ¡øŒ¨∂»: 768
+2025-06-04 23:06:50,561 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ƒ„∫√'}], 'model': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B', 'max_tokens': 512, 'stream': False, 'temperature': 0.2}}
+2025-06-04 23:06:50,562 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-06-04 23:06:50,563 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-06-04 23:06:50,564 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002693522E390>
+2025-06-04 23:06:50,564 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 23:06:50,565 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 23:06:50,566 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 23:06:50,566 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 23:06:50,566 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 23:06:50,567 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 23:06:50 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 23:06:50,567 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002693525CF80> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-06-04 23:06:50,799 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002693510CCD0>
+2025-06-04 23:06:50,800 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 23:06:50,800 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 23:06:50,801 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 23:06:50,801 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 23:06:50,801 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 23:06:52,003 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wed, 04 Jun 2025 15:06:51 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490496100017045e078032b7d68272afd3fd9c85f8cdcb3b8a1c;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-06-04 23:06:52,005 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-04 23:06:52,005 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 23:06:52,006 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 23:06:52,006 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 23:06:52,007 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 23:06:52,007 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Wed, 04 Jun 2025 15:06:51 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490496100017045e078032b7d68272afd3fd9c85f8cdcb3b8a1c;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-06-04 23:06:52,008 - openai._base_client - DEBUG - request_id: None
+2025-06-04 23:06:52,011 - VectorSearchSystem - INFO - Œ ¥ƒ£–Õ≤‚ ‘œÏ”¶: ƒ„∫√£°∫‹∏ﬂ–Àº˚µΩƒ„°£”– ≤√¥Œ“ø…“‘∞Ô÷˙ƒ„µƒ¬£ø...
+2025-06-04 23:06:52,012 - VectorSearchSystem - INFO - ’˝‘⁄¡¨Ω”Milvus ˝æ›ø‚...
+2025-06-04 23:06:52,788 - VectorSearchSystem - INFO - Milvus¡¨Ω”≥…π¶
+2025-06-04 23:06:55,536 - VectorSearchSystem - INFO - Collection 'text_search' created and loaded successfully.
+2025-06-04 23:06:55,537 - VectorSearchSystem - INFO - œµÕ≥≥ı ºªØÕÍ≥…
+2025-06-04 23:06:55,554 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.112:5000
+2025-06-04 23:06:55,554 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-04 23:06:55,556 - werkzeug - INFO -  * Restarting with stat
+2025-06-04 23:07:04,549 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:07:04,950 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:07:04,991 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:07:05,219 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:07:05,414 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-06-04 23:07:05,622 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-06-04 23:07:05,634 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:07:05,854 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:07:05,897 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-06-04 23:07:06,073 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-06-04 23:07:06,248 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-06-04 23:07:06,550 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-06-04 23:07:20,564 - VectorSearchSystem - INFO - ≥ı ºªØModelScope◊Èº˛...
+2025-06-04 23:07:21,152 - VectorSearchSystem - INFO - «∂»Îƒ£–Õ≤‚ ‘≥…π¶£¨œÚ¡øŒ¨∂»: 768
+2025-06-04 23:07:21,169 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ƒ„∫√'}], 'model': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B', 'max_tokens': 512, 'stream': False, 'temperature': 0.2}}
+2025-06-04 23:07:21,173 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-06-04 23:07:21,176 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-06-04 23:07:21,194 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021C5B789310>
+2025-06-04 23:07:21,199 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-06-04 23:07:21,201 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 23:07:21,202 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-06-04 23:07:21,203 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 23:07:21,203 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-06-04 23:07:21,205 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wednesday, 04-Jun-25 23:07:21 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-06-04 23:07:21,207 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000021C67F1F5C0> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-06-04 23:07:21,315 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000021C5B773BD0>
+2025-06-04 23:07:21,315 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-06-04 23:07:21,316 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-06-04 23:07:21,316 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-06-04 23:07:21,317 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-06-04 23:07:21,317 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-06-04 23:07:22,612 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Wed, 04 Jun 2025 15:07:21 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4cda17490496405061608e0668d0a9fb4915423a8d600c8e9d834b978a;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-06-04 23:07:22,615 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-04 23:07:22,616 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-06-04 23:07:22,617 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-06-04 23:07:22,618 - httpcore.http11 - DEBUG - response_closed.started
+2025-06-04 23:07:22,618 - httpcore.http11 - DEBUG - response_closed.complete
+2025-06-04 23:07:22,618 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Wed, 04 Jun 2025 15:07:21 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4cda17490496405061608e0668d0a9fb4915423a8d600c8e9d834b978a;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-06-04 23:07:22,619 - openai._base_client - DEBUG - request_id: None
+2025-06-04 23:07:22,622 - VectorSearchSystem - INFO - Œ ¥ƒ£–Õ≤‚ ‘œÏ”¶: ƒ„∫√£°”– ≤√¥Œ“ø…“‘∞Ô÷˙ƒ„µƒ¬£ø...
+2025-06-04 23:07:22,626 - VectorSearchSystem - INFO - ’˝‘⁄¡¨Ω”Milvus ˝æ›ø‚...
+2025-06-04 23:07:22,977 - VectorSearchSystem - INFO - Milvus¡¨Ω”≥…π¶
+2025-06-04 23:07:23,022 - VectorSearchSystem - INFO - Collection 'text_search' loaded successfully.
+2025-06-04 23:07:23,026 - VectorSearchSystem - INFO - œµÕ≥≥ı ºªØÕÍ≥…
+2025-06-04 23:07:23,045 - werkzeug - WARNING -  * Debugger is active!
+2025-06-04 23:07:23,058 - werkzeug - INFO -  * Debugger PIN: 250-243-251
+2025-06-04 23:07:23,156 - werkzeug - INFO - 127.0.0.1 - - [04/Jun/2025 23:07:23] "GET /home HTTP/1.1" 200 -
+2025-06-04 23:07:23,253 - werkzeug - INFO - 127.0.0.1 - - [04/Jun/2025 23:07:23] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-04 23:07:30,768 - VectorSearchSystem - INFO - »’÷æŒƒº˛“—…˙≥…£∫./uploads\222_parsed.txt
+2025-06-04 23:07:31,484 - VectorSearchSystem - INFO - Œƒµµ¥¶¿ÌÕÍ≥…£¨≥…π¶≤Â»Î 16 ∏ˆ∆¨∂Œ
+2025-06-04 23:07:31,485 - werkzeug - INFO - 127.0.0.1 - - [04/Jun/2025 23:07:31] "POST /upload HTTP/1.1" 200 -
+2025-06-04 23:07:52,983 - VectorSearchSystem - INFO - µ±«∞ π”√ ModelScope API ƒ£ Ω£¨Ã¯π˝±æµÿƒ£–Õº”‘ÿ
+2025-06-04 23:07:53,268 - VectorSearchSystem - ERROR - Reranking failed: 'reranker'
+2025-06-04 23:07:53,269 - werkzeug - INFO - 127.0.0.1 - - [04/Jun/2025 23:07:53] "POST /search HTTP/1.1" 200 -
+2025-06-04 23:08:05,895 - VectorSearchSystem - INFO - µ±«∞ π”√ ModelScope API ƒ£ Ω£¨Ã¯π˝±æµÿƒ£–Õº”‘ÿ
+2025-06-04 23:08:05,956 - VectorSearchSystem - ERROR - Reranking failed: 'reranker'
+2025-06-04 23:08:05,957 - werkzeug - INFO - 127.0.0.1 - - [04/Jun/2025 23:08:05] "POST /search HTTP/1.1" 200 -

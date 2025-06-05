@@ -9,50 +9,154 @@ from typing import List, Dict, Optional
 import pythoncom
 import win32com.client as win32
 from datetime import datetime
+import requests
+import json
+import time
+from openai import OpenAI
+import urllib3
+from tenacity import retry, stop_after_attempt, wait_exponential, wait_fixed, retry_if_exception_type
+import socket
+import certifi
+import ssl
+import http.client
+import httpx 
+from langchain_community.embeddings import ModelScopeEmbeddings
 
-# 初始化日志
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# 启用详细日志记录（调试时使用）
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("vector_search.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("VectorSearchSystem")
 
-# 模型配置
+# 模型配置 - 更新为ModelScope配置
 MODEL_CONFIG = {
     'embedding': {
-        'default': 'BAAI/bge-large-zh-v1.5',  # 中文嵌入模型
-        'en': 'BAAI/bge-large-en-v1.5',      # 英文嵌入模型
-        'small': 'paraphrase-MiniLM-L6-v2'    # 轻量级模型
+        'model_id': 'iic/nlp_gte_sentence-embedding_chinese-base',
+        'api_key': 'a008e17e-882d-4622-ae01-150918799925',
     },
-    'reranker': 'BAAI/bge-reranker-large'     # 重排序模型
+    'llm': {
+        'model_id': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B',
+        'api_base': 'https://api-inference.modelscope.cn/v1/',
+        'api_key': 'a008e17e-882d-4622-ae01-150918799925'
+    }
 }
 
+class ModelScopeLLM:
+    """OpenAI兼容封装的ModelScope LLM API"""
+    def __init__(self, api_base, api_key, model_id):
+        self.client = OpenAI(
+            base_url=api_base,
+            api_key=api_key
+        )
+        self.model_id = model_id
+        
+    def generate(self, prompt, **kwargs):
+        response = self.client.chat.completions.create(
+            model=self.model_id,
+            messages=[{"role": "user", "content": prompt}],
+            stream=False,
+            max_tokens=kwargs.get("max_tokens", 512),
+            temperature=kwargs.get("temperature", 0.2)
+        )
+        return response.choices[0].message.content
+
 class VectorSearchSystem:
-    def __init__(self, collection_name="text_search"):
+    def __init__(self, collection_name="text_search", max_retries=5):
         self.collection_name = collection_name
-        self.dim = 1024  # bge-large模型的维度
+        self.dim = 1024  # 初始值，实际由嵌入模型决定
         self.collection = None
-        self.embedding_model = None
+        self.max_retries = max_retries
         self.reranker_model = None
         self.metadata_dict = {}
         self.field_handlers = {
             'filename': {'max_len': 256, 'truncate': 'hash'},
             'chapter_title': {'max_len': 300, 'truncate': 'hash'},
-            'subsection_title': {'max_len': 500, 'truncate': 'simple'},  # 特殊处理
+            'subsection_title': {'max_len': 500, 'truncate': 'simple'},
             'content': {'max_len': 65535, 'truncate': 'reject'}
         }
-
-        # 初始化连接和集合
+        
+        # 初始化ModelScope组件
+        self.embeddings = ModelScopeEmbeddings(
+            model_id=MODEL_CONFIG['embedding']['model_id']
+        )
+        self.llm = ModelScopeLLM(
+            api_base=MODEL_CONFIG['llm']['api_base'],
+            api_key=MODEL_CONFIG['llm']['api_key'],
+            model_id=MODEL_CONFIG['llm']['model_id']
+        )
+        
+        # 初始化
         self._initialize()
-        # 确保模型在初始化时就加载
-        self.load_models()  # 新增这行
-    
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_fixed(3),
+        retry=retry_if_exception_type((httpx.NetworkError, 
+                                     httpx.TimeoutException,
+                                     ssl.SSLError)),
+        reraise=True
+    )
+    def text_to_vector(self, text: str) -> List[float]:
+        """使用ModelScopeEmbeddings进行文本向量化"""
+        try:
+            # 直接调用ModelScopeEmbeddings
+            return self.embeddings.embed_query(text)
+        except Exception as e:
+            logger.error(f"向量化失败: {type(e).__name__} - {str(e)}")
+            raise
+
+    def generate_answer(self, prompt: str) -> str:
+        """使用ModelScope LLM生成回答"""
+        return self.llm.generate(prompt)
+
     def _initialize(self):
-        """初始化系统"""
-        # 连接Milvus
-        connections.connect("default", host="localhost", port="19530")
+        """初始化并验证 API"""
+        logger.info("初始化ModelScope组件...")
         
-        # 创建集合
-        self._create_collection_if_not_exists()
-        
-        # 加载模型（按需加载）
+        for attempt in range(self.max_retries + 1):
+            try:
+                # 1. 测试嵌入模型
+                test_vector = self.text_to_vector("test")
+                self.dim = len(test_vector)
+                logger.info(f"嵌入模型测试成功，向量维度: {self.dim}")
+                
+                # 2. 测试问答模型
+                test_response = self.generate_answer("你好")
+                logger.info(f"问答模型测试响应: {test_response[:50]}...")
+                
+                # 3. 连接Milvus
+                self._connect_milvus()
+                logger.info("系统初始化完成")
+                return
+                
+            except Exception as e:
+                logger.error(f"初始化尝试 {attempt+1}/{self.max_retries} 失败: {str(e)}")
+                if attempt < self.max_retries:
+                    wait_time = min(2 ** attempt, 30)  # 指数退避
+                    logger.warning(f"等待 {wait_time} 秒后重试...")
+                    time.sleep(wait_time)
+                else:
+                    logger.critical("所有初始化尝试均失败")
+                    raise RuntimeError("系统无法初始化") from e
+
+    def _connect_milvus(self):
+        """连接Milvus数据库"""
+        try:
+            from pymilvus import connections
+            logger.info("正在连接Milvus数据库...")
+            connections.connect("default", host="localhost", port="19530")
+            logger.info("Milvus连接成功")
+            self._create_collection_if_not_exists()
+        except ImportError:
+            logger.warning("pymilvus未安装，跳过数据库连接")
+        except Exception as e:
+            logger.error(f"Milvus连接失败: {str(e)}")
+            # 非关键错误，允许继续运行
     
     def _create_collection_if_not_exists(self):
         """如果不存在则创建Milvus集合"""
@@ -66,7 +170,7 @@ class VectorSearchSystem:
                 FieldSchema(name="chapter_title", dtype=DataType.VARCHAR, max_length=300),
                 FieldSchema(name="subsection_title", dtype=DataType.VARCHAR, max_length=500),            
                 FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535, nullable=True),
-                FieldSchema(name="metadata", dtype=DataType.JSON)  # 新增字段存储额外元数据
+                FieldSchema(name="metadata", dtype=DataType.JSON)
             ]
 
             # 创建集合模式
@@ -79,7 +183,7 @@ class VectorSearchSystem:
             index_params = {
                 "metric_type": "COSINE",
                 "index_type": "HNSW",
-                "params": {"M": 24, "efConstruction": 300}  # 更强大的索引参数
+                "params": {"M": 24, "efConstruction": 300}
             }
 
             self.collection.create_index(field_name="embedding", index_params=index_params)
@@ -89,25 +193,21 @@ class VectorSearchSystem:
             self.collection = Collection(name=self.collection_name)
             self.collection.load()
             logger.info(f"Collection '{self.collection_name}' loaded successfully.")
+
+    def close(self):
+        """关闭资源"""
+        if hasattr(self, 'client') and self.client:
+            try:
+                self.client.close()
+                logger.info("OpenAI客户端已关闭")
+            except:
+                pass
+
     
     def load_models(self, model_type='default'):
-        """按需加载模型"""
-        if self.embedding_model is None:
-            model_name = MODEL_CONFIG['embedding'].get(model_type, MODEL_CONFIG['embedding']['default'])
-            logger.info(f"Loading embedding model: {model_name}")
-            try:
-                self.embedding_model = SentenceTransformer(model_name)
-                self.embedding_model_name = model_name  # 显式存储模型名称
-                self.dim = self.embedding_model.get_sentence_embedding_dimension()
-                logger.info(f"模型加载成功，维度: {self.dim}")
-            except Exception as e:
-                logger.error(f"模型加载失败: {str(e)}")
-                raise RuntimeError(f"无法加载嵌入模型: {str(e)}")
-        
-        # 重排序模型按需加载
-        # if self.reranker_model is None:
-        #     logger.info(f"Loading reranker model: {MODEL_CONFIG['reranker']}")
-        #     self.reranker_model = CrossEncoder(MODEL_CONFIG['reranker'])
+        """由于使用 API 模式，无需加载本地模型"""
+        logger.info("当前使用 ModelScope API 模式，跳过本地模型加载")
+        return
     
     def parse_document_structure(self, sections: List[Dict]) -> List[Dict]:
         """精确的文档结构解析（解决内容归属问题）
@@ -410,31 +510,7 @@ class VectorSearchSystem:
         except Exception as e:
             logging.warning(f"查询数据库失败（忽略去重）: {e}")
             return False  # 查询失败时不阻止插入            
-    
-    def text_to_vector(self, text: str) -> List[float]:
-        """将文本转换为向量"""
-        try:
-            # 确保模型已加载
-            if self.embedding_model is None:
-                self.load_models()  # 如果未加载则尝试加载
-            
-            # 如果仍然为None，抛出明确错误
-            if self.embedding_model is None:
-                raise RuntimeError("嵌入模型未能正确初始化")
-            
-            # 中文模型添加指令
-            if self.embedding_model_name and any(
-                keyword in self.embedding_model_name.lower() 
-                for keyword in ['zh', 'chinese', 'm3e', 'bge']
-            ):
-                text = "为这个句子生成表示以用于检索相关文章：" + text
-                
-            vector = self.embedding_model.encode(text, normalize_embeddings=True)
-            return vector.tolist()
-        except Exception as e:
-            logger.error(f"文本向量化失败 - 模型状态: {self.embedding_model is not None}, 错误: {e}")
-            raise RuntimeError(f"无法生成文本向量: {str(e)}")
-        
+       
     @staticmethod
     def log_subsections_to_file(filename: str, chapters: List[Dict], log_dir: str = "./uploads"):
         """生成格式优化的解析日志（处理重复内容+改进分隔符）"""
