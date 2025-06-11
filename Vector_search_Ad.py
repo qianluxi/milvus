@@ -967,20 +967,3 @@ class VectorSearchSystem:
         
         return keyword_filtered[:top_k]
 
-    def generate_parse_report(chapters: List[Dict]) -> Dict:
-        """生成结构化解析报告"""
-        report = {
-            "total_chapters": len(chapters),
-            "total_subsections": sum(len(chap["subsections"]) for chap in chapters),
-            "merged_subsections": sum(1 for chap in chapters for sub in chap["subsections"] if sub.get("is_merged")),
-            "chapter_details": [
-                {
-                    "title": chap["title"],
-                    "subsection_count": len(chap["subsections"]),
-                    "content_length": sum(len(text) for text in chap["content"]),
-                    "example_subsections": [sub["title"] for sub in chap["subsections"][:2]]
-                }
-                for chap in chapters
-            ]
-        }
-        return report
