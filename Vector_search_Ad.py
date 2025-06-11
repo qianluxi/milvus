@@ -9,50 +9,154 @@ from typing import List, Dict, Optional
 import pythoncom
 import win32com.client as win32
 from datetime import datetime
+import requests
+import json
+import time
+from openai import OpenAI
+#import urllib3
+from tenacity import retry, stop_after_attempt, wait_exponential, wait_fixed, retry_if_exception_type
+#import socket
+#import certifi
+import ssl
+#import http.client
+import httpx 
+from langchain_community.embeddings import ModelScopeEmbeddings
 
-# 初始化日志
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# 启用详细日志记录（调试时使用）
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("vector_search.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("VectorSearchSystem")
 
-# 模型配置
+# 模型配置 - 更新为ModelScope配置
 MODEL_CONFIG = {
     'embedding': {
-        'default': 'BAAI/bge-large-zh-v1.5',  # 中文嵌入模型
-        'en': 'BAAI/bge-large-en-v1.5',      # 英文嵌入模型
-        'small': 'paraphrase-MiniLM-L6-v2'    # 轻量级模型
+        'model_id': 'iic/nlp_gte_sentence-embedding_chinese-base',
+        'api_key': 'a008e17e-882d-4622-ae01-150918799925',
     },
-    'reranker': 'BAAI/bge-reranker-large'     # 重排序模型
+    'llm': {
+        'model_id': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B',
+        'api_base': 'https://api-inference.modelscope.cn/v1/',
+        'api_key': 'a008e17e-882d-4622-ae01-150918799925'
+    }
 }
 
+class ModelScopeLLM:
+    """OpenAI兼容封装的ModelScope LLM API"""
+    def __init__(self, api_base, api_key, model_id):
+        self.client = OpenAI(
+            base_url=api_base,
+            api_key=api_key
+        )
+        self.model_id = model_id
+        
+    def generate(self, prompt, **kwargs):
+        response = self.client.chat.completions.create(
+            model=self.model_id,
+            messages=[{"role": "user", "content": prompt}],
+            stream=False,
+            max_tokens=kwargs.get("max_tokens", 512),
+            temperature=kwargs.get("temperature", 0.2)
+        )
+        return response.choices[0].message.content
+
 class VectorSearchSystem:
-    def __init__(self, collection_name="text_search"):
+    def __init__(self, collection_name="text_search", max_retries=5):
         self.collection_name = collection_name
-        self.dim = 1024  # bge-large模型的维度
+        self.dim = 1024  # 初始值，实际由嵌入模型决定
         self.collection = None
-        self.embedding_model = None
+        self.max_retries = max_retries
         self.reranker_model = None
         self.metadata_dict = {}
         self.field_handlers = {
             'filename': {'max_len': 256, 'truncate': 'hash'},
             'chapter_title': {'max_len': 300, 'truncate': 'hash'},
-            'subsection_title': {'max_len': 500, 'truncate': 'simple'},  # 特殊处理
+            'subsection_title': {'max_len': 500, 'truncate': 'simple'},
             'content': {'max_len': 65535, 'truncate': 'reject'}
         }
-
-        # 初始化连接和集合
+        
+        # 初始化ModelScope组件
+        self.embeddings = ModelScopeEmbeddings(
+            model_id=MODEL_CONFIG['embedding']['model_id']
+        )
+        self.llm = ModelScopeLLM(
+            api_base=MODEL_CONFIG['llm']['api_base'],
+            api_key=MODEL_CONFIG['llm']['api_key'],
+            model_id=MODEL_CONFIG['llm']['model_id']
+        )
+        
+        # 初始化
         self._initialize()
-        # 确保模型在初始化时就加载
-        self.load_models()  # 新增这行
-    
+
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_fixed(3),
+        retry=retry_if_exception_type((httpx.NetworkError, 
+                                     httpx.TimeoutException,
+                                     ssl.SSLError)),
+        reraise=True
+    )
+    def text_to_vector(self, text: str) -> List[float]:
+        """使用ModelScopeEmbeddings进行文本向量化"""
+        try:
+            # 直接调用ModelScopeEmbeddings
+            return self.embeddings.embed_query(text)
+        except Exception as e:
+            logger.error(f"向量化失败: {type(e).__name__} - {str(e)}")
+            raise
+
+    def generate_answer(self, prompt: str) -> str:
+        """使用ModelScope LLM生成回答"""
+        return self.llm.generate(prompt)
+
     def _initialize(self):
-        """初始化系统"""
-        # 连接Milvus
-        connections.connect("default", host="localhost", port="19530")
+        """初始化并验证 API"""
+        logger.info("初始化ModelScope组件...")
         
-        # 创建集合
-        self._create_collection_if_not_exists()
-        
-        # 加载模型（按需加载）
+        for attempt in range(self.max_retries + 1):
+            try:
+                # 1. 测试嵌入模型
+                test_vector = self.text_to_vector("test")
+                self.dim = len(test_vector)
+                logger.info(f"嵌入模型测试成功，向量维度: {self.dim}")
+                
+                # 2. 测试问答模型
+                test_response = self.generate_answer("你好")
+                logger.info(f"问答模型测试响应: {test_response[:50]}...")
+                
+                # 3. 连接Milvus
+                self._connect_milvus()
+                logger.info("系统初始化完成")
+                return
+                
+            except Exception as e:
+                logger.error(f"初始化尝试 {attempt+1}/{self.max_retries} 失败: {str(e)}")
+                if attempt < self.max_retries:
+                    wait_time = min(2 ** attempt, 30)  # 指数退避
+                    logger.warning(f"等待 {wait_time} 秒后重试...")
+                    time.sleep(wait_time)
+                else:
+                    logger.critical("所有初始化尝试均失败")
+                    raise RuntimeError("系统无法初始化") from e
+
+    def _connect_milvus(self):
+        """连接Milvus数据库"""
+        try:
+            from pymilvus import connections
+            logger.info("正在连接Milvus数据库...")
+            connections.connect("default", host="localhost", port="19530")
+            logger.info("Milvus连接成功")
+            self._create_collection_if_not_exists()
+        except ImportError:
+            logger.warning("pymilvus未安装，跳过数据库连接")
+        except Exception as e:
+            logger.error(f"Milvus连接失败: {str(e)}")
+            # 非关键错误，允许继续运行
     
     def _create_collection_if_not_exists(self):
         """如果不存在则创建Milvus集合"""
@@ -66,7 +170,7 @@ class VectorSearchSystem:
                 FieldSchema(name="chapter_title", dtype=DataType.VARCHAR, max_length=300),
                 FieldSchema(name="subsection_title", dtype=DataType.VARCHAR, max_length=500),            
                 FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535, nullable=True),
-                FieldSchema(name="metadata", dtype=DataType.JSON)  # 新增字段存储额外元数据
+                FieldSchema(name="metadata", dtype=DataType.JSON)
             ]
 
             # 创建集合模式
@@ -79,7 +183,7 @@ class VectorSearchSystem:
             index_params = {
                 "metric_type": "COSINE",
                 "index_type": "HNSW",
-                "params": {"M": 24, "efConstruction": 300}  # 更强大的索引参数
+                "params": {"M": 24, "efConstruction": 300}
             }
 
             self.collection.create_index(field_name="embedding", index_params=index_params)
@@ -89,38 +193,29 @@ class VectorSearchSystem:
             self.collection = Collection(name=self.collection_name)
             self.collection.load()
             logger.info(f"Collection '{self.collection_name}' loaded successfully.")
+
+    def close(self):
+        """关闭资源"""
+        if hasattr(self, 'client') and self.client:
+            try:
+                self.client.close()
+                logger.info("OpenAI客户端已关闭")
+            except:
+                pass
+
     
     def load_models(self, model_type='default'):
-        """按需加载模型"""
-        if self.embedding_model is None:
-            model_name = MODEL_CONFIG['embedding'].get(model_type, MODEL_CONFIG['embedding']['default'])
-            logger.info(f"Loading embedding model: {model_name}")
-            try:
-                self.embedding_model = SentenceTransformer(model_name)
-                self.embedding_model_name = model_name  # 显式存储模型名称
-                self.dim = self.embedding_model.get_sentence_embedding_dimension()
-                logger.info(f"模型加载成功，维度: {self.dim}")
-            except Exception as e:
-                logger.error(f"模型加载失败: {str(e)}")
-                raise RuntimeError(f"无法加载嵌入模型: {str(e)}")
-        
-        # 重排序模型按需加载
-        # if self.reranker_model is None:
-        #     logger.info(f"Loading reranker model: {MODEL_CONFIG['reranker']}")
-        #     self.reranker_model = CrossEncoder(MODEL_CONFIG['reranker'])
+        """由于使用 API 模式，无需加载本地模型"""
+        logger.info("当前使用 ModelScope API 模式，跳过本地模型加载")
+        return
     
     def parse_document_structure(self, sections: List[Dict]) -> List[Dict]:
-        """精确的文档结构解析（解决内容归属问题）
-        
-        改进点：
-        1. 缓冲队列确保内容正确归属
-        2. 主章节/子章节的严格区分
-        3. 自动修复孤立内容
-        """
+        """重构的文档结构解析（精确匹配章节层级）"""
         chapters = []
         current_chapter = {"title": "未命名章节", "content": [], "subsections": []}
         current_subsection = None
         content_buffer = []  # 内容缓冲队列
+        chapter_counter = 0  # 章节计数器
 
         for section in sections:
             try:
@@ -128,41 +223,77 @@ class VectorSearchSystem:
                 if section["type"] == "main_chapter":
                     # 提交缓冲内容到当前结构
                     if content_buffer:
-                        if current_subsection:
-                            current_subsection["content"].extend(content_buffer)
-                        else:
-                            current_chapter["content"].extend(content_buffer)
+                        self._commit_content_buffer(content_buffer, current_chapter, current_subsection)
                         content_buffer = []
-
+                    
                     # 保存当前章节（非初始状态时）
                     if current_chapter["title"] != "未命名章节":
                         chapters.append(current_chapter)
-
+                        chapter_counter += 1
+                    
+                    # 重置当前子章节
+                    current_subsection = None
+                    
                     # 新建章节
                     current_chapter = {
                         "title": section["text"],
                         "content": [],
                         "subsections": []
                     }
-                    current_subsection = None
                     continue
 
-                # === 子章节处理 ===
-                if section["type"] == "sub_chapter":
+                # === 子章节处理（一级子章节） ===
+                if section["type"] == "sub_chapter" and section["level"] == 1:
                     # 提交缓冲内容
                     if content_buffer:
-                        if current_subsection:
-                            current_subsection["content"].extend(content_buffer)
-                        else:
-                            current_chapter["content"].extend(content_buffer)
+                        self._commit_content_buffer(content_buffer, current_chapter, current_subsection)
                         content_buffer = []
-
-                    # 新建子章节（标题作为首行内容）
+                    
+                    # 创建新子章节
                     current_subsection = {
                         "title": section["text"],
-                        "content": [section["text"]]  # 标题作为首行
+                        "content": [section["text"]],  # 标题作为首行
+                        "is_merged": False,
+                        "level": 1
                     }
                     current_chapter["subsections"].append(current_subsection)
+                    continue
+
+                # === 二级子章节处理 ===
+                if section["type"] == "sub_chapter" and section["level"] >= 2:
+                    # 提交缓冲内容
+                    if content_buffer:
+                        self._commit_content_buffer(content_buffer, current_chapter, current_subsection)
+                        content_buffer = []
+                    
+                    # 创建二级子章节（归属于当前一级子章节）
+                    if current_subsection:
+                        # 如果当前没有一级子章节，则创建占位的一级子章节
+                        if "subsections" not in current_subsection:
+                            current_subsection["subsections"] = []
+                            
+                        # 添加二级子章节
+                        current_subsection["subsections"].append({
+                            "title": section["text"],
+                            "content": [section["text"]],
+                            "is_merged": False,
+                            "level": section["level"]
+                        })
+                    else:
+                        # 没有一级子章节时直接创建一级子章节
+                        current_subsection = {
+                            "title": f"章节{chapter_counter}-未命名",
+                            "content": [],
+                            "is_merged": False,
+                            "level": 1,
+                            "subsections": [{
+                                "title": section["text"],
+                                "content": [section["text"]],
+                                "is_merged": False,
+                                "level": section["level"]
+                            }]
+                        }
+                        current_chapter["subsections"].append(current_subsection)
                     continue
 
                 # === 普通内容处理 ===
@@ -175,31 +306,115 @@ class VectorSearchSystem:
         # === 最终处理 ===
         # 1. 提交剩余缓冲内容
         if content_buffer:
-            if current_subsection:
-                current_subsection["content"].extend(content_buffer)
-            else:
-                current_chapter["content"].extend(content_buffer)
-
+            self._commit_content_buffer(content_buffer, current_chapter, current_subsection)
+        
         # 2. 保存最后一个章节
         if current_chapter["title"] != "未命名章节":
             chapters.append(current_chapter)
-
+        
         # 3. 后处理：修复孤立内容
         for chapter in chapters:
             # 情况1：有主内容但无子章节 -> 转换为子章节
             if chapter["content"] and not chapter["subsections"]:
                 chapter["subsections"].append({
-                    "title": f"{chapter['title']}-概要",
-                    "content": chapter["content"]
+                    "title": chapter['title'],
+                    "content": chapter["content"],
+                    "is_merged": False,
+                    "level": 1
                 })
                 chapter["content"] = []
-
-            # 情况2：子章节内容为空 -> 用标题填充
-            for subsection in chapter["subsections"]:
-                if not subsection["content"]:
-                    subsection["content"] = [subsection["title"]]
-
+        
+        # 4. 重构的合并算法（仅合并一级子章节）
+        MIN_SUBSECTION_LENGTH = 500  # 最小字数阈值
+        
+        for chapter in chapters:
+            # 只处理一级子章节
+            top_level_subsections = [sub for sub in chapter["subsections"] if sub.get("level") == 1]
+            
+            merged_subsections = []
+            current_merge = None  # 当前合并组
+            
+            for sub in top_level_subsections:
+                # 合并二级子章节内容到一级子章节
+                if "subsections" in sub:
+                    for child_sub in sub.get("subsections", []):
+                        sub["content"].extend(child_sub["content"])
+                
+                content_length = sum(len(text) for text in sub["content"])
+                
+                # 当前子章节需要合并
+                if content_length < MIN_SUBSECTION_LENGTH:
+                    if current_merge is None:
+                        # 开始新的合并组
+                        current_merge = {
+                            "titles": [sub["title"]],
+                            "content": sub["content"].copy(),
+                            "level": 1
+                        }
+                    else:
+                        # 添加到现有合并组
+                        current_merge["titles"].append(sub["title"])
+                        current_merge["content"].extend(sub["content"])
+                else:
+                    # 提交当前合并组（如果有）
+                    if current_merge is not None:
+                        merged_subsections.append({
+                            "title": " · ".join(current_merge["titles"]),
+                            "content": current_merge["content"],
+                            "is_merged": True,
+                            "level": 1
+                        })
+                        current_merge = None
+                    
+                    # 添加合格子章节
+                    merged_subsections.append({
+                        "title": sub["title"],
+                        "content": sub["content"],
+                        "is_merged": False,
+                        "level": 1
+                    })
+            
+            # 处理章节末尾的合并组
+            if current_merge is not None:
+                merged_subsections.append({
+                    "title": " · ".join(current_merge["titles"]),
+                    "content": current_merge["content"],
+                    "is_merged": True,
+                    "level": 1
+                })
+            
+            # 保留二级子章节信息
+            for sub in merged_subsections:
+                # 从原始子章节中恢复二级子章节
+                original_sub = next((s for s in top_level_subsections if s["title"] in sub["title"]), None)
+                if original_sub and "subsections" in original_sub:
+                    sub["subsections"] = original_sub["subsections"]
+            
+            chapter["subsections"] = merged_subsections
+        
         return chapters
+    
+    def _commit_content_buffer(self, buffer: List[str], chapter: Dict, current_subsection: Optional[Dict] = None):
+        """安全提交缓冲内容到当前结构（修复内容归属问题）
+        
+        参数:
+            buffer: 待提交的内容列表
+            chapter: 当前章节
+            current_subsection: 当前活动的子章节（可选）
+        """
+        if not buffer:
+            return
+        
+        # 优先提交到当前子章节（如果存在）
+        if current_subsection is not None:
+            current_subsection["content"].extend(buffer)
+        # 其次提交到最后一个子章节
+        elif chapter["subsections"]:
+            last_sub = chapter["subsections"][-1]
+            last_sub["content"].extend(buffer)
+        else:
+            # 没有子章节则提交到章节内容
+            chapter["content"].extend(buffer)
     
     def determine_section_type(self, text: str, style_name: str, list_value: str) -> str:
         """增强版段落类型判断函数
@@ -230,6 +445,7 @@ class VectorSearchSystem:
         
         # 0. 空内容处理
         if not text.strip():
+            logger.debug(debug_info + "EMPTY")
             return "paragraph"
 
         # 1. 主章节识别（支持【第X章】和独立章节标题）
@@ -275,13 +491,7 @@ class VectorSearchSystem:
 
 
     def read_docx_with_win32com(self, filepath: str) -> List[Dict]:
-        """增强版Word文档解析（精确保留编号和结构）
-        
-        改进点：
-        1. 智能处理自动编号与手动编号冲突
-        2. 保留原始缩进和段落结构
-        3. 增强的错误恢复机制
-        """
+        """增强版Word文档解析（解决final_text未定义问题）"""
         pythoncom.CoInitialize()
         word = None
         doc = None
@@ -308,11 +518,12 @@ class VectorSearchSystem:
 
                     # === 编号检测 ===
                     list_value = ""
+                    list_level = 0
                     list_levels = []
                     try:
                         if para.Range.ListFormat.ListType != 0:
-                            # 获取完整多级编号（如"1.1.2"）
-                            for level in range(1, para.Range.ListFormat.ListLevelNumber + 1):
+                            list_level = para.Range.ListFormat.ListLevelNumber
+                            for level in range(1, list_level + 1):
                                 para.Range.ListFormat.ListLevelNumber = level
                                 list_levels.append(para.Range.ListFormat.ListString)
                             list_value = ".".join(list_levels)
@@ -327,6 +538,9 @@ class VectorSearchSystem:
                         pass
 
                     # === 智能文本生成 ===
+                    # 初始化final_text为raw_text
+                    final_text = raw_text
+                    
                     # 检测手动编号（优先级高于自动编号）
                     manual_number_match = re.match(
                         r'^(\d+[、.)]|[(（][一二三四五六七八九十零\d]+[)）]|第?[一二三四五六七八九十零\d]+[章节条项])', 
@@ -341,9 +555,7 @@ class VectorSearchSystem:
                         # 情况2：只有自动编号 -> 添加缩进
                         indent = "\t" * (len(list_levels) - 1)
                         final_text = f"{indent}{list_value} {raw_text}"
-                    else:
-                        # 情况3：无编号
-                        final_text = raw_text
+                    # 情况3：无编号 -> 保持原样
 
                     # === 类型判断 ===
                     section_type = self.determine_section_type(
@@ -357,7 +569,7 @@ class VectorSearchSystem:
                         "type": section_type,
                         "text": final_text,
                         "number": list_value,
-                        "level": len(list_levels),
+                        "level": list_level,
                         "style": style_name,
                         "raw_text": raw_text  # 原始文本备份
                     })
@@ -410,84 +622,80 @@ class VectorSearchSystem:
         except Exception as e:
             logging.warning(f"查询数据库失败（忽略去重）: {e}")
             return False  # 查询失败时不阻止插入            
-    
-    def text_to_vector(self, text: str) -> List[float]:
-        """将文本转换为向量"""
-        try:
-            # 确保模型已加载
-            if self.embedding_model is None:
-                self.load_models()  # 如果未加载则尝试加载
-            
-            # 如果仍然为None，抛出明确错误
-            if self.embedding_model is None:
-                raise RuntimeError("嵌入模型未能正确初始化")
-            
-            # 中文模型添加指令
-            if self.embedding_model_name and any(
-                keyword in self.embedding_model_name.lower() 
-                for keyword in ['zh', 'chinese', 'm3e', 'bge']
-            ):
-                text = "为这个句子生成表示以用于检索相关文章：" + text
-                
-            vector = self.embedding_model.encode(text, normalize_embeddings=True)
-            return vector.tolist()
-        except Exception as e:
-            logger.error(f"文本向量化失败 - 模型状态: {self.embedding_model is not None}, 错误: {e}")
-            raise RuntimeError(f"无法生成文本向量: {str(e)}")
-        
+       
     @staticmethod
     def log_subsections_to_file(filename: str, chapters: List[Dict], log_dir: str = "./uploads"):
-        """生成格式优化的解析日志（处理重复内容+改进分隔符）"""
+        """生成格式优化的解析日志（显示层级结构）"""
         try:
             os.makedirs(log_dir, exist_ok=True)
-            output_path = os.path.join(log_dir, f"{os.path.splitext(filename)[0]}_parsed.txt")
-            
-            seen_content = set()  # 用于检测重复内容
+            base_name = os.path.splitext(os.path.basename(filename))[0]
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output_path = os.path.join(log_dir, f"{base_name}_parsed_{timestamp}.txt")
             
             with open(output_path, 'w', encoding='utf-8') as f:
                 # 文件头信息
-                f.write("="*80 + "\n")
+                f.write("=" * 80 + "\n")
                 f.write(f"文档解析日志：{filename}\n")
                 f.write(f"生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-                f.write("="*80 + "\n\n")
+                f.write(f"总章节数：{len(chapters)}\n")
+                f.write("=" * 80 + "\n\n")
                 
                 for chap_idx, chapter in enumerate(chapters, 1):
                     # 章节标题
                     chap_title = chapter.get('title', f'第{chap_idx}章')
-                    f.write("="*80 + "\n")
+                    f.write("=" * 80 + "\n")
                     f.write(f"【{chap_title}】\n")
-                    f.write("="*80 + "\n\n")
+                    f.write("=" * 80 + "\n\n")
                     
-                    # 章节内容（去重处理）
+                    # 章节内容
                     chap_content = '\n'.join(chapter.get('content', []))
-                    if chap_content and chap_content not in seen_content:
+                    if chap_content:
+                        f.write("[章节主内容]\n")
                         f.write(chap_content + "\n\n")
-                        seen_content.add(chap_content)
                     
-                    # 子章节处理
+                    # 一级子章节处理
                     for sub_idx, subsection in enumerate(chapter.get('subsections', []), 1):
                         sub_title = subsection.get('title', f'子章节{sub_idx}')
-                        f.write("-"*60 + "\n")
-                        f.write(f"* {sub_title}\n")
-                        f.write("-"*60 + "\n")
+                        level = subsection.get('level', 1)
+                        merge_flag = " [合并]" if subsection.get('is_merged', False) else ""
+                        f.write("-" * 60 + "\n")
+                        f.write(f"* L{level}: {sub_title}{merge_flag}\n")
+                        f.write("-" * 60 + "\n")
                         
-                        # 子章节内容（去重处理）
+                        # 一级子章节内容
                         sub_content = '\n'.join(subsection.get('content', []))
-                        if sub_content and sub_content not in seen_content:
-                            f.write(sub_content + "\n\n")
-                            seen_content.add(sub_content)
+                        f.write(sub_content + "\n\n")
+                        
+                        # 二级子章节处理
+                        for child_idx, child_sub in enumerate(subsection.get('subsections', []), 1):
+                            child_title = child_sub.get('title', f'子章节{sub_idx}.{child_idx}')
+                            child_level = child_sub.get('level', 2)
+                            f.write(f"  - L{child_level}: {child_title}\n")
+                            child_content = '\n'.join(child_sub.get('content', []))
+                            f.write(child_content + "\n\n")
             
-            logger.info(f"日志文件已生成：{output_path}")
+            print(f"详细日志文件已生成：{output_path}")
             return output_path
             
         except Exception as e:
-            logger.error(f"生成日志失败：{str(e)}")
+            print(f"生成日志失败：{str(e)}")
             return None
 
     def _process_field(self, field_name: str, value: str) -> str:
-        """智能字段处理（确保subsection_title永不失败）"""
+        """增强版字段处理（特别处理子章节标题）"""
         handler = self.field_handlers.get(field_name, {})
         max_len = handler.get('max_len', float('inf'))
+        
+        # 特别处理子章节标题
+        if field_name == 'subsection_title':
+            # 提取真正的标题部分（通常在第一行或前100个字符内）
+            true_title = self._extract_true_title(value)
+            if len(true_title) <= max_len:
+                return true_title
+            
+            # 如果仍然超长，使用哈希后缀
+            suffix = hashlib.md5(true_title.encode()).hexdigest()[:8]
+            return f"{true_title[:max_len-9]}...{suffix}"[:max_len]
         
         if len(value) <= max_len:
             return value
@@ -506,9 +714,49 @@ class VectorSearchSystem:
             return value[:max_len]
         else:
             raise ValueError(f"Field '{field_name}' exceeds max length ({len(value)} > {max_len})")
+        
+    def _extract_true_title(self, text: str) -> str:
+        """从可能包含额外内容的文本中提取真正的标题"""
+        # 情况1：标题在第一行
+        first_line = text.split('\n')[0].strip()
+        if len(first_line) <= 100:  # 假设真实标题不会超过100字符
+            return first_line
+        
+        # 情况2：标题在开头部分
+        possible_title = text[:100]
+        if '。' in possible_title or '；' in possible_title:
+            # 如果有标点符号，取第一个标点前的部分
+            for sep in ['。', '；', '\n', '.', ';']:
+                if sep in possible_title:
+                    return possible_title.split(sep)[0]
+        
+        # 情况3：无法确定，返回前100字符
+        return possible_title
+
+    def _commit_content_buffer(self, buffer: List[str], chapter: Dict, current_subsection: Optional[Dict] = None):
+        """安全提交缓冲内容到当前结构（修复内容归属问题）
+        
+        参数:
+            buffer: 待提交的内容列表
+            chapter: 当前章节
+            current_subsection: 当前活动的子章节（可选）
+        """
+        if not buffer:
+            return
+        
+        # 优先提交到当前子章节（如果存在）
+        if current_subsection is not None:
+            current_subsection["content"].extend(buffer)
+        # 其次提交到最后一个子章节
+        elif chapter["subsections"]:
+            last_sub = chapter["subsections"][-1]
+            last_sub["content"].extend(buffer)
+        else:
+            # 没有子章节则提交到章节内容
+            chapter["content"].extend(buffer)
 
     def insert_documents(self, file_dir: str, app=None):
-        """确保100%数据插入的终极版本"""
+        """重构的数据插入方法（支持多级章节）"""
         success_count = 0
         for filename in os.listdir(file_dir):
             if not filename.endswith(".docx"):
@@ -519,67 +767,84 @@ class VectorSearchSystem:
                 pythoncom.CoInitialize()
                 sections = self.read_docx_with_win32com(filepath)
                 chapters = self.parse_document_structure(sections)
+                
                 # 生成解析日志文件
-                self.log_subsections_to_file(filename, chapters)                
+                log_path = self.log_subsections_to_file(filename, chapters)
+                logger.info(f"文档解析完成：{filename}，日志路径：{log_path}")
                 
                 for chap_idx, chapter in enumerate(chapters, 1):
-                    # 处理章节
-                    chapter_content = '\n'.join(chapter['content']) or chapter['title']
-                    if chapter_content.strip():
-                        try:
-                            chap_hash = self._calculate_segment_hash(chapter_content, filename, chap_idx, 0)
-                            doc = {
-                                "embedding": self.text_to_vector(chapter_content),
-                                "file_hash": chap_hash,
-                                "filename": self._process_field('filename', filename),
-                                "chapter_title": self._process_field('chapter_title', chapter['title']),
-                                "subsection_title": self._process_field('subsection_title', chapter['title']),
-                                "content": chapter_content[:65535],  # 简单截断
-                                "metadata": {
-                                    "section_type": "chapter",
-                                    "original_title": chapter['title']
+                    # 处理章节内容
+                    if chapter.get('content'):
+                        chapter_content = '\n'.join(chapter['content'])
+                        if chapter_content.strip():
+                            try:
+                                chap_hash = self._calculate_segment_hash(chapter_content, filename, chap_idx, 0)
+                                doc = {
+                                    "embedding": self.text_to_vector(chapter_content),
+                                    "file_hash": chap_hash,
+                                    "filename": self._process_field('filename', filename),
+                                    "chapter_title": self._process_field('chapter_title', chapter['title']),
+                                    "subsection_title": self._process_field('subsection_title', chapter['title']),
+                                    "content": chapter_content[:65535],
+                                    "metadata": {
+                                        "section_type": "chapter",
+                                        "original_title": chapter['title'],
+                                        "log_path": log_path
+                                    }
                                 }
-                            }
-                            self.collection.insert([doc])
-                            success_count += 1
-                        except Exception as e:
-                            logger.error(f"章节插入失败（已简化标题）: {filename} Chap{chap_idx} - {str(e)}")
-                            # 终极回退：仅插入必要字段
-                            self.collection.insert([{
-                                "embedding": doc["embedding"],
-                                "file_hash": doc["file_hash"],
-                                "content": doc["content"]
-                            }])
+                                self.collection.insert([doc])
+                                success_count += 1
+                            except Exception as e:
+                                logger.error(f"章节插入失败: {filename} Chap{chap_idx} - {str(e)}")
 
-                    # 处理子章节（强制插入）
-                    for sub_idx, subsection in enumerate(chapter['subsections'], 1):
-                        subsection_content = '\n'.join(subsection['content']) or subsection['title']
+                    # 处理一级子章节
+                    for sub_idx, subsection in enumerate(chapter.get('subsections', []), 1):
+                        # 合并所有内容：一级子章节内容 + 其下的二级子章节内容
+                        all_content = subsection['content'][:]
+                        
+                        # 添加二级子章节内容
+                        if 'subsections' in subsection:
+                            for child_sub in subsection['subsections']:
+                                all_content.extend(child_sub['content'])
+                        
+                        subsection_content = '\n'.join(all_content)
+                        
                         try:
+                            # 使用一级子章节标题
+                            true_subsection_title = subsection['title']
+                            
                             sub_hash = self._calculate_segment_hash(subsection_content, filename, chap_idx, sub_idx)
+                            
+                            # 元数据记录层级信息
+                            metadata = {
+                                "section_type": "subsection",
+                                "original_title": subsection['title'],
+                                "parent_chapter": chapter['title'],
+                                "is_merged": subsection.get('is_merged', False),
+                                "level": subsection.get('level', 1),
+                                "log_path": log_path
+                            }
+                            
+                            # 添加二级子章节信息
+                            if 'subsections' in subsection:
+                                metadata["child_subsections"] = [
+                                    {"title": child['title'], "level": child.get('level', 2)} 
+                                    for child in subsection['subsections']
+                                ]
+                            
                             doc = {
                                 "embedding": self.text_to_vector(subsection_content),
                                 "file_hash": sub_hash,
                                 "filename": self._process_field('filename', filename),
                                 "chapter_title": self._process_field('chapter_title', chapter['title']),
-                                "subsection_title": self._process_field('subsection_title', subsection['title']),
+                                "subsection_title": self._process_field('subsection_title', true_subsection_title),
                                 "content": subsection_content[:65535],
-                                "metadata": {
-                                    "section_type": "subsection",
-                                    "original_title": subsection['title'],
-                                    "parent_chapter": chapter['title']
-                                }
+                                "metadata": metadata
                             }
                             self.collection.insert([doc])
                             success_count += 1
                         except Exception as e:
-                            logger.error(f"子章节插入失败（已简化标题）: {filename} {chap_idx}.{sub_idx} - {str(e)}")
-                            # 保底插入最小数据集
-                            self.collection.insert([{
-                                "embedding": doc["embedding"],
-                                "file_hash": doc["file_hash"],
-                                "content": doc["content"],
-                                "subsection_title": f"Section-{chap_idx}.{sub_idx}"
-                            }])
+                            logger.error(f"子章节插入失败: {filename} {chap_idx}.{sub_idx} - {str(e)}")
                             
             except Exception as e:
                 logger.error(f"文件处理错误（跳过）: {filename} - {str(e)}")
@@ -587,7 +852,7 @@ class VectorSearchSystem:
                 pythoncom.CoUninitialize()
 
         self.collection.load()
-        logger.info(f"文档处理完成，成功插入 {success_count} 个片段")
+        logger.info(f"文档处理完成: 成功插入 {success_count} 个片段")
         return success_count
     
     def search(self, query_text: str, top_k: int = 10, rerank: bool = True) -> List[Dict]:
@@ -701,3 +966,21 @@ class VectorSearchSystem:
             keyword_filtered.extend(additional[:top_k - len(keyword_filtered)])
         
         return keyword_filtered[:top_k]
+
+    def generate_parse_report(chapters: List[Dict]) -> Dict:
+        """生成结构化解析报告"""
+        report = {
+            "total_chapters": len(chapters),
+            "total_subsections": sum(len(chap["subsections"]) for chap in chapters),
+            "merged_subsections": sum(1 for chap in chapters for sub in chap["subsections"] if sub.get("is_merged")),
+            "chapter_details": [
+                {
+                    "title": chap["title"],
+                    "subsection_count": len(chap["subsections"]),
+                    "content_length": sum(len(text) for text in chap["content"]),
+                    "example_subsections": [sub["title"] for sub in chap["subsections"][:2]]
+                }
+                for chap in chapters
+            ]
+        }
+        return report
