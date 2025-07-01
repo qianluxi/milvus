@@ -3,254 +3,774 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>增强版文档检索系统</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>智能文档检索系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .search-container {
-            max-width: 800px;
-            margin: 40px auto;
+        .gradient-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
-        .result-card {
-            margin-bottom: 20px;
-            border-left: 4px solid #0d6efd;
-            transition: all 0.3s;
+        .card-hover {
+            transition: all 0.3s ease;
         }
-        .result-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
-        .similarity-badge {
-            background-color: #198754;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
-        .file-info {
-            font-size: 0.9rem;
-            color: #6c757d;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .search-options {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .ai-highlight {
+            background: linear-gradient(120deg, #e0f7fa 0%, #f3e5f5 100%);
+            border-left: 4px solid #7e22ce;
         }
-        .progress-container {
-            display: none;
-            margin: 20px 0;
+        .rerank-indicator {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+        }
+        .markdown-style {
+            line-height: 1.6;
+        }
+        .markdown-style p {
+            margin-bottom: 1em;
+        }
+        .markdown-style ul {
+            list-style-type: disc;
+            padding-left: 2em;
+            margin-bottom: 1em;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1 class="text-center my-4">增强版文档检索系统</h1>
-        
-        <!-- 搜索区域 -->
-        <div class="search-container">
-            <div class="search-options">
-                <div class="row g-3">
-                    <div class="col-md-8">
-                        <input type="text" id="queryInput" class="form-control" placeholder="输入搜索内容...">
-                    </div>
-                    <div class="col-md-4">
-                        <button id="searchBtn" class="btn btn-primary w-100">搜索</button>
-                    </div>
+<body class="gradient-bg min-h-screen font-sans">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-book-open text-indigo-600 text-xl mr-2"></i>
+                    <span class="text-xl font-semibold text-gray-800">智能文档检索系统</span>
                 </div>
-                
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="rerankSwitch" checked>
-                            <label class="form-check-label" for="rerankSwitch">启用高级重排序</label>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition">首页</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition">文档</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition">关于</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 上传卡片 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-hover">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-cloud-upload-alt text-indigo-500 mr-2"></i>
+                    上传文档
+                </h2>
+                <form id="uploadForm" enctype="multipart/form-data" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">项目名称</label>
+                        <input type="text" name="project_name" required
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">选择文档</label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                            <div class="space-y-1 text-center">
+                                <div class="flex text-sm text-gray-600">
+                                    <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                        <span>上传文件</span>
+                                        <input type="file" name="files" multiple required class="sr-only">
+                                    </label>
+                                    <p class="pl-1">或将文件拖拽到此处</p>
+                                </div>
+                                <p class="text-xs text-gray-500">支持.docx格式文档</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" id="keywordFilter" class="form-control" placeholder="关键词过滤(可选)">
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center">
+                        <i class="fas fa-upload mr-2"></i> 上传并处理
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 项目与搜索区 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 项目列表 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-folder-open text-indigo-500 mr-2"></i>
+                            项目列表
+                        </h2>
+                        <div class="mb-4 relative">
+                            <input type="text" id="projectSearch" placeholder="搜索项目..." 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
+                        </div>
+                        <div id="projectsContainer" class="space-y-3">
+                            <div class="text-center py-8">
+                                <i class="fas fa-spinner fa-spin text-gray-400 text-2xl"></i>
+                                <p class="mt-2 text-gray-500">加载中...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="progress-container" id="progressContainer">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
-                </div>
-                <p class="text-center mt-2">正在处理搜索请求...</p>
-            </div>
-            
-            <div id="resultsContainer"></div>
-        </div>
-        
-        <!-- 上传区域 -->
-        <div class="search-container mt-5">
-            <h3>文档上传</h3>
-            <form id="uploadForm" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <input class="form-control" type="file" id="fileUpload" multiple accept=".docx">
-                </div>
-                <button type="submit" class="btn btn-success">上传并处理文档</button>
-            </form>
-            <div class="alert alert-info mt-3" role="alert">
-                支持上传Word文档(.docx)，系统将自动解析文档内容并建立索引。
-            </div>
-        </div>
-    </div>
 
-    <!-- 结果模板 -->
-    <template id="resultTemplate">
-        <div class="card result-card">
-            <div class="card-body">
-                <h5 class="card-title"></h5>
-                <div class="file-info mb-2">
-                    <span class="source-file"></span>
-                    <span class="similarity-badge badge rounded-pill float-end"></span>
+            <!-- 搜索区 -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-search text-indigo-500 mr-2"></i>
+                            文档检索
+                        </h2>
+                        <form id="searchForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">选择项目</label>
+                                    <select name="project_names" multiple id="projectSelect"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                        <!-- 项目选项将通过JavaScript动态加载 -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">返回结果数</label>
+                                    <input type="number" name="top_k" value="10" min="1" max="50"
+                                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">搜索查询</label>
+                                <input type="text" name="query" required
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                       placeholder="输入您要搜索的内容...">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">关键词过滤 (可选)</label>
+                                <input type="text" name="keyword"
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                       placeholder="输入过滤关键词...">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="rerank" id="rerankCheckbox" value="true"
+                                           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="rerankCheckbox" class="ml-2 block text-sm text-gray-700">启用重排序</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="use_llm" id="useLLMCheckbox" value="true"
+                                           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <label for="useLLMCheckbox" class="ml-2 block text-sm text-gray-700">启用AI摘要</label>
+                                </div>
+                            </div>
+                            <button type="submit"
+                                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center">
+                                <i class="fas fa-search mr-2"></i> 开始搜索
+                            </button>
+                        </form>
+
+                        <!-- 搜索结果 -->
+                        <div class="mt-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800">搜索结果</h3>
+                                <div id="searchStats" class="text-sm text-gray-500">
+                                    <!-- 搜索统计信息将通过JavaScript动态加载 -->
+                                </div>
+                            </div>
+                            <div id="searchResults" class="space-y-4">
+                                <div class="text-center py-8">
+                                    <i class="fas fa-search text-gray-400 text-2xl"></i>
+                                    <p class="mt-2 text-gray-500">输入查询条件开始搜索</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-text result-content"></div>
-                <div class="chapter-info text-muted mt-2"></div>
             </div>
         </div>
-    </template>
+    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 页脚 -->
+    <footer class="bg-white shadow-inner mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-book-open text-indigo-600 text-xl mr-2"></i>
+                    <span class="text-lg font-medium text-gray-800">智能文档检索系统</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-indigo-600 transition">隐私政策</a>
+                    <a href="#" class="text-gray-500 hover:text-indigo-600 transition">使用条款</a>
+                    <a href="#" class="text-gray-500 hover:text-indigo-600 transition">联系我们</a>
+                </div>
+            </div>
+            <div class="mt-4 text-center md:text-left text-sm text-gray-500">
+                &copy; 2023 智能文档检索系统. 保留所有权利.
+            </div>
+        </div>
+    </footer>
+
     <script>
+        // 添加调试模式开关
+        const DEBUG_MODE = true;
+        
+        function debugLog(...args) {
+            if (DEBUG_MODE) {
+                console.log("[DEBUG]", ...args);
+            }
+        }
+        
+        // 页面加载时获取项目列表
         document.addEventListener('DOMContentLoaded', function() {
-            // 搜索功能
-            document.getElementById('searchBtn').addEventListener('click', performSearch);
-            document.getElementById('queryInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
+            fetchProjects();
             
-            // 文件上传
-            document.getElementById('uploadForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                uploadFiles();
+            // 初始化多选下拉框样式
+            const select = document.getElementById('projectSelect');
+            select.addEventListener('change', function() {
+                const selectedProjects = Array.from(this.selectedOptions).map(option => option.value);
+                localStorage.setItem('selectedProjects', JSON.stringify(selectedProjects));
+            });
+
+            // 恢复之前选择的项目
+            const savedProjects = localStorage.getItem('selectedProjects');
+            if (savedProjects) {
+                const projects = JSON.parse(savedProjects);
+                const select = document.getElementById('projectSelect');
+                
+                // 需要等待项目加载完成后再设置选择
+                const checkProjectsLoaded = setInterval(() => {
+                    if (select.options.length > 0) {
+                        clearInterval(checkProjectsLoaded);
+                        projects.forEach(project => {
+                            for (let option of select.options) {
+                                if (option.value === project) {
+                                    option.selected = true;
+                                    break;
+                                }
+                            }
+                        });
+                    }
+                }, 100);
+            }
+
+            // 项目搜索功能
+            document.getElementById('projectSearch').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const projects = document.querySelectorAll('#projectsContainer > div');
+                
+                projects.forEach(project => {
+                    if (project.classList.contains('project-card')) {
+                        const name = project.querySelector('h3').textContent.toLowerCase();
+                        project.style.display = name.includes(searchTerm) ? 'block' : 'none';
+                    }
+                });
             });
         });
         
-        function performSearch() {
-            const query = document.getElementById('queryInput').value.trim();
-            const useRerank = document.getElementById('rerankSwitch').checked;
-            const keyword = document.getElementById('keywordFilter').value.trim();
+        // 获取项目列表并更新UI
+        function fetchProjects() {
+            debugLog("正在请求项目列表...");
+            const projectsContainer = document.getElementById('projectsContainer');
             
-            if (!query) {
-                alert('请输入搜索内容');
+            fetch('/projects')
+                .then(response => {
+                    debugLog("项目列表响应状态:", response.status);
+                    if (!response.ok) {
+                        throw new Error('获取项目列表失败');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    debugLog("接收到的项目数据:", data);
+                    
+                    // 修复1: 确保数据是数组格式
+                    if (!Array.isArray(data)) {
+                        // 如果是对象格式，转换为数组
+                        if (typeof data === 'object' && data !== null) {
+                            data = Object.keys(data).map(key => {
+                                return {
+                                    name: key,
+                                    ...data[key]
+                                };
+                            });
+                        } else {
+                            throw new Error('项目数据格式无效');
+                        }
+                    }
+                    
+                    updateProjectSelect(data);
+                    renderProjectCards(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    projectsContainer.innerHTML = `
+                        <div class="text-center py-8 text-red-500">
+                            <i class="fas fa-exclamation-circle text-2xl"></i>
+                            <p class="mt-2">加载项目列表失败: ${error.message}</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // 更新项目选择下拉框
+        function updateProjectSelect(projects) {
+            const select = document.getElementById('projectSelect');
+            select.innerHTML = '';
+            
+            if (!Array.isArray(projects) || projects.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '暂无项目';
+                option.disabled = true;
+                select.appendChild(option);
                 return;
             }
             
-            const resultsContainer = document.getElementById('resultsContainer');
-            const progressContainer = document.getElementById('progressContainer');
-            
-            resultsContainer.innerHTML = '';
-            progressContainer.style.display = 'block';
-            
-            // 构建请求数据
-            const formData = new FormData();
-            formData.append('query', query);
-            
-            // 确定使用哪种搜索方式
-            const endpoint = keyword ? '/hybrid_search' : '/search';
-            
-            fetch(endpoint, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('搜索失败');
-                return response.json();
-            })
-            .then(data => {
-                progressContainer.style.display = 'none';
-                
-                if (data.error) {
-                    resultsContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
-                    return;
-                }
-                
-                if (data.length === 0) {
-                    resultsContainer.innerHTML = '<div class="alert alert-warning">没有找到匹配的结果</div>';
-                    return;
-                }
-                
-                displayResults(data);
-            })
-            .catch(error => {
-                progressContainer.style.display = 'none';
-                resultsContainer.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
-                console.error('搜索错误:', error);
+            projects.forEach(project => {
+                const option = document.createElement('option');
+                option.value = project.name;
+                option.textContent = project.name;
+                select.appendChild(option);
             });
         }
         
-        function displayResults(results) {
-            const template = document.getElementById('resultTemplate');
-            const container = document.getElementById('resultsContainer');
+        // 渲染项目卡片
+        function renderProjectCards(projects) {
+            const container = document.getElementById('projectsContainer');
             
-            results.forEach(result => {
-                const clone = template.content.cloneNode(true);
-                const card = clone.querySelector('.card');
-                
-                // 设置结果内容
-                clone.querySelector('.card-title').textContent = result.subsection_title || '无标题';
-                clone.querySelector('.source-file').textContent = `来源: ${result.filename}`;
-                
-                // 显示相似度分数
-                const score = result.rerank_score || result.distance;
-                const similarityBadge = clone.querySelector('.similarity-badge');
-                similarityBadge.textContent = `相关度: ${score.toFixed(3)}`;
-                
-                // 根据分数设置颜色
-                const scorePercent = score * 100;
-                if (scorePercent > 70) {
-                    similarityBadge.style.backgroundColor = '#198754';
-                } else if (scorePercent > 40) {
-                    similarityBadge.style.backgroundColor = '#fd7e14';
-                } else {
-                    similarityBadge.style.backgroundColor = '#6c757d';
-                }
-                
-                // 显示内容摘要
-                const content = result.content || '无内容';
-                const preview = content.length > 200 ? content.substring(0, 200) + '...' : content;
-                clone.querySelector('.result-content').textContent = preview;
-                
-                // 显示章节信息
-                if (result.chapter_title) {
-                    clone.querySelector('.chapter-info').textContent = `所属章节: ${result.chapter_title}`;
-                }
-                
-                container.appendChild(clone);
-            });
-        }
-        
-        function uploadFiles() {
-            const fileInput = document.getElementById('fileUpload');
-            const files = fileInput.files;
-            
-            if (files.length === 0) {
-                alert('请选择要上传的文件');
+            if (!Array.isArray(projects)) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fas fa-exclamation-circle text-2xl"></i>
+                        <p class="mt-2">项目数据格式错误</p>
+                        <p class="text-sm">后端返回格式: ${typeof projects}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (projects.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-folder-open text-2xl"></i>
+                        <p class="mt-2">暂无项目</p>
+                        <p class="text-sm mt-1">上传文档以创建新项目</p>
+                    </div>
+                `;
                 return;
             }
             
-            const formData = new FormData();
-            for (let i = 0; i < files.length; i++) {
-                formData.append('files', files[i]);
-            }
+            container.innerHTML = '';
             
-            const progressContainer = document.getElementById('progressContainer');
-            progressContainer.style.display = 'block';
+            projects.forEach(project => {
+                // 修复2: 确保项目对象有必要的属性
+                const name = project.name || "未命名项目";
+                const docCount = project.document_count || project.document_count || 0;
+                const fileCount = project.file_count || project.file_count || 0;
+                const lastUpdated = project.last_updated || project.last_updated || '未知时间';
+                
+                const card = document.createElement('div');
+                card.className = 'project-card bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 flex items-center">
+                                <i class="fas fa-folder text-indigo-400 mr-2"></i>
+                                ${name}
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-1">
+                                <i class="fas fa-file-alt mr-1"></i> ${docCount} 个文档片段
+                            </p>
+                        </div>
+                        <button onclick="viewProjectDetails(${JSON.stringify(name)})" 
+                                class="text-indigo-600 hover:text-indigo-800 transition">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2 flex justify-between text-xs text-gray-400">
+                        <span><i class="far fa-clock mr-1"></i> ${lastUpdated}</span>
+                        <span><i class="fas fa-file-word mr-1"></i> ${fileCount} 个文件</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        // 查看项目详情
+        function viewProjectDetails(projectName) {
+            fetch(`/project/${encodeURIComponent(projectName)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error || '获取项目详情失败') });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 修复3: 处理项目详情数据
+                    const files = data.files || [];
+                    const docCount = data.document_count || 0;
+                    const fileCount = data.file_count || files.length || 0;
+                    const lastUpdated = data.last_updated || '未知';
+                    
+                    // 创建模态框显示详情
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+                    modal.innerHTML = `
+                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-bold text-gray-800">
+                                        <i class="fas fa-folder-open text-indigo-500 mr-2"></i>
+                                        ${projectName}
+                                    </h3>
+                                    <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                                            class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-500">文件列表</h4>
+                                        <ul class="mt-2 space-y-1 max-h-[200px] overflow-y-auto">
+                                            ${files.length > 0 ? 
+                                                files.map(file => `
+                                                    <li class="flex items-center py-1 px-2 hover:bg-gray-50 rounded">
+                                                        <i class="fas fa-file-word text-indigo-400 mr-2"></i>
+                                                        <span class="truncate">${file}</span>
+                                                    </li>
+                                                `).join('') : 
+                                                '<li class="text-gray-500 py-2">暂无文件</li>'}
+                                        </ul>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="bg-indigo-50 p-3 rounded-lg">
+                                            <p class="text-xs text-indigo-600">文档片段</p>
+                                            <p class="text-xl font-semibold text-indigo-800">${docCount}</p>
+                                        </div>
+                                        <div class="bg-indigo-50 p-3 rounded-lg">
+                                            <p class="text-xs text-indigo-600">文件数量</p>
+                                            <p class="text-xl font-semibold text-indigo-800">${fileCount}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        <p><i class="far fa-clock mr-1"></i> 最后更新: ${lastUpdated}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                                <button onclick="this.parentElement.parentElement.remove()"
+                                        class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+                                    关闭
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                })
+                .catch(error => {
+                    showNotification('error', '获取项目详情失败: ' + error.message);
+                });
+        }
+        
+        // 处理文件上传
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // 显示加载状态
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> 处理中...`;
+            
+            const formData = new FormData(form);
             
             fetch('/upload', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
-                if (!response.ok) throw new Error('上传失败');
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || '上传失败') });
+                }
                 return response.json();
             })
             .then(data => {
-                progressContainer.style.display = 'none';
-                alert(data.message || '文件上传并处理成功');
-                fileInput.value = ''; // 清空文件选择
+                if (!data.success) {
+                    throw new Error(data.error || '上传失败');
+                }
+                
+                // 显示成功通知
+                showNotification('success', data.message);
+                form.reset();
+                fetchProjects(); // 刷新项目列表
             })
             .catch(error => {
-                progressContainer.style.display = 'none';
-                alert(error.message || '文件处理失败');
-                console.error('上传错误:', error);
+                showNotification('error', error.message);
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             });
+        });
+        
+        // 处理搜索请求
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            const resultsContainer = document.getElementById('searchResults');
+            const statsContainer = document.getElementById('searchStats');
+            
+            // 显示加载状态
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> 搜索中...`;
+            resultsContainer.innerHTML = `
+                <div class="text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-indigo-400 text-2xl"></i>
+                    <p class="mt-2 text-gray-500">正在搜索...</p>
+                </div>
+            `;
+            statsContainer.innerHTML = '';
+            
+            // 获取所有选中的项目
+            const projectSelect = document.getElementById('projectSelect');
+            const selectedProjects = Array.from(projectSelect.selectedOptions)
+                .map(option => option.value);
+            
+            const formData = new FormData(form);
+            
+            // 添加项目选择到表单数据
+            selectedProjects.forEach(project => {
+                formData.append('project_names', project);
+            });
+            
+            // 获取功能启用状态
+            const rerankEnabled = document.getElementById('rerankCheckbox').checked;
+            const useLLM = document.getElementById('useLLMCheckbox').checked;
+            
+            // 添加到表单数据
+            formData.append('rerank', rerankEnabled);
+            formData.append('use_llm', useLLM);
+            
+            fetch('/search', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                debugLog("搜索响应状态:", response.status);
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || '搜索失败') });
+                }
+                return response.json();
+            })
+            .then(data => {
+                debugLog("接收到的搜索结果:", data);
+                
+                // 检查返回的数据格式
+                if (!data.success) {
+                    throw new Error(data.error || '搜索失败');
+                }
+                
+                // 更新统计信息
+                statsContainer.innerHTML = `
+                    <span>找到 ${data.results.length} 条结果</span>
+                    ${rerankEnabled ? '<span class="ml-2 text-blue-600"><i class="fas fa-sort-amount-down"></i> 已重排序</span>' : ''}
+                    ${useLLM ? '<span class="ml-2 text-purple-600"><i class="fas fa-robot"></i> AI摘要</span>' : ''}
+                `;
+                
+                if (data.results.length === 0) {
+                    showNotification('info', '没有找到匹配的结果');
+                }
+                
+                // 显示结果，传递功能状态
+                displaySearchResults(data.results, rerankEnabled, useLLM);
+            })
+            .catch(error => {
+                showNotification('error', error.message);
+                resultsContainer.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fas fa-exclamation-circle text-2xl"></i>
+                        <p class="mt-2">搜索错误: ${error.message}</p>
+                    </div>
+                `;
+                statsContainer.innerHTML = '';
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            });
+        });
+        
+        // 显示搜索结果
+        function displaySearchResults(results, rerankEnabled = false, useLLM = false) {
+            const container = document.getElementById('searchResults');
+            
+            if (!Array.isArray(results) || results.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-search text-2xl"></i>
+                        <p class="mt-2">没有找到匹配的结果</p>
+                        <p class="text-sm mt-1">尝试修改搜索条件</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            // 根据重排序状态显示不同提示
+            if (rerankEnabled) {
+                const rerankNotice = document.createElement('div');
+                rerankNotice.className = 'rerank-indicator p-3 rounded-lg mb-4 flex items-center';
+                rerankNotice.innerHTML = `
+                    <i class="fas fa-sort-amount-down-alt text-blue-500 mr-2"></i>
+                    <span>已启用重排序，结果按相关性优化</span>
+                `;
+                container.appendChild(rerankNotice);
+            }
+            
+            results.forEach((result, index) => {
+                const item = document.createElement('div');
+                item.className = `bg-white rounded-lg p-4 shadow-sm fade-in ${index > 0 ? 'mt-4' : ''}`;
+                
+                // 重排序相关元素
+                const rerankInfo = rerankEnabled && result.rerank_score ? `
+                    <div class="text-xs text-blue-600 mt-1">
+                        <i class="fas fa-sort-amount-down-alt mr-1"></i>
+                        重排序分数: ${result.rerank_score.toFixed(4)}
+                    </div>
+                ` : '';
+                
+                // 匹配度显示（优先使用重排序分数）
+                const matchScore = rerankEnabled && result.rerank_score ? 
+                    result.rerank_score : 
+                    result.distance || 0;
+                    
+                const matchPercent = Math.round(matchScore * 100);
+                
+                // 构建结果内容
+                let contentHtml = '';
+                if (useLLM && result.summary) {
+                    contentHtml = `
+                        <div class="ai-highlight p-4 rounded-lg mb-3">
+                            <div class="flex items-center text-purple-700 mb-2">
+                                <i class="fas fa-robot mr-1"></i>
+                                <span class="font-medium">AI摘要</span>
+                            </div>
+                            <div class="markdown-style text-gray-800">
+                                ${result.summary}
+                            </div>
+                        </div>
+                        <details class="group">
+                            <summary class="flex items-center cursor-pointer text-sm text-gray-600 hover:text-indigo-700">
+                                <span>查看原始内容</span>
+                                <i class="fas fa-chevron-down ml-1 transform group-open:rotate-180 transition text-xs"></i>
+                            </summary>
+                            <div class="mt-2 p-3 bg-gray-50 rounded text-sm text-gray-700 border border-gray-200">
+                                ${result.content || '无内容'}
+                            </div>
+                        </details>
+                    `;
+                } else if (useLLM) {
+                    // 当启用AI摘要但没有返回时显示提示
+                    contentHtml = `
+                        <div class="bg-yellow-50 p-4 rounded-lg mb-3">
+                            <div class="flex items-center text-yellow-700 mb-2">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                <span class="font-medium">AI摘要不可用</span>
+                            </div>
+                            <p class="text-sm text-gray-700">未能生成摘要，以下是原始内容：</p>
+                        </div>
+                        <details class="group" open>
+                            <div class="mt-2 p-3 bg-gray-50 rounded text-sm text-gray-700 border border-gray-200">
+                                ${result.content || '无内容'}
+                            </div>
+                        </details>
+                    `;
+                } else {
+                    contentHtml = `
+                        <details class="group" ${index < 3 ? 'open' : ''}>
+                            <summary class="flex items-center cursor-pointer text-sm text-gray-600 hover:text-indigo-700">
+                                <span>查看内容</span>
+                                <i class="fas fa-chevron-down ml-1 transform group-open:rotate-180 transition text-xs"></i>
+                            </summary>
+                            <div class="mt-2 p-3 bg-gray-50 rounded text-sm text-gray-700 border border-gray-200">
+                                ${result.content || '无内容'}
+                            </div>
+                        </details>
+                    `;
+                }
+                
+                item.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                    ${result.project_name || '未知项目'}
+                                </span>
+                                <span class="ml-2 text-xs text-gray-500">
+                                    <i class="far fa-file-word mr-1"></i> ${result.filename || '未命名文件'}
+                                </span>
+                            </div>
+                            <h4 class="mt-1 font-medium text-gray-800">${result.chapter_title || '无章节标题'}</h4>
+                            ${result.subsection_title ? `<p class="text-sm text-gray-600">${result.subsection_title}</p>` : ''}
+                            ${rerankInfo}
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="text-xs font-medium px-2 py-1 rounded bg-green-100 text-green-800">
+                                ${matchPercent}% 匹配
+                            </span>
+                            ${rerankEnabled ? `
+                                <span class="text-xs text-blue-600 mt-1">
+                                    <i class="fas fa-sort-amount-down"></i>
+                                </span>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        ${contentHtml}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+        
+        // 显示通知
+        function showNotification(type, message) {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'bg-green-100 border-green-400 text-green-700',
+                error: 'bg-red-100 border-red-400 text-red-700',
+                info: 'bg-blue-100 border-blue-400 text-blue-700'
+            };
+            
+            notification.className = `fixed top-4 right-4 border-l-4 ${colors[type] || colors.info} px-4 py-3 rounded shadow-lg z-50 max-w-xs transition transform fade-in`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-2"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 自动消失
+            setTimeout(() => {
+                notification.classList.add('opacity-0', 'translate-x-full');
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
         }
     </script>
 </body>

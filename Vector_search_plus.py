@@ -79,6 +79,7 @@ class VectorSearchSystem:
             'subsection_title': {'max_len': 500, 'truncate': 'simple'},
             'content': {'max_len': 65535, 'truncate': 'reject'}
         }
+        self.project_metadata = {}  # 项目元数据存储 {project_name: metadata}
         
         # 初始化ModelScope组件
         self.embeddings = ModelScopeEmbeddings(
@@ -101,6 +102,16 @@ class VectorSearchSystem:
                                      ssl.SSLError)),
         reraise=True
     )
+
+    def add_project_metadata(self, project_name: str, metadata: dict):
+        """添加或更新项目元数据"""
+        self.project_metadata[project_name] = metadata
+        logger.info(f"Added metadata for project: {project_name}")
+        
+    def get_project_metadata(self, project_name: str) -> Optional[dict]:
+        """获取项目元数据"""
+        return self.project_metadata.get(project_name)
+
     def text_to_vector(self, text: str) -> List[float]:
         """使用ModelScopeEmbeddings进行文本向量化"""
         try:
@@ -167,6 +178,7 @@ class VectorSearchSystem:
                 FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=self.dim),
                 FieldSchema(name="file_hash", dtype=DataType.VARCHAR, max_length=256),
                 FieldSchema(name="filename", dtype=DataType.VARCHAR, max_length=256),
+                FieldSchema(name="project_name", dtype=DataType.VARCHAR, max_length=256),  # 新增项目名字段
                 FieldSchema(name="chapter_title", dtype=DataType.VARCHAR, max_length=300),
                 FieldSchema(name="subsection_title", dtype=DataType.VARCHAR, max_length=500),            
                 FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=65535, nullable=True),
@@ -174,11 +186,11 @@ class VectorSearchSystem:
             ]
 
             # 创建集合模式
-            schema = CollectionSchema(fields, "Enhanced text search collection")
-
+            schema = CollectionSchema(fields, "Multi-project text search collection")
+            
             # 创建集合
             self.collection = Collection(name=self.collection_name, schema=schema)
-
+            
             # 创建索引
             index_params = {
                 "metric_type": "COSINE",
@@ -188,7 +200,7 @@ class VectorSearchSystem:
 
             self.collection.create_index(field_name="embedding", index_params=index_params)
             self.collection.load()
-            logger.info(f"Collection '{self.collection_name}' created and loaded successfully.")
+            logger.info(f"Collection '{self.collection_name}' created with project_name field.")
         else:
             self.collection = Collection(name=self.collection_name)
             self.collection.load()
@@ -755,9 +767,23 @@ class VectorSearchSystem:
             # 没有子章节则提交到章节内容
             chapter["content"].extend(buffer)
 
-    def insert_documents(self, file_dir: str, app=None):
-        """重构的数据插入方法（支持多级章节）"""
+    def insert_documents(self, file_dir: str, project_name: str = None, app=None):
+        """重构的数据插入方法（支持项目和项目元数据）"""
         success_count = 0
+        project_files = {}
+        
+    # 自动从目录结构推断项目名
+        if project_name is None:
+            project_name = os.path.basename(os.path.normpath(file_dir))
+            logger.info(f"Auto-detected project name: {project_name}")
+        else:
+            # 确保项目名称不超过最大长度
+            project_name = project_name[:256]
+
+        # 验证项目名称
+        if not project_name or not isinstance(project_name, str):
+            raise ValueError("Invalid project name")            
+        
         for filename in os.listdir(file_dir):
             if not filename.endswith(".docx"):
                 continue
@@ -772,6 +798,11 @@ class VectorSearchSystem:
                 log_path = self.log_subsections_to_file(filename, chapters)
                 logger.info(f"文档解析完成：{filename}，日志路径：{log_path}")
                 
+                # 记录项目文件关系
+                if project_name not in project_files:
+                    project_files[project_name] = []
+                project_files[project_name].append(filename)
+                
                 for chap_idx, chapter in enumerate(chapters, 1):
                     # 处理章节内容
                     if chapter.get('content'):
@@ -783,8 +814,9 @@ class VectorSearchSystem:
                                     "embedding": self.text_to_vector(chapter_content),
                                     "file_hash": chap_hash,
                                     "filename": self._process_field('filename', filename),
+                                    "project_name": project_name,  # 确保提供项目名称
                                     "chapter_title": self._process_field('chapter_title', chapter['title']),
-                                    "subsection_title": self._process_field('subsection_title', chapter['title']),
+                                    "subsection_title": "",  # 章节没有子章节，所以子章节标题为空
                                     "content": chapter_content[:65535],
                                     "metadata": {
                                         "section_type": "chapter",
@@ -813,6 +845,10 @@ class VectorSearchSystem:
                             # 使用一级子章节标题
                             true_subsection_title = subsection['title']
                             
+                            # 确保子章节标题与章节标题不同
+                            if true_subsection_title == chapter['title']:
+                                true_subsection_title = f"{chapter['title']} - 子章节{sub_idx}"
+                            
                             sub_hash = self._calculate_segment_hash(subsection_content, filename, chap_idx, sub_idx)
                             
                             # 元数据记录层级信息
@@ -836,6 +872,7 @@ class VectorSearchSystem:
                                 "embedding": self.text_to_vector(subsection_content),
                                 "file_hash": sub_hash,
                                 "filename": self._process_field('filename', filename),
+                                "project_name": project_name,  # 确保提供项目名称
                                 "chapter_title": self._process_field('chapter_title', chapter['title']),
                                 "subsection_title": self._process_field('subsection_title', true_subsection_title),
                                 "content": subsection_content[:65535],
@@ -851,136 +888,288 @@ class VectorSearchSystem:
             finally:
                 pythoncom.CoUninitialize()
 
+        # 保存项目元数据
+        if project_files:
+            self.add_project_metadata(project_name, {
+                "file_count": len(project_files[project_name]),
+                "files": project_files[project_name],
+                "last_updated": datetime.now().isoformat()
+            })
+        
         self.collection.load()
-        logger.info(f"文档处理完成: 成功插入 {success_count} 个片段")
+        logger.info(f"项目 '{project_name}' 处理完成: 成功插入 {success_count} 个片段")
         return success_count
     
-    def search(self, query_text: str, top_k: int = 10, rerank: bool = True) -> List[Dict]:
+    def search(self, query_text: str, top_k: int = 10, 
+            rerank: bool = True, 
+            project_names: List[str] = None,
+            use_llm: bool = False) -> List[Dict]:
         """
-        增强版搜索功能，支持重排序
+        支持项目过滤的搜索功能，可选LLM结果处理
         
         参数:
             query_text: 查询文本
             top_k: 返回结果数量
             rerank: 是否使用重排序
-            
-        返回:
-            相似文档列表，按相关性排序
+            project_names: 要搜索的项目列表（None表示所有项目）
+            use_llm: 是否使用LLM处理结果
         """
         self.load_models()
-        
-        # 第一步：向量相似度搜索
-        query_vector = self.text_to_vector(query_text)
-        search_params = {
-            "metric_type": "COSINE",
-            "params": {"ef": 50}  # 更高的搜索参数
-        }
+        try:    
+            # 第一步：向量相似度搜索
+            query_vector = self.text_to_vector(query_text)
+            search_params = {
+                "metric_type": "COSINE",
+                "params": {"ef": 50}  # 更高的搜索参数
+            }
 
-        # 先获取更多候选结果用于重排序
-        candidate_k = top_k * 3 if rerank else top_k
-        
-        raw_results = self.collection.search(
-            data=[query_vector], 
-            anns_field="embedding", 
-            param=search_params, 
-            limit=candidate_k, 
-            output_fields=["id", "file_hash", "filename", "chapter_title", "subsection_title", "content"]
-        )
+            expr = None
+            if project_names:
+                # 创建类似 "project_name in ['proj1', 'proj2']" 的表达式
+                project_list = ", ".join([f"'{p}'" for p in project_names])
+                expr = f"project_name in [{project_list}]"
+            
+            # 确定要获取的候选结果数量
+            candidate_k = top_k * 3 if rerank else top_k
+            
+            raw_results = self.collection.search(
+                data=[query_vector], 
+                anns_field="embedding", 
+                param=search_params, 
+                limit=candidate_k, 
+                expr=expr,  # 项目过滤表达式
+                output_fields=["id", "file_hash", "filename", "project_name", 
+                                "chapter_title", "subsection_title", "content"]
+            )
 
-        candidates = []
-        for hits in raw_results:
-            for hit in hits:
-                candidates.append({
-                    "id": hit.id,
-                    "file_hash": hit.entity.get("file_hash"),
-                    "filename": hit.entity.get("filename"),
-                    "chapter_title": hit.entity.get("chapter_title"),
-                    "subsection_title": hit.entity.get("subsection_title"),
-                    "content": hit.entity.get("content"),
-                    "distance": hit.distance
-                })
+            candidates = []
+            for hits in raw_results:
+                for hit in hits:
+                    candidates.append({
+                        "id": hit.id,
+                        "file_hash": hit.entity.get("file_hash"),
+                        "filename": hit.entity.get("filename"),
+                        "project_name": hit.entity.get("project_name"),
+                        "chapter_title": hit.entity.get("chapter_title"),
+                        "subsection_title": hit.entity.get("subsection_title"),
+                        "content": hit.entity.get("content"),
+                        "distance": hit.distance
+                    })
+            
+            # 如果没有重排序或候选结果不足，直接返回
+            if not rerank or len(candidates) <= top_k:
+                final_results = candidates[:top_k]
+            else:
+                # 第二步：重排序
+                try:
+                    from sentence_transformers import CrossEncoder
+                    
+                    if self.reranker_model is None:
+                        self.reranker_model = CrossEncoder(MODEL_CONFIG['reranker'])
+                    
+                    # 准备重排序对
+                    pairs = [(query_text, doc['content']) for doc in candidates]
+                    
+                    # 计算重排序分数
+                    rerank_scores = self.reranker_model.predict(pairs)
+                    
+                    # 合并分数
+                    for doc, score in zip(candidates, rerank_scores):
+                        doc['rerank_score'] = float(score)
+                    
+                    # 按重排序分数排序
+                    candidates.sort(key=lambda x: x['rerank_score'], reverse=True)
+                    
+                    # 取最终结果
+                    final_results = candidates[:top_k]
+                    
+                except ImportError:
+                    logger.warning("CrossEncoder not available, skipping reranking")
+                    final_results = candidates[:top_k]
+                except Exception as e:
+                    logger.error(f"Reranking failed: {str(e)}")
+                    final_results = candidates[:top_k]
+            
+            # 第三步：LLM处理（如果启用）
+            if use_llm:
+                try:
+                    # LLM提示模板
+                    PROMPT_TEMPLATE = """
+                    你是一个专业的技术文档助手，请基于以下上下文回答问题：
+                    ========
+                    来源文档: {filename}
+                    所属项目: {project_name}
+                    章节标题: {chapter_title}
+                    子章节标题: {subsection_title}
+                    --------
+                    内容:
+                    {content}
+                    ========
+                    
+                    用户查询: {query}
+                    
+                    要求:
+                    1. 用简洁专业的中文回答，不超过100字
+                    2. 如果内容与查询无关，回答"未找到相关信息"
+                    3. 不要编造内容中没有的信息
+                    4. 重点突出技术细节和关键点
+                    
+                    回答格式:
+                    ### 来源文档摘要
+                    [你的回答]
+                    """
+                    
+                    for result in final_results:
+                        # 构建提示词
+                        prompt = PROMPT_TEMPLATE.format(
+                            filename=result['filename'],
+                            project_name=result['project_name'],
+                            chapter_title=result['chapter_title'],
+                            subsection_title=result['subsection_title'],
+                            content=result['content'][:2000],  # 限制内容长度
+                            query=query_text
+                        )
+                        
+                        # 调用LLM生成摘要
+                        llm_response = self.generate_answer(prompt)
+                        
+                        # 修复1: 使用前端期望的字段名 "summary" 而不是 "llm_summary"
+                        result['summary'] = llm_response
+                        
+                        # 修复2: 保留原始内容不变
+                        # 不需要修改 result['content']
+                        
+                except Exception as e:
+                    logger.error(f"LLM processing failed: {str(e)}")
+                    # 修复3: 如果LLM处理失败，设置摘要为空字符串
+                    for result in final_results:
+                        result['summary'] = None
+            
+            # 修复4: 确保所有结果都有 summary 字段
+            for result in final_results:
+                if 'summary' not in result:
+                    result['summary'] = None
+            
+            return final_results
         
-        # 如果没有重排序或候选结果不足，直接返回
-        if not rerank or len(candidates) <= top_k:
-            return candidates[:top_k]
-        
-        # 第二步：重排序
-        # 使用更强大的交叉编码器重新排序结果
-        # 注意：这部分需要安装sentence-transformers的CrossEncoder
-        try:
-            from sentence_transformers import CrossEncoder
-            
-            if self.reranker_model is None:
-                self.reranker_model = CrossEncoder(MODEL_CONFIG['reranker'])
-            
-            # 准备重排序对
-            pairs = [(query_text, doc['content']) for doc in candidates]
-            
-            # 计算重排序分数
-            rerank_scores = self.reranker_model.predict(pairs)
-            
-            # 合并分数
-            for doc, score in zip(candidates, rerank_scores):
-                doc['rerank_score'] = float(score)
-            
-            # 按重排序分数排序
-            candidates.sort(key=lambda x: x['rerank_score'], reverse=True)
-            
-            # 返回带重排序分数的结果
-            return candidates[:top_k]
-            
-        except ImportError:
-            logger.warning("CrossEncoder not available, skipping reranking")
-            return candidates[:top_k]
         except Exception as e:
-            logger.error(f"Reranking failed: {str(e)}")
-            return candidates[:top_k]
+            logger.error(f"Search failed: {str(e)}")
+            return []
     
-    def hybrid_search(self, query_text: str, keyword: str = None, top_k: int = 10):
+        # 新增跨项目统计方法
+    def get_project_summary(self) -> Dict[str, Dict]:
+        """获取所有项目的统计信息"""
+        # 从集合中获取所有唯一项目名
+        try:
+            res = self.collection.query(
+                expr="",
+                output_fields=["project_name"],
+                limit=10000
+            )
+            project_names = list(set([item["project_name"] for item in res if "project_name" in item]))
+            
+            project_stats = {}
+            for project in project_names:
+                metadata = self.get_project_metadata(project) or {}
+                expr = f"project_name == '{project}'"
+                count = self.collection.query(expr=expr, count_only=True)
+                
+                project_stats[project] = {
+                    "document_count": count,
+                    "last_updated": metadata.get("last_updated", "unknown"),
+                    "file_count": metadata.get("file_count", 0),
+                    "files": metadata.get("files", [])
+                }
+            return project_stats
+        except Exception as e:
+            logger.error(f"Failed to get project summary: {e}")
+            return {}
+    
+    # 新增跨项目搜索方法
+    def cross_project_search(self, query_text: str, top_k_per_project: int = 3, 
+                            rerank: bool = True) -> Dict[str, List[Dict]]:
         """
-        混合搜索：结合向量搜索和关键词过滤
+        跨项目搜索，返回每个项目的top结果
         
         参数:
-            query_text: 查询文本（用于向量搜索）
-            keyword: 关键词（用于过滤）
-            top_k: 返回结果数量
+            query_text: 查询文本
+            top_k_per_project: 每个项目返回的结果数
+            rerank: 是否使用重排序
+            
+        返回:
+            字典: {project_name: [result1, result2, ...]}
         """
-        # 向量搜索
-        vector_results = self.search(query_text, top_k=top_k, rerank=False)
+        # 获取所有项目
+        all_projects = list(self.project_metadata.keys())
         
-        # 如果没有关键词过滤，直接返回向量结果
-        if not keyword:
-            return vector_results
+        if not all_projects:
+            # 如果没有项目元数据，从集合中获取
+            res = self.collection.query(
+                expr="",
+                output_fields=["project_name"],
+                partition_names=[],
+                limit=10000
+            )
+            all_projects = list(set([item["project_name"] for item in res]))
         
-        # 关键词过滤
-        keyword_filtered = [
-            doc for doc in vector_results 
-            if keyword.lower() in doc['content'].lower() or 
-               keyword.lower() in doc['chapter_title'].lower() or
-               keyword.lower() in doc['subsection_title'].lower()
-        ]
+        results_by_project = {}
         
-        # 如果关键词过滤后结果不足，补充向量结果
-        if len(keyword_filtered) < top_k:
-            additional = [doc for doc in vector_results if doc not in keyword_filtered]
-            keyword_filtered.extend(additional[:top_k - len(keyword_filtered)])
+        for project in all_projects:
+            try:
+                results = self.search(
+                    query_text, 
+                    top_k=top_k_per_project, 
+                    rerank=rerank, 
+                    project_names=[project]
+                )
+                results_by_project[project] = results
+            except Exception as e:
+                logger.error(f"Project {project} search failed: {str(e)}")
+                results_by_project[project] = []
         
-        return keyword_filtered[:top_k]
-
-    def generate_parse_report(chapters: List[Dict]) -> Dict:
-        """生成结构化解析报告"""
-        report = {
-            "total_chapters": len(chapters),
-            "total_subsections": sum(len(chap["subsections"]) for chap in chapters),
-            "merged_subsections": sum(1 for chap in chapters for sub in chap["subsections"] if sub.get("is_merged")),
-            "chapter_details": [
-                {
-                    "title": chap["title"],
-                    "subsection_count": len(chap["subsections"]),
-                    "content_length": sum(len(text) for text in chap["content"]),
-                    "example_subsections": [sub["title"] for sub in chap["subsections"][:2]]
-                }
-                for chap in chapters
+        return results_by_project
+    
+    def hybrid_search(self, query_text: str, keyword: str = None, top_k: int = 10,
+                    project_names: List[str] = None,
+                    rerank: bool = False,
+                    use_llm: bool = False) -> List[Dict]:
+        """
+        增强版混合搜索，支持重排序和AI摘要
+        
+        参数:
+            query_text: 查询文本
+            keyword: 过滤关键词
+            top_k: 返回结果数
+            project_names: 项目过滤
+            rerank: 是否启用重排序
+            use_llm: 是否启用AI摘要
+        """
+        # 1. 先进行基础搜索
+        results = self.search(
+            query_text, 
+            top_k=top_k*2,  # 获取更多结果用于过滤
+            rerank=rerank,
+            project_names=project_names,
+            use_llm=use_llm
+        )
+        
+        # 2. 关键词过滤
+        if keyword:
+            keyword = keyword.lower()
+            filtered_results = [
+                r for r in results
+                if (keyword in r['content'].lower() or
+                    keyword in r.get('chapter_title', '').lower() or
+                    keyword in r.get('subsection_title', '').lower())
             ]
-        }
-        return report
+            
+            # 确保返回数量不超过top_k
+            results = filtered_results[:top_k]
+        
+        # 修复5: 确保混合搜索结果也有 summary 字段
+        for result in results:
+            if 'summary' not in result:
+                result['summary'] = None
+        
+        return results
+
