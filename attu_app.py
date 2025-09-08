@@ -326,31 +326,49 @@ def get_context():
             "error": f"获取筛选条件失败: {str(e)}"
         }), 500
 
+# 修改现有的/projects端点，添加统计信息
 @app.route('/projects', methods=['GET'])
 def get_projects():
-    """获取所有项目列表（与前端项目列表功能对应）"""
+    """获取所有项目及其统计信息（用于前端项目管理界面）"""
     try:
-        project_summary = search_system.get_project_summary()
+        # 使用新方法获取项目统计信息
+        project_stats = search_system.get_all_projects_with_stats()
         
-        # 格式化项目信息
-        projects = []
-        for name, info in project_summary.items():
-            projects.append({
-                "name": name,
-                "document_count": info.get("document_count", 0),
-                "file_count": info.get("file_count", 0),
-                "last_updated": info.get("last_updated", "未知"),
-                "description": search_system.get_project_description(name),  # 项目描述
-                "features": info.get("features", [])
-            })
-        
-        return jsonify(projects), 200
+        return jsonify({
+            "success": True,
+            "projects": project_stats
+        }), 200
         
     except Exception as e:
         app.logger.error(f"获取项目列表失败: {str(e)}", exc_info=True)
         return jsonify({
             "success": False,
             "error": f"获取项目失败: {str(e)}"
+        }), 500
+
+# 添加项目删除端点
+@app.route('/projects/delete', methods=['POST'])
+def delete_projects():
+    """删除指定项目"""
+    try:
+        data = request.get_json()
+        project_names = data.get('project_names', [])
+        
+        if not project_names:
+            return jsonify({"success": False, "error": "未选择项目"}), 400
+        
+        # 执行删除
+        result = search_system.delete_projects(project_names)
+        if result['success']:
+            return jsonify(result), 200
+        else:
+            return jsonify(result), 500
+            
+    except Exception as e:
+        app.logger.error(f"删除项目失败: {str(e)}", exc_info=True)
+        return jsonify({
+            "success": False,
+            "error": f"删除失败: {str(e)}"
         }), 500
 
 @app.route('/project/<name>', methods=['GET'])

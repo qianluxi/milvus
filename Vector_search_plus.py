@@ -20,7 +20,7 @@ import ssl
 #import http.client
 import httpx 
 from langchain_community.embeddings import ModelScopeEmbeddings
-from typing import Set, List, Dict, Optional, Tuple
+from typing import Set, List, Dict, Optional, Tuple, Any
 import uuid
 
 # 启用详细日志记录（调试时使用）
@@ -1914,4 +1914,88 @@ class VectorSearchSystem:
         else:
             yield "抱歉，未能生成回答"
 
+    def delete_projects(self, project_names: List[str]) -> Dict[str, Any]:
+        """
+        删除指定项目的所有数据
+        
+        参数:
+            project_names: 要删除的项目名称列表
+            
+        返回:
+            包含删除结果信息的字典
+        """
+        if not project_names:
+            return {"success": False, "message": "未提供项目名称"}
+        
+        try:
+            # 构建删除表达式
+            expr = f"project_name in {json.dumps(project_names)}"
+            
+            # 先查询要删除的数据量（用于返回信息）
+            count_result = self.collection.query(
+                expr=expr,
+                count_only=True
+            )
+            
+            # 执行删除操作
+            delete_result = self.collection.delete(expr)
+            
+            # 从内存元数据中移除项目
+            for project in project_names:
+                if project in self.project_metadata:
+                    del self.project_metadata[project]
+            
+            # 刷新上下文中的项目集合
+            self.context_manager["current_project_set"] = None
+            
+            logger.info(f"成功删除项目: {project_names}, 共删除 {count_result} 条记录")
+            
+            return {
+                "success": True,
+                "message": f"成功删除 {len(project_names)} 个项目",
+                "deleted_count": count_result,
+                "deleted_projects": project_names
+            }
+            
+        except Exception as e:
+            logger.error(f"删除项目失败: {str(e)}")
+            return {
+                "success": False,
+                "message": f"删除失败: {str(e)}",
+                "deleted_projects": []
+            }
+
+    def get_all_projects_with_stats(self) -> Dict[str, Dict]:
+        """
+        获取所有项目及其统计信息（用于前端显示）
+        
+        返回:
+            项目名称到统计信息的映射
+        """
+        try:
+            # 获取所有项目
+            all_projects = self.get_all_projects()
+            project_stats = {}
+            
+            for project in all_projects:
+                # 获取项目文档数量
+                expr = f"project_name == '{project}'"
+                count = self.collection.query(expr=expr, count_only=True)
+                
+                # 获取项目元数据
+                metadata = self.get_project_metadata(project) or {}
+                
+                project_stats[project] = {
+                    "document_count": count,
+                    "project_code": metadata.get("project_code", "未知"),
+                    "file_count": metadata.get("file_count", 0),
+                    "last_updated": metadata.get("last_updated", "未知"),
+                    "start_date": metadata.get("start_date", "未知")
+                }
+                
+            return project_stats
+            
+        except Exception as e:
+            logger.error(f"获取项目统计信息失败: {str(e)}")
+            return {}
 
