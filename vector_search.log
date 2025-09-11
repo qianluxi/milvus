@@ -26038,3 +26038,400 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-09-08 14:16:25,125 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 14:16:25] "GET /context HTTP/1.1" 200 -
 2025-09-08 14:16:25,128 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 6 ¸öÏîÄ¿
 2025-09-08 14:16:25,129 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 14:16:25] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-08 16:31:31,002 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:31:31,184 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:31:31,216 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:31:31,444 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:31:31,721 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-08 16:31:31,844 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-08 16:31:31,875 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:31:32,086 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:31:32,115 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:31:32,326 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:31:32,545 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-08 16:31:32,639 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-08 16:31:44,610 - VectorSearchSystem - INFO - ³õÊ¼»¯ModelScope×é¼þ...
+2025-09-08 16:31:45,108 - VectorSearchSystem - INFO - Ç¶ÈëÄ£ÐÍ²âÊÔ³É¹¦£¬ÏòÁ¿Î¬¶È: 768
+2025-09-08 16:31:45,126 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ÄãºÃ'}], 'model': 'deepseek-ai/DeepSeek-R1-0528', 'max_tokens': 2048, 'stream': True}}
+2025-09-08 16:31:45,140 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-09-08 16:31:45,140 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-09-08 16:31:45,141 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002AB00955610>
+2025-09-08 16:31:45,141 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-09-08 16:31:45,142 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-08 16:31:45,142 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-09-08 16:31:45,143 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-08 16:31:45,143 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-09-08 16:31:45,143 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Monday, 08-Sep-25 16:31:45 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-09-08 16:31:45,144 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002AB0D093920> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-09-08 16:31:45,280 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002AB0CF4E2D0>
+2025-09-08 16:31:45,281 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-09-08 16:31:45,281 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-08 16:31:45,281 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-09-08 16:31:45,281 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-08 16:31:45,282 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-09-08 16:31:46,581 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Mon, 08 Sep 2025 08:31:41 GMT'), (b'Content-Type', b'text/event-stream'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0b62601e17573203000173977e64a1d16e24037e4e65013458a5f4f2dec2df;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-09-08 16:31:46,582 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-08 16:31:46,582 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Mon, 08 Sep 2025 08:31:41 GMT', 'content-type': 'text/event-stream', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0b62601e17573203000173977e64a1d16e24037e4e65013458a5f4f2dec2df;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-09-08 16:31:46,583 - openai._base_client - DEBUG - request_id: None
+2025-09-08 16:31:46,583 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-09-08 16:31:55,820 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-09-08 16:31:55,820 - httpcore.http11 - DEBUG - response_closed.started
+2025-09-08 16:31:55,820 - httpcore.http11 - DEBUG - response_closed.complete
+2025-09-08 16:31:55,825 - VectorSearchSystem - INFO - ÕýÔÚÁ¬½ÓZilliz CloudÊý¾Ý¿â...
+2025-09-08 16:31:56,114 - VectorSearchSystem - INFO - Zilliz CloudÁ¬½Ó³É¹¦
+2025-09-08 16:31:59,215 - VectorSearchSystem - INFO - Collection 'text_search' created successfully on Zilliz Cloud.
+2025-09-08 16:31:59,216 - VectorSearchSystem - INFO - ÏµÍ³³õÊ¼»¯Íê³É
+2025-09-08 16:31:59,244 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.112:5000
+2025-09-08 16:31:59,244 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-08 16:31:59,246 - werkzeug - INFO -  * Restarting with stat
+2025-09-08 16:32:08,982 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:32:09,372 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:32:09,406 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:32:09,618 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:32:10,176 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-08 16:32:10,281 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-08 16:32:10,296 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:32:10,510 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:32:10,546 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-08 16:32:10,804 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-08 16:32:11,095 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-08 16:32:11,302 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-08 16:32:22,684 - VectorSearchSystem - INFO - ³õÊ¼»¯ModelScope×é¼þ...
+2025-09-08 16:32:23,073 - VectorSearchSystem - INFO - Ç¶ÈëÄ£ÐÍ²âÊÔ³É¹¦£¬ÏòÁ¿Î¬¶È: 768
+2025-09-08 16:32:23,088 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ÄãºÃ'}], 'model': 'deepseek-ai/DeepSeek-R1-0528', 'max_tokens': 2048, 'stream': True}}
+2025-09-08 16:32:23,090 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-09-08 16:32:23,091 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-09-08 16:32:23,092 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BAEBF28910>
+2025-09-08 16:32:23,092 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-09-08 16:32:23,093 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-08 16:32:23,093 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-09-08 16:32:23,094 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-08 16:32:23,094 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-09-08 16:32:23,095 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Monday, 08-Sep-25 16:32:23 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-09-08 16:32:23,095 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BAEBFC5F40> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-09-08 16:32:23,195 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BADE9BF290>
+2025-09-08 16:32:23,195 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-09-08 16:32:23,195 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-08 16:32:23,197 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-09-08 16:32:23,197 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-08 16:32:23,197 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-09-08 16:32:24,051 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Mon, 08 Sep 2025 08:32:18 GMT'), (b'Content-Type', b'text/event-stream'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0b62601217573203379284130e8e5b5be213ca504462be894ca65dd9b272c9;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-09-08 16:32:24,053 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-08 16:32:24,054 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Mon, 08 Sep 2025 08:32:18 GMT', 'content-type': 'text/event-stream', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0b62601217573203379284130e8e5b5be213ca504462be894ca65dd9b272c9;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-09-08 16:32:24,054 - openai._base_client - DEBUG - request_id: None
+2025-09-08 16:32:24,055 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-09-08 16:32:31,809 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-09-08 16:32:31,809 - httpcore.http11 - DEBUG - response_closed.started
+2025-09-08 16:32:31,810 - httpcore.http11 - DEBUG - response_closed.complete
+2025-09-08 16:32:31,816 - VectorSearchSystem - INFO - ÕýÔÚÁ¬½ÓZilliz CloudÊý¾Ý¿â...
+2025-09-08 16:32:31,927 - VectorSearchSystem - INFO - Zilliz CloudÁ¬½Ó³É¹¦
+2025-09-08 16:32:32,202 - VectorSearchSystem - INFO - Collection 'text_search' loaded successfully from Zilliz Cloud.
+2025-09-08 16:32:32,203 - VectorSearchSystem - INFO - ÏµÍ³³õÊ¼»¯Íê³É
+2025-09-08 16:32:32,220 - werkzeug - WARNING -  * Debugger is active!
+2025-09-08 16:32:32,222 - werkzeug - INFO -  * Debugger PIN: 250-243-251
+2025-09-08 16:32:32,275 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:32:32] "GET / HTTP/1.1" 200 -
+2025-09-08 16:32:32,841 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:32:32] "GET /health HTTP/1.1" 200 -
+2025-09-08 16:32:33,027 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 0 ¸öÏîÄ¿
+2025-09-08 16:32:33,028 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 0 ¸öÏîÄ¿
+2025-09-08 16:32:33,028 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:32:33] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-08 16:32:33,030 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 0 ¸öÏîÄ¿
+2025-09-08 16:32:33,031 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 0 ¸öÏîÄ¿
+2025-09-08 16:32:33,032 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:32:33] "GET /context HTTP/1.1" 200 -
+2025-09-08 16:32:33,236 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:32:33] "GET /projects HTTP/1.1" 200 -
+2025-09-08 16:33:17,796 - app - INFO - ÊÕµ½ÉÏ´«ÇëÇó
+2025-09-08 16:33:17,816 - app - INFO - ±íµ¥Êý¾Ý: ImmutableMultiDict([('project_name', 'ËÕÖÝ'), ('project_code', 'aa2019'), ('project_date', '2019-01-01')])
+2025-09-08 16:33:17,816 - app - INFO - ÎÄ¼þÊýÁ¿: 1
+2025-09-08 16:33:21,176 - VectorSearchSystem - INFO - ÎÄµµ½âÎöÍê³É£ºËÕÖÝ.docx£¬ÈÕÖ¾Â·¾¶£º./uploads\ËÕÖÝ_parsed_20250908_163321.txt
+2025-09-08 16:33:21,309 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 1.1 - ¡¾µÚÒ»ÕÂ Éè¼ÆÒÀ¾Ý¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:33:21,371 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 2.1 - ¡¾µÚ¶þÕÂ ½á¹¹¸Å¿ö¼°Ñ¡ÐÍ¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:33:21,464 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 3.1 - ¡¾µÚÈýÕÂ »ù´¡¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:33:21,525 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 4.1 - ¡¾µÚËÄÕÂ ²ÄÁÏ¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:33:21,608 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 5.1 - ¡¾µÚÎåÕÂ ¼òÒª¼ÆËã·½·¨¼°½á¹û¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:33:21,609 - VectorSearchSystem - INFO - Added metadata for project: ËÕÖÝ (Code: aa2019)
+2025-09-08 16:33:21,609 - VectorSearchSystem - INFO - ÏîÄ¿ 'ËÕÖÝ' ÔªÊý¾ÝÒÑ¸üÐÂ
+2025-09-08 16:33:21,610 - VectorSearchSystem - INFO - ÏîÄ¿ 'ËÕÖÝ' ÔªÊý¾ÝÒÑ¸üÐÂ: ¿ªÊ¼ÈÕÆÚ=2019-01-01
+2025-09-08 16:33:21,706 - VectorSearchSystem - INFO - ÏîÄ¿ 'ËÕÖÝ' ´¦ÀíÍê³É: ³É¹¦²åÈë 5 ¸öÆ¬¶Î
+2025-09-08 16:33:21,707 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:33:21] "POST /upload HTTP/1.1" 200 -
+2025-09-08 16:33:21,723 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 0 ¸öÏîÄ¿
+2025-09-08 16:33:21,724 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:33:21] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-08 16:36:31,075 - app - INFO - ÊÕµ½ÉÏ´«ÇëÇó
+2025-09-08 16:36:31,087 - app - INFO - ±íµ¥Êý¾Ý: ImmutableMultiDict([('project_name', 'Ã©°²Ç°'), ('project_code', 'aa2020'), ('project_date', '2020-03-03')])
+2025-09-08 16:36:31,087 - app - INFO - ÎÄ¼þÊýÁ¿: 1
+2025-09-08 16:37:01,542 - VectorSearchSystem - INFO - ÎÄµµ½âÎöÍê³É£º¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx£¬ÈÕÖ¾Â·¾¶£º./uploads\¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831_parsed_20250908_163701.txt
+2025-09-08 16:37:01,732 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 1.1 - £¨1£© ÖÊ¸ÐÍâÇ½Í¿ÁÏÃæ£¨ÓÐ±£ÎÂ£©£º ¡¤ £¨2£© ÍâÇ½ÂÁ°åÃæ£¨...
+2025-09-08 16:37:01,826 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 2.1 - ¡¾µÚ¶þÕÂ ½á¹¹Éè¼ÆËµÃ÷¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:01,908 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 3.1 - ¡¾µÚÈýÕÂ   ¸øÅÅË®Éè¼ÆËµÃ÷¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,028 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 4.1 - 7¡¢ ³öÈë¿Ú¿ØÖÆÏµÍ³...
+2025-09-08 16:37:02,157 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 5.1 - ¡¾µÚÎåÕÂ Í¨·ç¿Õµ÷Éè¼ÆËµÃ÷¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,254 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 6.1 - ¡¾µÚÁùÕÂ È¼ÆøÉè¼Æ¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,387 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 7.1 - ¡¾µÚÆßÕÂ Ïû·À×¨Æª¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,537 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 8.1 - ¡¾µÚ°ËÕÂ ÈË·À×¨Æª¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,624 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 9.1 - µÚ¾ÅÕÂ ÎÞÕÏ°­Éè¼Æ×¨Æª¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,756 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 10.1 - µÚÊ®ÕÂ ÂÌÉ«½¨ÖþÉè¼Æ×¨Æª¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,882 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 11.1 - ¡¾µÚÊ®Ò»ÕÂ º£Ãà³ÇÊÐÉè¼Æ×¨Æª¡¿ - ×ÓÕÂ½Ú1...
+2025-09-08 16:37:02,970 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 12.1 - 2. ×°ÅäÊ½½¨ÖþÆÀ·ÖÏîÊµÊ©Çé¿ö£º...
+2025-09-08 16:37:03,064 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ¶«½Öµ¥ÔªLC-01-04-02A¡¢BºÅµØ¿éÉè¼ÆËµÃ÷20210831.docx 12.2 - 1) ¸ÃÏîÄ¿Î»ÓÚÊú¾®ÄÚ¼°¹«¹²ÇøÓòµÄµçÆøÉè±¸¡¢¹ÜÏßÃ÷×°£¨°üÀ¨·ó...
+2025-09-08 16:37:03,072 - VectorSearchSystem - INFO - Added metadata for project: Ã©°²Ç° (Code: aa2020)
+2025-09-08 16:37:03,073 - VectorSearchSystem - INFO - ÏîÄ¿ 'Ã©°²Ç°' ÔªÊý¾ÝÒÑ¸üÐÂ
+2025-09-08 16:37:03,074 - VectorSearchSystem - INFO - ÏîÄ¿ 'Ã©°²Ç°' ÔªÊý¾ÝÒÑ¸üÐÂ: ¿ªÊ¼ÈÕÆÚ=2020-03-03
+2025-09-08 16:37:03,147 - VectorSearchSystem - INFO - ÏîÄ¿ 'Ã©°²Ç°' ´¦ÀíÍê³É: ³É¹¦²åÈë 13 ¸öÆ¬¶Î
+2025-09-08 16:37:03,150 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:37:03] "POST /upload HTTP/1.1" 200 -
+2025-09-08 16:37:03,157 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 0 ¸öÏîÄ¿
+2025-09-08 16:37:03,159 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:37:03] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-08 16:37:08,278 - VectorSearchSystem - INFO - Context cleared
+2025-09-08 16:37:08,279 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 2 ¸öÏîÄ¿
+2025-09-08 16:37:08,280 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 2 ¸öÏîÄ¿
+2025-09-08 16:37:08,282 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:37:08] "POST /context/clear HTTP/1.1" 200 -
+2025-09-08 16:37:08,291 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 2 ¸öÏîÄ¿
+2025-09-08 16:37:08,294 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:37:08] "GET /context HTTP/1.1" 200 -
+2025-09-08 16:37:08,297 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 2 ¸öÏîÄ¿
+2025-09-08 16:37:08,299 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:37:08] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-08 16:37:36,453 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 2 ¸öÏîÄ¿
+2025-09-08 16:37:36,896 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-09-08 16:37:36,898 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-09-08 16:37:36,899 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BAFCC73CD0>
+2025-09-08 16:37:36,900 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-09-08 16:37:36,900 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-08 16:37:36,900 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-09-08 16:37:36,901 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-08 16:37:36,901 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-09-08 16:37:36,902 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Monday, 08-Sep-25 16:37:36 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-09-08 16:37:36,902 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001BAEBFC5F40> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-09-08 16:37:37,059 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001BAFCAC2F50>
+2025-09-08 16:37:37,060 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-09-08 16:37:37,060 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-08 16:37:37,061 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-09-08 16:37:37,062 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-08 16:37:37,062 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-09-08 16:37:39,541 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Mon, 08 Sep 2025 08:37:34 GMT'), (b'Content-Type', b'text/event-stream'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-09-08 16:37:39,542 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-08 16:37:39,543 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Mon, 08 Sep 2025 08:37:34 GMT', 'content-type': 'text/event-stream', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-09-08 16:37:39,544 - openai._base_client - DEBUG - request_id: None
+2025-09-08 16:37:39,545 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-09-08 16:38:33,559 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-09-08 16:38:33,559 - httpcore.http11 - DEBUG - response_closed.started
+2025-09-08 16:38:33,560 - httpcore.http11 - DEBUG - response_closed.complete
+2025-09-08 16:38:33,560 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 2 ¸öÏîÄ¿
+2025-09-08 16:38:33,562 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:38:33] "POST /ask HTTP/1.1" 200 -
+2025-09-08 16:39:23,839 - VectorSearchSystem - INFO - ³É¹¦É¾³ýÏîÄ¿: ['ËÕÖÝ'], ¹²É¾³ý data: ["{'id': 459967551335157614}", "{'id': 459967551336881784}", "{'id': 459967551336881786}", "{'id': 459967551336881788}", "{'id': 459967551336881790}"], extra_info: {'cost': 6} Ìõ¼ÇÂ¼
+2025-09-08 16:39:23,841 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:39:23] "POST /projects/delete HTTP/1.1" 200 -
+2025-09-08 16:39:23,856 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-08 16:39:23,856 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-08 16:39:23,858 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:39:23] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-08 16:39:24,233 - werkzeug - INFO - 127.0.0.1 - - [08/Sep/2025 16:39:24] "GET /projects HTTP/1.1" 200 -
+2025-09-09 09:16:22,350 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:16:22,664 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:16:22,752 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:16:22,963 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:16:23,449 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-09 09:16:23,697 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-09 09:16:23,729 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:16:23,961 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:16:23,983 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:16:24,194 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:16:24,514 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-09 09:16:24,611 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-09 09:16:34,644 - VectorSearchSystem - INFO - ³õÊ¼»¯ModelScope×é¼þ...
+2025-09-09 09:16:35,086 - VectorSearchSystem - INFO - Ç¶ÈëÄ£ÐÍ²âÊÔ³É¹¦£¬ÏòÁ¿Î¬¶È: 768
+2025-09-09 09:16:35,095 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ÄãºÃ'}], 'model': 'deepseek-ai/DeepSeek-R1-0528', 'max_tokens': 2048, 'stream': True}}
+2025-09-09 09:16:35,097 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-09-09 09:16:35,098 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-09-09 09:16:35,119 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001C315E05610>
+2025-09-09 09:16:35,119 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-09-09 09:16:35,120 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-09 09:16:35,120 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-09-09 09:16:35,120 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-09 09:16:35,121 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-09-09 09:16:35,121 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tuesday, 09-Sep-25 09:16:35 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-09-09 09:16:35,121 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001C322563920> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-09-09 09:16:35,244 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001C315D27390>
+2025-09-09 09:16:35,245 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-09-09 09:16:35,245 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-09 09:16:35,245 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-09-09 09:16:35,246 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-09 09:16:35,246 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-09-09 09:16:37,862 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tue, 09 Sep 2025 01:16:31 GMT'), (b'Content-Type', b'text/event-stream'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4c5a17573805886567519ee73050723db1cc7ca22a59f43d4e2575e81a;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-09-09 09:16:37,863 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-09 09:16:37,864 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Tue, 09 Sep 2025 01:16:31 GMT', 'content-type': 'text/event-stream', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4c5a17573805886567519ee73050723db1cc7ca22a59f43d4e2575e81a;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-09-09 09:16:37,864 - openai._base_client - DEBUG - request_id: None
+2025-09-09 09:16:37,865 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-09-09 09:16:47,020 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-09-09 09:16:47,020 - httpcore.http11 - DEBUG - response_closed.started
+2025-09-09 09:16:47,021 - httpcore.http11 - DEBUG - response_closed.complete
+2025-09-09 09:16:47,025 - VectorSearchSystem - INFO - ÕýÔÚÁ¬½ÓZilliz CloudÊý¾Ý¿â...
+2025-09-09 09:16:47,216 - VectorSearchSystem - INFO - Zilliz CloudÁ¬½Ó³É¹¦
+2025-09-09 09:16:47,613 - VectorSearchSystem - INFO - Collection 'text_search' loaded successfully from Zilliz Cloud.
+2025-09-09 09:16:47,614 - VectorSearchSystem - INFO - ÏµÍ³³õÊ¼»¯Íê³É
+2025-09-09 09:16:47,634 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7860
+ * Running on http://192.168.0.112:7860
+2025-09-09 09:16:47,634 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-09 09:20:10,927 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:11,313 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:11,353 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:11,573 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:11,943 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-09 09:20:12,045 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-09 09:20:12,057 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:12,274 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:12,310 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:12,570 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:12,832 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-09 09:20:13,056 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-09 09:20:25,447 - VectorSearchSystem - INFO - ³õÊ¼»¯ModelScope×é¼þ...
+2025-09-09 09:20:25,942 - VectorSearchSystem - INFO - Ç¶ÈëÄ£ÐÍ²âÊÔ³É¹¦£¬ÏòÁ¿Î¬¶È: 768
+2025-09-09 09:20:25,951 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ÄãºÃ'}], 'model': 'deepseek-ai/DeepSeek-R1-0528', 'max_tokens': 2048, 'stream': True}}
+2025-09-09 09:20:25,953 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-09-09 09:20:25,954 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-09-09 09:20:25,973 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001B568CFFE10>
+2025-09-09 09:20:25,974 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-09-09 09:20:25,974 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-09 09:20:25,975 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-09-09 09:20:25,976 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-09 09:20:25,976 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-09-09 09:20:25,977 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tuesday, 09-Sep-25 09:20:25 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-09-09 09:20:25,977 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001B568D7B890> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-09-09 09:20:26,101 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001B568D0EC10>
+2025-09-09 09:20:26,101 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-09-09 09:20:26,103 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-09 09:20:26,103 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-09-09 09:20:26,103 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-09 09:20:26,103 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-09-09 09:20:27,192 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tue, 09 Sep 2025 01:20:20 GMT'), (b'Content-Type', b'text/event-stream'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4c5a17573808195102880ee746e4101112b938f9fe696836c70ec4854f;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-09-09 09:20:27,193 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-09 09:20:27,193 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Tue, 09 Sep 2025 01:20:20 GMT', 'content-type': 'text/event-stream', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4c5a17573808195102880ee746e4101112b938f9fe696836c70ec4854f;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-09-09 09:20:27,194 - openai._base_client - DEBUG - request_id: None
+2025-09-09 09:20:27,194 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-09-09 09:20:39,838 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-09-09 09:20:39,839 - httpcore.http11 - DEBUG - response_closed.started
+2025-09-09 09:20:39,839 - httpcore.http11 - DEBUG - response_closed.complete
+2025-09-09 09:20:39,842 - VectorSearchSystem - INFO - ÕýÔÚÁ¬½ÓZilliz CloudÊý¾Ý¿â...
+2025-09-09 09:20:40,009 - VectorSearchSystem - INFO - Zilliz CloudÁ¬½Ó³É¹¦
+2025-09-09 09:20:40,270 - VectorSearchSystem - INFO - Collection 'text_search' loaded successfully from Zilliz Cloud.
+2025-09-09 09:20:40,270 - VectorSearchSystem - INFO - ÏµÍ³³õÊ¼»¯Íê³É
+2025-09-09 09:20:40,295 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.112:5000
+2025-09-09 09:20:40,295 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-09 09:20:40,297 - werkzeug - INFO -  * Restarting with stat
+2025-09-09 09:20:48,667 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:48,903 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:48,944 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:49,198 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:49,558 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-09 09:20:49,654 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-09 09:20:49,668 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:50,227 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:50,263 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): www.modelscope.cn:443
+2025-09-09 09:20:50,485 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base HTTP/1.1" 200 None
+2025-09-09 09:20:50,791 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/revisions HTTP/1.1" 200 399
+2025-09-09 09:20:50,892 - urllib3.connectionpool - DEBUG - https://www.modelscope.cn:443 "GET /api/v1/models/iic/nlp_gte_sentence-embedding_chinese-base/repo/files?Revision=v1.1.0&Recursive=True HTTP/1.1" 200 None
+2025-09-09 09:21:02,088 - VectorSearchSystem - INFO - ³õÊ¼»¯ModelScope×é¼þ...
+2025-09-09 09:21:02,449 - VectorSearchSystem - INFO - Ç¶ÈëÄ£ÐÍ²âÊÔ³É¹¦£¬ÏòÁ¿Î¬¶È: 768
+2025-09-09 09:21:02,459 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'ÄãºÃ'}], 'model': 'deepseek-ai/DeepSeek-R1-0528', 'max_tokens': 2048, 'stream': True}}
+2025-09-09 09:21:02,461 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions
+2025-09-09 09:21:02,462 - httpcore.connection - DEBUG - connect_tcp.started host='127.0.0.1' port=50958 local_address=None timeout=5.0 socket_options=None
+2025-09-09 09:21:02,463 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002C4D7364290>
+2025-09-09 09:21:02,463 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'CONNECT']>
+2025-09-09 09:21:02,463 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-09 09:21:02,464 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'CONNECT']>
+2025-09-09 09:21:02,464 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-09 09:21:02,465 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'CONNECT']>
+2025-09-09 09:21:02,466 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tuesday, 09-Sep-25 09:21:02 CST'), (b'Keep-Alive', b'timeout=58'), (b'Content-Length', b'0')])
+2025-09-09 09:21:02,466 - httpcore.proxy - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002C4E3ABDF40> server_hostname='api-inference.modelscope.cn' timeout=5.0
+2025-09-09 09:21:02,572 - httpcore.proxy - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002C4E3A0F150>
+2025-09-09 09:21:02,573 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2025-09-09 09:21:02,573 - httpcore.http11 - DEBUG - send_request_headers.complete
+2025-09-09 09:21:02,574 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2025-09-09 09:21:02,574 - httpcore.http11 - DEBUG - send_request_body.complete
+2025-09-09 09:21:02,574 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2025-09-09 09:21:04,269 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tue, 09 Sep 2025 01:20:57 GMT'), (b'Content-Type', b'text/event-stream'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Set-Cookie', b'acw_tc=0bcd4c5a17573808559748359ee7160891b121440f6260c41bcb98fd608549;path=/;HttpOnly;Max-Age=1800'), (b'Cache-Control', b'no-cache'), (b'Strict-Transport-Security', b'max-age=15724800; includeSubDomains'), (b'Access-Control-Allow-Origin', b'*'), (b'Access-Control-Allow-Credentials', b'true'), (b'Access-Control-Allow-Methods', b'OPTION,HEAD,GET,POST'), (b'Access-Control-Allow-Headers', b'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization'), (b'Access-Control-Max-Age', b'1728000')])
+2025-09-09 09:21:04,270 - httpx - INFO - HTTP Request: POST https://api-inference.modelscope.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-09-09 09:21:04,271 - openai._base_client - DEBUG - HTTP Response: POST https://api-inference.modelscope.cn/v1/chat/completions "200 OK" Headers({'date': 'Tue, 09 Sep 2025 01:20:57 GMT', 'content-type': 'text/event-stream', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'set-cookie': 'acw_tc=0bcd4c5a17573808559748359ee7160891b121440f6260c41bcb98fd608549;path=/;HttpOnly;Max-Age=1800', 'cache-control': 'no-cache', 'strict-transport-security': 'max-age=15724800; includeSubDomains', 'access-control-allow-origin': '*', 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'OPTION,HEAD,GET,POST', 'access-control-allow-headers': 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization', 'access-control-max-age': '1728000'})
+2025-09-09 09:21:04,272 - openai._base_client - DEBUG - request_id: None
+2025-09-09 09:21:04,273 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2025-09-09 09:21:13,808 - httpcore.http11 - DEBUG - receive_response_body.complete
+2025-09-09 09:21:13,808 - httpcore.http11 - DEBUG - response_closed.started
+2025-09-09 09:21:13,809 - httpcore.http11 - DEBUG - response_closed.complete
+2025-09-09 09:21:13,816 - VectorSearchSystem - INFO - ÕýÔÚÁ¬½ÓZilliz CloudÊý¾Ý¿â...
+2025-09-09 09:21:13,938 - VectorSearchSystem - INFO - Zilliz CloudÁ¬½Ó³É¹¦
+2025-09-09 09:21:14,272 - VectorSearchSystem - INFO - Collection 'text_search' loaded successfully from Zilliz Cloud.
+2025-09-09 09:21:14,273 - VectorSearchSystem - INFO - ÏµÍ³³õÊ¼»¯Íê³É
+2025-09-09 09:21:14,292 - werkzeug - WARNING -  * Debugger is active!
+2025-09-09 09:21:14,294 - werkzeug - INFO -  * Debugger PIN: 250-243-251
+2025-09-09 09:21:14,383 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:14] "GET / HTTP/1.1" 200 -
+2025-09-09 09:21:14,769 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:14] "GET /health HTTP/1.1" 200 -
+2025-09-09 09:21:14,835 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:14] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-09 09:21:14,956 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:14,956 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:14,957 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:14] "GET /context HTTP/1.1" 200 -
+2025-09-09 09:21:15,156 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:15,156 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:15,356 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:15] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-09 09:21:15,357 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:15] "GET /projects HTTP/1.1" 200 -
+2025-09-09 09:21:19,276 - VectorSearchSystem - INFO - Context cleared
+2025-09-09 09:21:19,756 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:19,757 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:19,760 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:19] "POST /context/clear HTTP/1.1" 200 -
+2025-09-09 09:21:19,771 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 1 ¸öÏîÄ¿
+2025-09-09 09:21:19,775 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 1 ¸öÏîÄ¿
+2025-09-09 09:21:19,776 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:19] "GET /context HTTP/1.1" 200 -
+2025-09-09 09:21:20,157 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:20] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-09 09:21:21,472 - VectorSearchSystem - INFO - Context cleared
+2025-09-09 09:21:21,957 - VectorSearchSystem - DEBUG - ³õÊ¼ÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:21,958 - VectorSearchSystem - INFO - ×îÖÕ·ûºÏËùÓÐÔ¼ÊøµÄÏîÄ¿¼¯ºÏ´óÐ¡: 1 ¸öÏîÄ¿
+2025-09-09 09:21:21,965 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:21] "POST /context/clear HTTP/1.1" 200 -
+2025-09-09 09:21:21,981 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 1 ¸öÏîÄ¿
+2025-09-09 09:21:21,983 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:21] "GET /context HTTP/1.1" 200 -
+2025-09-09 09:21:21,992 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 1 ¸öÏîÄ¿
+2025-09-09 09:21:22,364 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:21:22] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-09 09:22:04,436 - app - INFO - ÊÕµ½ÉÏ´«ÇëÇó
+2025-09-09 09:22:04,446 - app - INFO - ±íµ¥Êý¾Ý: ImmutableMultiDict([('project_name', 'ËÕÖÝ'), ('project_code', 'aa2019'), ('project_date', '2019-03-03')])
+2025-09-09 09:22:04,446 - app - INFO - ÎÄ¼þÊýÁ¿: 1
+2025-09-09 09:22:07,019 - VectorSearchSystem - INFO - ÎÄµµ½âÎöÍê³É£ºËÕÖÝ.docx£¬ÈÕÖ¾Â·¾¶£º./uploads\ËÕÖÝ_parsed_20250909_092207.txt
+2025-09-09 09:22:07,197 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 1.1 - ¡¾µÚÒ»ÕÂ Éè¼ÆÒÀ¾Ý¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:22:07,258 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 2.1 - ¡¾µÚ¶þÕÂ ½á¹¹¸Å¿ö¼°Ñ¡ÐÍ¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:22:07,332 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 3.1 - ¡¾µÚÈýÕÂ »ù´¡¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:22:07,409 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 4.1 - ¡¾µÚËÄÕÂ ²ÄÁÏ¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:22:07,475 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ËÕÖÝ.docx 5.1 - ¡¾µÚÎåÕÂ ¼òÒª¼ÆËã·½·¨¼°½á¹û¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:22:07,476 - VectorSearchSystem - INFO - Added metadata for project: ËÕÖÝ (Code: aa2019)
+2025-09-09 09:22:07,476 - VectorSearchSystem - INFO - ÏîÄ¿ 'ËÕÖÝ' ÔªÊý¾ÝÒÑ¸üÐÂ
+2025-09-09 09:22:07,477 - VectorSearchSystem - INFO - ÏîÄ¿ 'ËÕÖÝ' ÔªÊý¾ÝÒÑ¸üÐÂ: ¿ªÊ¼ÈÕÆÚ=2019-03-03
+2025-09-09 09:22:07,544 - VectorSearchSystem - INFO - ÏîÄ¿ 'ËÕÖÝ' ´¦ÀíÍê³É: ³É¹¦²åÈë 5 ¸öÆ¬¶Î
+2025-09-09 09:22:07,545 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:22:07] "POST /upload HTTP/1.1" 200 -
+2025-09-09 09:22:07,553 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 1 ¸öÏîÄ¿
+2025-09-09 09:22:07,960 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:22:07] "GET /projects/filtered HTTP/1.1" 200 -
+2025-09-09 09:23:00,564 - app - INFO - ÊÕµ½ÉÏ´«ÇëÇó
+2025-09-09 09:23:00,851 - app - INFO - ±íµ¥Êý¾Ý: ImmutableMultiDict([('project_name', 'ÐÂÖÐÐÄ'), ('project_code', 'aa2023'), ('project_date', '2023-05-05')])
+2025-09-09 09:23:00,851 - app - INFO - ÎÄ¼þÊýÁ¿: 1
+2025-09-09 09:24:16,899 - VectorSearchSystem - INFO - ÎÄµµ½âÎöÍê³É£ºÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx£¬ÈÕÖ¾Â·¾¶£º./uploads\ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷_parsed_20250909_092416.txt
+2025-09-09 09:24:17,091 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 1.1 - ¡¾µÚ¶þÕÂ ½á¹¹Éè¼ÆËµÃ÷¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:24:17,199 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 2.1 - ¡¾µÚÈýÕÂ ¸øÅÅË®Éè¼ÆËµÃ÷¡¿ - ×ÓÕÂ½Ú1...
+2025-09-09 09:24:17,279 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 3.1 - 1. ÊÒÄÚÉè¼Æ¼ÆËã²ÎÊý...
+2025-09-09 09:24:17,383 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 3.2 - 2. Í¨·ç»»Æø´ÎÊý¼°·½Ê½...
+2025-09-09 09:24:17,461 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.1 - £¨2£© ³ø·¿ÇøÓò°´Ô­ÁÏ½øÈë¡¢Ô­ÁÏ´¦Àí¡¢Ö÷Ê³¼Ó¹¤¡¢¸±Ê³¼Ó¹¤¡¢±¸...
+2025-09-09 09:24:17,562 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.2 - £¨3£© ÎÀÉú¼ä¡¢îÂÏ´ÊÒ¡¢Ô¡ÊÒµÈÓÐË®·¿¼ä¾ùÎ´ÔÚ³ø·¿ÇøÓòÒÔ¼°ÓÃ²Í...
+2025-09-09 09:24:17,637 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.3 - 1. ÎÞÕÏ°­Â·Ïß...
+2025-09-09 09:24:17,702 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.4 - 2. ÊÒÍâ³¡µØ...
+2025-09-09 09:24:17,764 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.5 - 3. ½¨ÖþÉè¼Æ...
+2025-09-09 09:24:17,832 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.6 - 4. ÐÅÏ¢ÎÞÕÏ°­Éè¼Æ...
+2025-09-09 09:24:17,928 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.7 - 1. Õã½­Ê¡¡¶¹«¹²½¨Öþ½ÚÄÜÉè¼Æ±ê×¼¡·£¨DB33/1036-2...
+2025-09-09 09:24:18,053 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.8 - 16. ¸÷×¨ÒµÏà¹ØµÄ×¨Òµ¹æ·¶¡¢Ïà¹Ø²úÆ·±ê×¼...
+2025-09-09 09:24:18,135 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.9 - 1. ±¾ÏîÄ¿Âú×ãÏÖÐÐ¹ú¼Ò±ê×¼¡¶½¨Öþ¿¹ÕðÉè¼Æ¹æ·¶¡·GB5001...
+2025-09-09 09:24:18,223 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.10 - 8. ±¾ÏîÄ¿²ÉÓÃ×°ÅäÊ½½¨ÖþÉè¼Æ¡£...
+2025-09-09 09:24:18,316 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.11 - 1¡¢ ÂÌÉ«½¨Öþ¾ùÓ¦Âú×ã¡¶ÂÌÉ«½¨ÖþÆÀ¼Û±ê×¼¡·GB/T 5037...
+2025-09-09 09:24:18,447 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.12 - 5¡¢ ±¾ÏîÄ¿ÂÌÉ«½¨ÖþÐÇ¼¶µÈ¼¶×ÔÆÀ£¨×¢£º×ÜµÃ·Ö·Ö±ð´ïµ½60·Ö£¬...
+2025-09-09 09:24:18,507 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.13 - 1¡¢ ÏîÄ¿Ãû³Æ£ººËÐÄÇø¿é³ÇÊÐ·þÎñ×ÛºÏÌåÐÂ½¨ÏîÄ¿Éè¼Æ...
+2025-09-09 09:24:18,595 - VectorSearchSystem - DEBUG - ²åÈë×ÓÕÂ½Ú: ÐÂÖÐÐÄ³õ²½Éè¼ÆËµÃ÷.docx 4.14 - 2¡¢ ±¾ÏîÄ¿²ÉÓÃ×°ÅäÊ½½¨Ôì¡£...
+2025-09-09 09:24:18,596 - VectorSearchSystem - INFO - Added metadata for project: ÐÂÖÐÐÄ (Code: aa2023)
+2025-09-09 09:24:18,596 - VectorSearchSystem - INFO - ÏîÄ¿ 'ÐÂÖÐÐÄ' ÔªÊý¾ÝÒÑ¸üÐÂ
+2025-09-09 09:24:18,597 - VectorSearchSystem - INFO - ÏîÄ¿ 'ÐÂÖÐÐÄ' ÔªÊý¾ÝÒÑ¸üÐÂ: ¿ªÊ¼ÈÕÆÚ=2023-05-05
+2025-09-09 09:24:18,675 - VectorSearchSystem - INFO - ÏîÄ¿ 'ÐÂÖÐÐÄ' ´¦ÀíÍê³É: ³É¹¦²åÈë 18 ¸öÆ¬¶Î
+2025-09-09 09:24:18,677 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:24:18] "POST /upload HTTP/1.1" 200 -
+2025-09-09 09:24:18,707 - VectorSearchSystem - DEBUG - Ê¹ÓÃ»º´æµÄÏîÄ¿¼¯ºÏ£¬°üº¬ 1 ¸öÏîÄ¿
+2025-09-09 09:24:19,160 - werkzeug - INFO - 127.0.0.1 - - [09/Sep/2025 09:24:19] "GET /projects/filtered HTTP/1.1" 200 -

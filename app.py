@@ -15,12 +15,20 @@ logging.basicConfig(level=logging.INFO)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 配置上传文件夹
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = "./uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Zilliz Cloud 配置
+ZILLIZ_CONFIG = {
+    "endpoint": "https://in03-a43203d37be04a4.serverless.ali-cn-hangzhou.cloud.zilliz.com.cn",
+    "user": "db_a43203d37be04a4",
+    "password": "Zk6?L.*ojB~um+tB",
+    "secure": True
+}
+
 # 初始化搜索系统
-search_system = VectorSearchSystem()
+search_system = VectorSearchSystem(zilliz_config=ZILLIZ_CONFIG)
 
 # 添加健康检查端点
 @app.route('/health', methods=['GET'])
@@ -31,6 +39,38 @@ def health_check():
         "message": "API服务正常运行",
         "timestamp": datetime.now().isoformat()
     })
+
+# 添加连接健康检查端点zilliz
+@app.route('/health/zilliz', methods=['GET'])
+def check_zilliz_connection():
+    """检查 Zilliz Cloud 连接状态"""
+    try:
+        is_connected = search_system.check_connection()
+        return jsonify({
+            "connected": is_connected,
+            "message": "Zilliz Cloud 连接正常" if is_connected else "Zilliz Cloud 连接异常"
+        }), 200 if is_connected else 503
+    except Exception as e:
+        return jsonify({
+            "connected": False,
+            "message": f"连接检查失败: {str(e)}"
+        }), 503
+    
+# 添加重新连接端点
+@app.route('/health/reconnect', methods=['POST'])
+def reconnect_zilliz():
+    """重新连接 Zilliz Cloud"""
+    try:
+        success = search_system.reconnect()
+        return jsonify({
+            "success": success,
+            "message": "重新连接成功" if success else "重新连接失败"
+        }), 200 if success else 503
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"重新连接失败: {str(e)}"
+        }), 503
 
 # 添加/ask端点 (非流式)
 @app.route('/ask', methods=['POST'])
