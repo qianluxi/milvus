@@ -1546,7 +1546,7 @@ class VectorSearchSystem:
         
         return self.execute_search(
             query_text=question,
-            top_k=10,
+            top_k=5,
             use_llm=True,
             project_names=project_names,
             time_range=time_range,
