@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, Response
+from flask import Flask, request, jsonify, render_template, redirect, url_for, Response,send_from_directory
 from flask_cors import CORS
 import os
 import logging
@@ -7,6 +7,9 @@ import json
 import uuid
 from datetime import datetime
 import time
+from config import MODEL_CONFIG, ZILLIZ_CONFIG
+
+os.environ["GRADIO_SERVER_NAME"] = "0.0.0.0"
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -15,22 +18,59 @@ logging.basicConfig(level=logging.INFO)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 配置上传文件夹
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = "/tmp/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# 初始化搜索系统
-search_system = VectorSearchSystem()
 
-# 添加健康检查端点
-@app.route('/health', methods=['GET'])
+# 初始化搜索系统
+search_system = VectorSearchSystem(
+    collection_name="text_searchMC",
+    max_retries=5,
+    model_config=MODEL_CONFIG,
+    zilliz_config=ZILLIZ_CONFIG
+)
+
+# -------- 健康检查 --------
+@app.route("/health", methods=["GET"])
 def health_check():
-    """健康检查端点"""
     return jsonify({
         "status": "healthy",
         "message": "API服务正常运行",
         "timestamp": datetime.now().isoformat()
     })
+
+# 添加连接健康检查端点zilliz
+@app.route('/health/zilliz', methods=['GET'])
+def check_zilliz_connection():
+    """检查 Zilliz Cloud 连接状态"""
+    try:
+        is_connected = search_system.check_connection()
+        return jsonify({
+            "connected": is_connected,
+            "message": "Zilliz Cloud 连接正常" if is_connected else "Zilliz Cloud 连接异常"
+        }), 200 if is_connected else 503
+    except Exception as e:
+        return jsonify({
+            "connected": False,
+            "message": f"连接检查失败: {str(e)}"
+        }), 503
+    
+# 添加重新连接端点
+@app.route('/health/reconnect', methods=['POST'])
+def reconnect_zilliz():
+    """重新连接 Zilliz Cloud"""
+    try:
+        success = search_system.reconnect()
+        return jsonify({
+            "success": success,
+            "message": "重新连接成功" if success else "重新连接失败"
+        }), 200 if success else 503
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"重新连接失败: {str(e)}"
+        }), 503
 
 # 添加/ask端点 (非流式)
 @app.route('/ask', methods=['POST'])
@@ -118,11 +158,50 @@ def ask_question_stream():
             "success": False,
             "error": f"流式问答失败: {str(e)}"
         }), 500
+    
+@app.route('/config', methods=['GET'])
+def get_config():
+    """前端配置信息"""
+    return jsonify({
+        "success": True,
+        "data": {
+            "model_config": MODEL_CONFIG,
+            "zilliz_config": ZILLIZ_CONFIG,
+            "endpoints": {
+                "upload": "/upload",
+                "query": "/query/stream",
+                "health": "/health",
+                "projects": "/projects"
+            }
+        }
+    }), 200
 
-@app.route('/')
+@app.route('/ping', methods=['GET'])
+def ping():
+    return jsonify({"status": "pong"}), 200
+
+@app.route('/service/status', methods=['GET'])
+def service_status():
+    return jsonify({"status": "ok"}), 200
+
+@app.route('/api/info', methods=['GET'])
+def api_info():
+    return jsonify({
+        "name": "Vector Search API",
+        "version": "1.0.0"
+    }), 200
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({
+        "success": False,
+        "error": f"Endpoint {request.path} not found"
+    }), 404
+
+
+@app.route("/")
 def index():
-    """渲染主页"""
-    return render_template('index.html')
+    return render_template("index.html")
 
 @app.route('/upload', methods=['POST'])
 def upload_files():
@@ -455,9 +534,13 @@ def home_redirect():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    try:
-        # 运行Flask应用
-        app.run(host='0.0.0.0', port=5000, debug=True)
-    except Exception as e:
-        logging.error(f"应用启动失败: {e}")
-        raise
+    # 仅在本地调试时执行，ModelScope 使用 gunicorn 时不会触发
+    # 打印所有注册的路由，便于检查
+    print(app.url_map)
+
+    # 读取环境变量 PORT，默认 7860
+    port = int(os.getenv("PORT", 7860))
+
+    # 启动 Flask 开发服务器（仅本地调试使用）
+    app.run(host='0.0.0.0', port=port, debug=False)
+
