@@ -1,3 +1,4 @@
+#HF版
 from flask import Flask, request, jsonify, render_template, redirect, url_for, Response
 from flask_cors import CORS
 import os
