@@ -957,28 +957,30 @@
             // 初始化聊天模块
             const chatModule = new ChatModule({
                 containerId: 'chat-module-container',
-                apiBase: 'http://127.0.0.1:5000',
+                // 使用当前页面域名作为 API 根路径
+                apiBase: window.location.origin,
                 streamMode: false
             });
-            
+
             // 绑定API测试按钮
-            document.getElementById('testApiBtn').addEventListener('click', function() {
+            document.getElementById('testApiBtn').addEventListener('click', function () {
                 updateDebugInfo("手动测试API连接...");
                 chatModule.testApiConnection();
             });
             
             // 绑定查看响应按钮
-            document.getElementById('viewResponseBtn').addEventListener('click', function() {
+            document.getElementById('viewResponseBtn').addEventListener('click', function () {
                 updateDebugInfo("查看原始响应...");
-                fetch('http://127.0.0.1:5000/ask', {
+                fetch(`${window.location.origin}/ask`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({question: "测试连接"})
+                    body: JSON.stringify({ question: "测试连接" })
                 })
                 .then(response => response.text())
                 .then(data => {
+                    // 只显示前 200 个字符，防止内容过长
                     updateDebugInfo("原始响应: " + data.substring(0, 200) + (data.length > 200 ? "..." : ""));
                 })
                 .catch(error => {
@@ -1296,81 +1298,78 @@
             });
         }
 
-        // 添加约束条件
+        // 全局变量存储当前筛选条件
+        let currentFilters = [];
+
+        // 添加约束条件 - 修改为每次重新筛选
         function addConstraint(type, value) {
-            fetch('/context/add', {
+            // 将新条件添加到当前筛选条件中
+            currentFilters.push({ type, value });
+            
+            // 立即应用所有筛选条件
+            applyFilters();
+            
+            showNotification('success', `已添加筛选条件: ${formatConstraint(type, value)}`);
+            updateContextUI(); // 更新UI显示当前筛选条件
+        }
+
+        // 应用所有筛选条件
+        function applyFilters() {
+            fetch('/projects/filtered', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ constraint_type: type, value: value })
+                body: JSON.stringify({
+                    filters: currentFilters
+                })
             })
             .then(response => {
                 if (!response.ok) {
-                    return response.json().then(err => { throw new Error(err.error || '添加约束失败') });
+                    throw new Error('筛选项目失败');
                 }
                 return response.json();
             })
             .then(data => {
-                if (data.success) {
-                    showNotification('success', `已添加筛选条件: ${formatConstraint(type, value)}`);
-                    fetchContext(); // 刷新上下文显示
-                    fetchFilteredProjects();  // 新增：更新项目列表
-                } else {
-                    throw new Error(data.error || '添加约束失败');
-                }
+                renderProjectCards(data);
             })
             .catch(error => {
-                showNotification('error', '添加筛选条件失败: ' + error.message);
+                console.error('筛选项目失败:', error);
+                showNotification('error', '筛选项目失败: ' + error.message);
             });
         }
-        
+
         // 清除所有约束条件
         function clearAllConstraints() {
-            fetch('/context/clear', {
-                method: 'POST'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('success', '已清除所有筛选条件');
-                    fetchContext(); // 刷新上下文显示
-                    fetchFilteredProjects();  // 新增：恢复所有项目
-                }
-            })
-            .catch(error => {
-                showNotification('error', '清除筛选条件失败: ' + error.message);
-            });
+            currentFilters = [];
+            // 重新加载所有项目
+            fetchFilteredProjects();
+            updateContextUI();
+            showNotification('success', '已清除所有筛选条件');
         }
-        
-        // 获取上下文信息
-        function fetchContext() {
-            fetch('/context')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        updateContextUI(data.context);
-                    }
-                })
-                .catch(error => {
-                    console.error('获取上下文失败:', error);
-                });
+
+        // 移除单个约束条件
+        function removeConstraint(index) {
+            currentFilters.splice(index, 1);
+            applyFilters(); // 重新应用剩余筛选条件
+            updateContextUI();
+            showNotification('success', '已移除筛选条件');
         }
-        
-        // 更新上下文UI
-        function updateContextUI(context) {
+
+        // 更新上下文UI显示当前筛选条件
+        function updateContextUI() {
             const constraintTags = document.getElementById('constraintTags');
             
-            if (!context || !context.constraints || context.constraints.length === 0) {
+            if (!currentFilters || currentFilters.length === 0) {
                 constraintTags.innerHTML = '<p>无筛选条件（所有项目）</p>';
                 return;
             }
             
             let html = '';
-            context.constraints.forEach((constraint, index) => {
+            currentFilters.forEach((filter, index) => {
                 html += `
                     <span class="constraint-tag">
-                        ${formatConstraint(constraint.type, constraint.value)}
+                        ${formatConstraint(filter.type, filter.value)}
                         <button onclick="removeConstraint(${index})">
                             <i class="fas fa-times text-xs"></i>
                         </button>
@@ -1381,43 +1380,9 @@
             constraintTags.innerHTML = html;
         }
         
-        // 格式化约束条件显示
-        function formatConstraint(type, value) {
-            const typeNames = {
-                'project_name': '项目名称',
-                'time_range': '时间范围',
-                'feature': '项目特点'
-            };
-            
-            return `${escapeHTML(typeNames[type] || type)}: ${escapeHTML(value)}`;
-        }
-        
-        // 移除单个约束条件
-        function removeConstraint(index) {
-            fetch(`/context/remove/${index}`, {
-                method: 'POST'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw new Error(err.error || '移除约束失败') });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    fetchContext(); // 刷新上下文显示
-                    fetchFilteredProjects();  // 新增：更新项目列表
-                    showNotification('success', '已移除筛选条件');
-                }
-            })
-            .catch(error => {
-                showNotification('error', '移除筛选条件失败: ' + error.message);
-            });
-        }
-        
-        // 获取项目列表并更新UI（修复XSS问题）
+        // 获取项目列表 - 修改为总是从服务器获取完整列表
         function fetchFilteredProjects() {
-            debugLog("根据当前筛选条件请求项目列表...");
+            debugLog("请求项目列表...");
             const projectsContainer = document.getElementById('projectsContainer');
             
             // 显示加载状态
@@ -1428,29 +1393,37 @@
                 </div>
             `;
 
-            // 请求后端接口，获取符合当前约束的项目
-            fetch('/projects/filtered')  // 新增接口：返回符合筛选条件的项目
-                .then(response => {
-                    debugLog("筛选后项目响应状态:", response.status);
-                    if (!response.ok) {
-                        throw new Error('获取筛选项目失败');
-                    }
-                    return response.json();
+            // 发送当前筛选条件到后端
+            fetch('/projects/filtered', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    filters: currentFilters
                 })
-                .then(data => {
-                    debugLog("接收到的筛选后项目数据:", data);
-                    renderProjectCards(data);  // 用精简的renderProjectCards渲染
-                })
-                .catch(error => {
-                    console.error('筛选项目加载失败:', error);
-                    projectsContainer.innerHTML = `
-                        <div class="text-center py-8 text-red-500">
-                            <i class="fas fa-exclamation-circle text-2xl"></i>
-                            <p class="mt-2">项目加载失败: ${error.message}</p>
-                        </div>
-                    `;
-                });
-        }
+            })
+            .then(response => {
+                debugLog("项目响应状态:", response.status);
+                if (!response.ok) {
+                    throw new Error('获取项目失败');
+                }
+                return response.json();
+            })
+            .then(data => {
+                debugLog("接收到的项目数据:", data);
+                renderProjectCards(data);
+            })
+                    .catch(error => {
+                        console.error('项目加载失败:', error);
+                        projectsContainer.innerHTML = `
+                            <div class="text-center py-8 text-red-500">
+                                <i class="fas fa-exclamation-circle text-2xl"></i>
+                                <p class="mt-2">项目加载失败: ${error.message}</p>
+                            </div>
+                        `;
+                    });
+                }
         
         // 渲染项目卡片（修复XSS和事件处理问题）
         function renderProjectCards(projects) {
