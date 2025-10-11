@@ -900,7 +900,7 @@
     <script>
         // 添加调试模式开关
         const DEBUG_MODE = true;
-        
+      
         // 添加全局变量
         let allProjects = [];
         let selectedProjects = [];
@@ -957,28 +957,30 @@
             // 初始化聊天模块
             const chatModule = new ChatModule({
                 containerId: 'chat-module-container',
-                apiBase: 'http://127.0.0.1:5000',
+                // 使用当前页面域名作为 API 根路径
+                apiBase: window.location.origin,
                 streamMode: false
             });
-            
+
             // 绑定API测试按钮
-            document.getElementById('testApiBtn').addEventListener('click', function() {
+            document.getElementById('testApiBtn').addEventListener('click', function () {
                 updateDebugInfo("手动测试API连接...");
                 chatModule.testApiConnection();
             });
             
             // 绑定查看响应按钮
-            document.getElementById('viewResponseBtn').addEventListener('click', function() {
+            document.getElementById('viewResponseBtn').addEventListener('click', function () {
                 updateDebugInfo("查看原始响应...");
-                fetch('http://127.0.0.1:5000/ask', {
+                fetch(`${window.location.origin}/ask`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({question: "测试连接"})
+                    body: JSON.stringify({ question: "测试连接" })
                 })
                 .then(response => response.text())
                 .then(data => {
+                    // 只显示前 200 个字符，防止内容过长
                     updateDebugInfo("原始响应: " + data.substring(0, 200) + (data.length > 200 ? "..." : ""));
                 })
                 .catch(error => {
