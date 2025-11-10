@@ -77,7 +77,7 @@ class ModelScopeLLM:
         return full_response
 
 class VectorSearchSystem:
-    def __init__(self, collection_name="text_search", max_retries=5, zilliz_config=None, model_config=None):
+    def __init__(self, collection_name="text_searchLC", max_retries=5, zilliz_config=None, model_config=None):
         self.collection_name = collection_name
         self.dim = 1024  # 初始值，实际由嵌入模型决定
         self.collection = None
