@@ -1,0 +1,47 @@
+{
+  "苏州": {
+    "file_count": 1,
+    "files": [
+      "苏州.docx"
+    ],
+    "last_updated": "2025-11-27T09:15:28.703855",
+    "project_code": "aa2016",
+    "start_date": "2016-01-01"
+  },
+  "茅安前": {
+    "file_count": 1,
+    "files": [
+      "东街单元LC-01-04-02A、B号地块设计说明20210831.docx"
+    ],
+    "last_updated": "2025-11-27T09:16:26.027923",
+    "project_code": "aa2019",
+    "start_date": "2019-01-01"
+  },
+  "新中心": {
+    "file_count": 1,
+    "files": [
+      "新中心初步设计说明.docx"
+    ],
+    "last_updated": "2025-11-27T09:18:13.320546",
+    "project_code": "aa2020",
+    "start_date": "2020-01-01"
+  },
+  "广州": {
+    "file_count": 1,
+    "files": [
+      "广州扩初.docx"
+    ],
+    "last_updated": "2025-11-27T17:42:07.346712",
+    "project_code": "aa2015",
+    "start_date": "2015-01-01"
+  },
+  "舟山": {
+    "file_count": 1,
+    "files": [
+      "海洋学院扩初统一做法.docx"
+    ],
+    "last_updated": "2025-11-27T17:42:34.141321",
+    "project_code": "aa2009",
+    "start_date": "2009-01-01"
+  }
+}
