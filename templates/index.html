@@ -6,6 +6,7 @@
     <title>智能文档检索系统</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         /* 样式保持不变 */
         .gradient-bg {
@@ -445,6 +446,103 @@
             margin-bottom: 0.5rem;
             color: #374151;
         }
+        
+        /* 选项卡样式 */
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .btn-danger:disabled {
+            background-color: #fca5a5;
+            cursor: not-allowed;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-outline-danger {
+            background-color: transparent;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        .btn-outline-danger:hover {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        /* 表格样式 */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+        }
+        
+        .table-striped tbody tr:nth-child(odd) {
+            background-color: #f9fafb;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+        
+        /* 警告框样式 */
+        .alert {
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-warning {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+        }
     </style>
 </head>
 <body class="gradient-bg min-h-screen font-sans">
@@ -457,7 +555,8 @@
                     <span class="text-xl font-semibold text-gray-800">智能文档检索系统</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition">首页</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition" data-tab="home">首页</a>
+                    <a href="#" class="text-gray-600 hover:text-indigo-600 transition" data-tab="project-management">文档管理</a>
                     <a href="#" class="text-gray-600 hover:text-indigo-600 transition">文档</a>
                     <a href="#" class="text-gray-600 hover:text-indigo-600 transition">关于</a>
                 </div>
@@ -467,229 +566,314 @@
 
     <!-- 主内容区 -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- 上传卡片 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-hover">
-            <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-cloud-upload-alt text-indigo-500 mr-2"></i>
-                    上传文档
-                </h2>
-                <form id="uploadForm" enctype="multipart/form-data" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">项目名称</label>
-                        <input type="text" name="project_name" required
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                    </div>
-                    
-                    <!-- 新增项目编号输入框 -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">项目编号</label>
-                        <input type="text" name="project_code" required
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                               placeholder="例如: PRJ-2023-001">
-                        <p class="text-xs text-gray-500 mt-1">项目的唯一标识符</p>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">项目开始日期</label>
-                        <input type="date" name="project_date"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                        <p class="text-xs text-gray-500 mt-1">格式：YYYY-MM-DD</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">选择文档</label>
-                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                            <div class="space-y-1 text-center">
-                                <div class="flex text-sm text-gray-600">
-                                    <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
-                                        <span>上传文件</span>
-                                        <input type="file" name="files" multiple required class="sr-only">
-                                    </label>
-                                    <p class="pl-1">或将文件拖拽到此处</p>
-                                </div>
-                                <p class="text-xs text-gray-500">支持.docx格式文档</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" 
-                            class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center">
-                        <i class="fas fa-upload mr-2"></i> 上传并处理
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- 调试面板 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-hover">
-            <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-bug text-red-500 mr-2"></i>
-                    API调试信息
-                </h2>
-                <div class="debug-panel">
-                    <div class="debug-title">API连接状态:</div>
-                    <div id="apiDebugInfo">正在检测API连接...</div>
-                </div>
-                <div class="mt-4">
-                    <button id="testApiBtn" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
-                        <i class="fas fa-plug mr-2"></i> 测试API连接
-                    </button>
-                    <button id="viewResponseBtn" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition ml-4">
-                        <i class="fas fa-code mr-2"></i> 查看原始响应
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 上下文状态卡片 -->
-        <div id="contextCard" class="context-card rounded-xl shadow-md overflow-hidden mb-8 fade-in">
-            <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-filter text-amber-500 mr-2"></i>
-                    当前筛选条件
-                </h2>
-                <div id="contextInfo" class="text-sm text-gray-600 mb-4">
-                    <div id="constraintTags">
-                        <p>无筛选条件（所有项目）</p>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <button id="clearContextBtn" 
-                            class="bg-amber-100 text-amber-800 hover:bg-amber-200 py-2 px-4 rounded-lg transition flex items-center">
-                        <i class="fas fa-times-circle mr-2"></i> 清除所有筛选条件
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 项目筛选卡片 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 filter-card fade-in">
-            <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-filter-circle-dollar text-blue-500 mr-2"></i>
-                    项目筛选
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">项目名称/编号</label>
-                        <div class="flex">
-                            <input type="text" id="projectNameFilter" 
-                                   class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                   placeholder="输入项目名称或编号...">
-                            <button id="addProjectFilterBtn"
-                                    class="bg-blue-100 text-blue-800 px-4 py-2 rounded-r-lg hover:bg-blue-200 transition">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">项目特点</label>
-                        <div class="flex">
-                            <input type="text" id="projectFeatureFilter" 
-                                   class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                   placeholder="输入项目特点...">
-                            <button id="addFeatureFilterBtn"
-                                    class="bg-blue-100 text-blue-800 px-4 py-2 rounded-r-lg hover:bg-blue-200 transition">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">项目时间范围</label>
-                        <div class="flex">
-                            <input type="text" id="projectTimeFilter" 
-                                   class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                   placeholder="例如：2018-2023年...">
-                            <button id="addTimeFilterBtn"
-                                    class="bg-blue-100 text-blue-800 px-4 py-2 rounded-r-lg hover:bg-blue-200 transition">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div id="filterResults" class="mt-4 min-h-[60px]">
-                    <!-- 筛选结果提示将显示在这里 -->
-                </div>
-            </div>
-        </div>
-
-        <!-- 项目与搜索区 -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- 项目列表 -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-                    <div class="p-6">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-folder-open text-indigo-500 mr-2"></i>
-                            项目列表
-                        </h2>
-                        <div class="mb-4 relative">
-                            <input type="text" id="projectSearch" placeholder="搜索项目..." 
+        <!-- 首页内容 -->
+        <div class="tab-pane active" id="home" role="tabpanel">
+            <!-- 上传卡片 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-hover">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-cloud-upload-alt text-indigo-500 mr-2"></i>
+                        上传文档
+                    </h2>
+                    <form id="uploadForm" enctype="multipart/form-data" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">项目名称</label>
+                            <input type="text" name="project_name" required
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                            <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
                         </div>
-                        <div id="projectsContainer" class="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
-                            <!-- 项目卡片将通过JS动态生成 -->
-                            <div class="text-center py-8">
-                                <i class="fas fa-spinner fa-spin text-gray-400 text-2xl"></i>
-                                <p class="mt-2 text-gray-500">加载中...</p>
+                        
+                        <!-- 新增项目编号输入框 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">项目编号</label>
+                            <input type="text" name="project_code" required
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                   placeholder="例如: PRJ-2023-001">
+                            <p class="text-xs text-gray-500 mt-1">项目的唯一标识符</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">项目开始日期</label>
+                            <input type="date" name="project_date"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                            <p class="text-xs text-gray-500 mt-1">格式：YYYY-MM-DD</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">选择文档</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                                <div class="space-y-1 text-center">
+                                    <div class="flex text-sm text-gray-600">
+                                        <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                            <span>上传文件</span>
+                                            <input type="file" name="files" multiple required class="sr-only">
+                                        </label>
+                                        <p class="pl-1">或将文件拖拽到此处</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">支持.docx格式文档</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" 
+                                class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center">
+                            <i class="fas fa-upload mr-2"></i> 上传并处理
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 调试面板 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-hover">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-bug text-red-500 mr-2"></i>
+                        API调试信息
+                    </h2>
+                    <div class="debug-panel">
+                        <div class="debug-title">API连接状态:</div>
+                        <div id="apiDebugInfo">正在检测API连接...</div>
+                    </div>
+                    <div class="mt-4">
+                        <button id="testApiBtn" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-plug mr-2"></i> 测试API连接
+                        </button>
+                        <button id="viewResponseBtn" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition ml-4">
+                            <i class="fas fa-code mr-2"></i> 查看原始响应
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 上下文状态卡片 -->
+            <div id="contextCard" class="context-card rounded-xl shadow-md overflow-hidden mb-8 fade-in">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-filter text-amber-500 mr-2"></i>
+                        当前筛选条件
+                    </h2>
+                    <div id="contextInfo" class="text-sm text-gray-600 mb-4">
+                        <div id="constraintTags">
+                            <p>无筛选条件（所有项目）</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button id="clearContextBtn" 
+                                class="bg-amber-100 text-amber-800 hover:bg-amber-200 py-2 px-4 rounded-lg transition flex items-center">
+                            <i class="fas fa-times-circle mr-2"></i> 项目集合初始化
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目筛选卡片 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 filter-card fade-in">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-filter-circle-dollar text-blue-500 mr-2"></i>
+                        项目筛选
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">项目名称/编号</label>
+                            <div class="flex">
+                                <input type="text" id="projectNameFilter" 
+                                       class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                       placeholder="输入项目名称或编号...">
+                                <button id="addProjectFilterBtn"
+                                        class="bg-blue-100 text-blue-800 px-4 py-2 rounded-r-lg hover:bg-blue-200 transition">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">项目特点</label>
+                            <div class="flex">
+                                <input type="text" id="projectFeatureFilter" 
+                                       class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                       placeholder="输入项目特点...">
+                                <button id="addFeatureFilterBtn"
+                                        class="bg-blue-100 text-blue-800 px-4 py-2 rounded-r-lg hover:bg-blue-200 transition">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">项目时间范围</label>
+                            <div class="flex">
+                                <input type="text" id="projectTimeFilter" 
+                                       class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                       placeholder="例如：2018-2023年...">
+                                <button id="addTimeFilterBtn"
+                                        class="bg-blue-100 text-blue-800 px-4 py-2 rounded-r-lg hover:bg-blue-200 transition">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="filterResults" class="mt-4 min-h-[60px]">
+                        <!-- 筛选结果提示将显示在这里 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目与搜索区 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 文档列表 -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                        <div class="p-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-folder-open text-indigo-500 mr-2"></i>
+                                文档列表
+                            </h2>
+                            <div class="mb-4 relative">
+                                <input type="text" id="projectSearch" placeholder="搜索项目..." 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                <i class="fas fa-search absolute right-3 top-2.5 text-gray-400"></i>
+                            </div>
+                            <div id="projectsContainer" class="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
+                                <!-- 项目卡片将通过JS动态生成 -->
+                                <div class="text-center py-8">
+                                    <i class="fas fa-spinner fa-spin text-gray-400 text-2xl"></i>
+                                    <p class="mt-2 text-gray-500">加载中...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 搜索与聊天区 -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover h-full flex flex-col">
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-comments text-indigo-500 mr-2"></i>
+                                问答与检索
+                            </h2>
+
+                            <!-- 聊天模块容器 -->
+                            <div id="chat-module-container"></div>
+                            
+                            <!-- 搜索选项 -->
+                            <form id="searchForm" class="space-y-4 mt-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">搜索参数</label>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" name="rerank" id="rerankCheckbox" value="true"
+                                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <label for="rerankCheckbox" class="ml-2 block text-sm text-gray-700">启用重排序</label>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input type="checkbox" name="use_llm" id="useLLMCheckbox" value="true"
+                                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <label for="useLLMCheckbox" class="ml-2 block text-sm text-gray-700">启用AI整理</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- 搜索结果 -->
+                            <div class="mt-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">检索结果</h3>
+                                    <div id="searchStats" class="text-sm text-gray-500">
+                                        <!-- 搜索统计信息将通过JavaScript动态加载 -->
+                                    </div>
+                                </div>
+                                <div id="searchResults" class="space-y-4">
+                                    <div class="text-center py-8">
+                                        <i class="fas fa-search text-gray-400 text-2xl"></i>
+                                        <p class="mt-2 text-gray-500">提问后将显示相关检索结果</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 搜索与聊天区 -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover h-full flex flex-col">
-                    <div class="p-6 flex-grow flex flex-col">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-comments text-indigo-500 mr-2"></i>
-                            问答与检索
-                        </h2>
-
-                        <!-- 聊天模块容器 -->
-                        <div id="chat-module-container"></div>
-                        
-                        <!-- 搜索选项 -->
-                        <form id="searchForm" class="space-y-4 mt-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">搜索参数</label>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" name="rerank" id="rerankCheckbox" value="true"
-                                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                        <label for="rerankCheckbox" class="ml-2 block text-sm text-gray-700">启用重排序</label>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <input type="checkbox" name="use_llm" id="useLLMCheckbox" value="true"
-                                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                        <label for="useLLMCheckbox" class="ml-2 block text-sm text-gray-700">启用AI整理</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                        <!-- 搜索结果 -->
-                        <div class="mt-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800">检索结果</h3>
-                                <div id="searchStats" class="text-sm text-gray-500">
-                                    <!-- 搜索统计信息将通过JavaScript动态加载 -->
-                                </div>
-                            </div>
-                            <div id="searchResults" class="space-y-4">
-                                <div class="text-center py-8">
-                                    <i class="fas fa-search text-gray-400 text-2xl"></i>
-                                    <p class="mt-2 text-gray-500">提问后将显示相关检索结果</p>
-                                </div>
-                            </div>
+        <!-- 文档管理选项卡内容 -->
+        <div class="tab-pane fade" id="project-management" role="tabpanel">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-hover">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-cogs text-indigo-500 mr-2"></i>
+                        文档管理
+                    </h2>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong>警告:</strong> 删除项目将永久移除所有相关数据，此操作不可逆！
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="refresh-projects" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt mr-2"></i> 刷新文档列表
+                        </button>
+                        <div class="text-sm text-gray-500">
+                            共 <span id="total-project-count">0</span> 个文档
                         </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="50px">
+                                        <input type="checkbox" id="select-all-projects">
+                                    </th>
+                                    <th>项目名称</th>
+                                    <th>项目编号</th>
+                                    <th>开始日期</th>
+                                    <th>最后更新</th>
+                                    <th width="100px">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projects-management-table">
+                                <!-- 文档管理表格内容将通过JavaScript动态加载 -->
+                                <tr>
+                                    <td colspan="8" class="text-center py-4 text-gray-500">加载中...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-between items-center">
+                        <div id="selected-count" class="text-sm text-gray-600">已选择 0 个文档</div>
+                        <button id="delete-selected-projects" class="btn btn-danger" disabled>
+                            <i class="fas fa-trash-alt mr-2"></i> 删除选中文档
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- 删除确认模态框 -->
+    <div class="modal fade" id="deleteProjectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">确认删除项目</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>您确定要删除以下项目吗？此操作将永久删除所有相关数据，不可恢复！</p>
+                    <div class="bg-red-50 p-3 rounded mt-3">
+                        <p class="font-medium" id="deleteProjectName"></p>
+                        <p class="text-sm text-gray-600" id="deleteProjectCode"></p>
+                    </div>
+                    <p class="text-sm text-red-600 mt-3">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        警告：此操作不可逆，请谨慎操作！
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteProject">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 页脚 -->
     <footer class="bg-white shadow-inner mt-12">
@@ -714,6 +898,10 @@
     <script>
         // 添加调试模式开关
         const DEBUG_MODE = true;
+        
+        // 添加全局变量
+        let allProjects = [];
+        let selectedProjects = [];
         
         function debugLog(...args) {
             if (DEBUG_MODE) {
@@ -752,7 +940,7 @@
                 });
         }
 
-        // 页面加载时获取项目列表
+        // 页面加载时获取文档列表
         document.addEventListener('DOMContentLoaded', function() {
             // 确保表单元素存在
             const uploadForm = document.getElementById('uploadForm');
@@ -767,28 +955,30 @@
             // 初始化聊天模块
             const chatModule = new ChatModule({
                 containerId: 'chat-module-container',
-                apiBase: 'http://127.0.0.1:5000',
+                // 使用当前页面域名作为 API 根路径
+                apiBase: window.location.origin,
                 streamMode: false
             });
-            
+
             // 绑定API测试按钮
-            document.getElementById('testApiBtn').addEventListener('click', function() {
+            document.getElementById('testApiBtn').addEventListener('click', function () {
                 updateDebugInfo("手动测试API连接...");
                 chatModule.testApiConnection();
             });
             
             // 绑定查看响应按钮
-            document.getElementById('viewResponseBtn').addEventListener('click', function() {
+            document.getElementById('viewResponseBtn').addEventListener('click', function () {
                 updateDebugInfo("查看原始响应...");
-                fetch('http://127.0.0.1:5000/ask', {
+                fetch(`${window.location.origin}/ask`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({question: "测试连接"})
+                    body: JSON.stringify({ question: "测试连接" })
                 })
                 .then(response => response.text())
                 .then(data => {
+                    // 只显示前 200 个字符，防止内容过长
                     updateDebugInfo("原始响应: " + data.substring(0, 200) + (data.length > 200 ? "..." : ""));
                 })
                 .catch(error => {
@@ -897,10 +1087,220 @@
             // 绑定清除上下文按钮
             document.getElementById('clearContextBtn').addEventListener('click', clearAllConstraints);
 
-            // 初始化上下文和项目列表
+            // 初始化上下文和文档列表
             fetchContext();
             fetchFilteredProjects();
+            
+            // 初始化文档管理
+            initProjectManagement();
+            
+            // 绑定选项卡切换事件
+            bindTabEvents();
         });
+
+        // 初始化文档管理功能
+        function initProjectManagement() {
+            // 绑定刷新按钮
+            document.getElementById('refresh-projects').addEventListener('click', loadAllProjects);
+            
+            // 绑定全选/取消全选
+            document.getElementById('select-all-projects').addEventListener('change', function() {
+                const isChecked = this.checked;
+                document.querySelectorAll('.project-select-checkbox').forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                });
+                updateSelectedProjects();
+            });
+            
+            // 绑定删除选中项目按钮
+            document.getElementById('delete-selected-projects').addEventListener('click', function() {
+                if (selectedProjects.length === 0) return;
+                showDeleteConfirmation(selectedProjects);
+            });
+            
+            // 初始加载所有项目
+            loadAllProjects();
+        }
+
+        // 绑定选项卡切换事件
+        function bindTabEvents() {
+            document.querySelectorAll('[data-tab]').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // 隐藏所有选项卡内容
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('active', 'show');
+                    });
+                    
+                    // 显示选中的选项卡内容
+                    const targetPane = document.getElementById(tabName);
+                    if (targetPane) {
+                        targetPane.classList.add('active', 'show');
+                    }
+                    
+                    // 更新活动选项卡样式
+                    document.querySelectorAll('[data-tab]').forEach(t => {
+                        t.classList.toggle('text-indigo-600', t === this);
+                    });
+                });
+            });
+        }
+
+        // 加载所有项目（用于管理界面）
+        function loadAllProjects() {
+            showLoading('加载项目中...');
+            
+            fetch('/projects')
+                .then(response => response.json())
+                .then(data => {
+                    hideLoading();
+                    if (data.success) {
+                        allProjects = data.projects;
+                        renderProjectsManagementTable(allProjects);
+                    } else {
+                        showNotification('error', '加载项目失败: ' + (data.error || '未知错误'));
+                    }
+                })
+                .catch(error => {
+                    hideLoading();
+                    showNotification('error', '加载项目失败: ' + error.message);
+                });
+        }
+
+        // 渲染文档管理表格
+        function renderProjectsManagementTable(projects) {
+            const tbody = document.getElementById('projects-management-table');
+            tbody.innerHTML = '';
+
+            if (!projects || projects.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-gray-500">暂无项目数据</td></tr>';
+                document.getElementById('total-project-count').textContent = '0';
+                return;
+            }
+
+            // 设置总项目数量
+            document.getElementById('total-project-count').textContent = projects.length;
+
+            // 遍历文档列表渲染表格
+            Object.entries(projects).forEach(([projectName, project]) => {
+                const projectCode = project.project_code || '无';
+                const documentCount = project.document_count ?? project.vector_count ?? 0;
+                const fileCount = project.file_count ?? 0;
+                const startDate = project.start_date || '未知';
+                const lastUpdated = project.last_updated || '未知';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <input type="checkbox" class="project-select-checkbox" value="${escapeHTML(projectName)}">
+                    </td>
+                    <td>${escapeHTML(projectName)}</td>
+                    <td>${escapeHTML(projectCode)}</td>
+                    <td>${escapeHTML(startDate)}</td>
+                    <td>${escapeHTML(lastUpdated)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-danger delete-single-project" data-project="${escapeHTML(projectName)}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // 绑定单个项目删除按钮事件
+            document.querySelectorAll('.delete-single-project').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const projectName = this.getAttribute('data-project');
+                    showDeleteConfirmation([projectName]);
+                });
+            });
+
+            // 绑定复选框选择事件
+            document.querySelectorAll('.project-select-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedProjects);
+            });
+
+            // 重置选择状态
+            selectedProjects = [];
+            document.getElementById('select-all-projects').checked = false;
+            updateSelectedCount();
+        }
+
+        // 更新选中的项目
+        function updateSelectedProjects() {
+            selectedProjects = [];
+            document.querySelectorAll('.project-select-checkbox:checked').forEach(checkbox => {
+                selectedProjects.push(checkbox.value);
+            });
+            
+            // 更新删除按钮状态
+            document.getElementById('delete-selected-projects').disabled = selectedProjects.length === 0;
+            
+            // 更新选中计数
+            updateSelectedCount();
+        }
+
+        // 更新选中项目计数
+        function updateSelectedCount() {
+            document.getElementById('selected-count').textContent = `已选择 ${selectedProjects.length} 个项目`;
+        }
+
+        // 显示删除确认对话框
+        function showDeleteConfirmation(projectNames) {
+            // 设置模态框内容
+            document.getElementById('deleteProjectName').textContent = projectNames.join(', ');
+            
+            // 获取项目编号（如果有）
+            const projectCodes = projectNames.map(name => {
+                const project = allProjects[name];
+                return project ? project.project_code || '无编号' : '无编号';
+            });
+            document.getElementById('deleteProjectCode').textContent = projectCodes.join(', ');
+            
+            // 显示模态框
+            const modal = new bootstrap.Modal(document.getElementById('deleteProjectModal'));
+            modal.show();
+            
+            // 绑定确认删除按钮
+            document.getElementById('confirmDeleteProject').onclick = function() {
+                modal.hide();
+                deleteProjects(projectNames);
+            };
+        }
+
+        // 删除文档
+        function deleteProjects(projectNames) {
+            showLoading('删除文档中...');
+            
+            fetch('/projects/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    project_names: projectNames
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading();
+                if (data.success) {
+                    showNotification('success', `成功删除 ${data.deleted_count} 条记录`);
+                    // 重新加载文档列表
+                    loadAllProjects();
+                    // 同时更新侧边栏的文档列表
+                    //fetchFilteredProjects();
+                } else {
+                    showNotification('error', '删除失败: ' + (data.error || '未知错误'));
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                showNotification('error', '删除请求失败: ' + error.message);
+            });
+        }
 
         // 添加约束条件
         function addConstraint(type, value) {
@@ -921,7 +1321,7 @@
                 if (data.success) {
                     showNotification('success', `已添加筛选条件: ${formatConstraint(type, value)}`);
                     fetchContext(); // 刷新上下文显示
-                    fetchFilteredProjects();  // 新增：更新项目列表
+                    //fetchFilteredProjects();  // 新增：更新文档列表
                 } else {
                     throw new Error(data.error || '添加约束失败');
                 }
@@ -968,7 +1368,7 @@
             const constraintTags = document.getElementById('constraintTags');
             
             if (!context || !context.constraints || context.constraints.length === 0) {
-                constraintTags.innerHTML = '<p>无筛选条件（所有项目）</p>';
+                constraintTags.innerHTML = '<p>无筛选条件（所有文档）</p>';
                 return;
             }
             
@@ -1012,7 +1412,7 @@
             .then(data => {
                 if (data.success) {
                     fetchContext(); // 刷新上下文显示
-                    fetchFilteredProjects();  // 新增：更新项目列表
+                    //fetchFilteredProjects();  // 新增：更新文档列表
                     showNotification('success', '已移除筛选条件');
                 }
             })
@@ -1021,9 +1421,9 @@
             });
         }
         
-        // 获取项目列表并更新UI（修复XSS问题）
+        // 获取文档列表并更新UI（修复XSS问题）
         function fetchFilteredProjects() {
-            debugLog("根据当前筛选条件请求项目列表...");
+            debugLog("根据当前筛选条件请求文档列表...");
             const projectsContainer = document.getElementById('projectsContainer');
             
             // 显示加载状态
@@ -1115,12 +1515,17 @@
                         <button class="view-project-btn p-1.5 text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded transition">
                             <i class="fas fa-info-circle text-sm"></i>
                         </button>
+                        <!-- 添加删除按钮 -->
+                        <button class="delete-project-btn p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition">
+                            <i class="fas fa-trash-alt text-sm"></i>
+                        </button>
                     </div>
                 `;
                 
                 // 添加事件监听器 - 修复：确保按钮存在后再添加监听器
                 const filterButton = card.querySelector('.filter-project-btn');
                 const viewButton = card.querySelector('.view-project-btn');
+                const deleteButton = card.querySelector('.delete-project-btn');
                 
                 if (filterButton) {
                     filterButton.addEventListener('click', () => {
@@ -1136,6 +1541,15 @@
                     });
                 } else {
                     console.error('View button not found for project:', name);
+                }
+                
+                if (deleteButton) {
+                    deleteButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showDeleteConfirmation([name]);
+                    });
+                } else {
+                    console.error('Delete button not found for project:', name);
                 }
                 
                 container.appendChild(card);
@@ -1358,6 +1772,35 @@
                 setTimeout(() => notification.remove(), 300);
             }, 5000);
         }
+        
+        // 显示加载状态
+        function showLoading(message = '加载中...') {
+            // 实现加载状态显示
+            let loadingEl = document.getElementById('loadingIndicator');
+            if (!loadingEl) {
+                loadingEl = document.createElement('div');
+                loadingEl.id = 'loadingIndicator';
+                loadingEl.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                loadingEl.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 flex items-center">
+                        <i class="fas fa-spinner fa-spin text-indigo-600 mr-3"></i>
+                        <span class="loading-message">${message}</span>
+                    </div>
+                `;
+                document.body.appendChild(loadingEl);
+            } else {
+                loadingEl.querySelector('.loading-message').textContent = message;
+                loadingEl.style.display = 'flex';
+            }
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            const loadingEl = document.getElementById('loadingIndicator');
+            if (loadingEl) {
+                loadingEl.style.display = 'none';
+            }
+        }
 
         // ChatModule类
         class ChatModule {
@@ -1564,7 +2007,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        },
                     body: JSON.stringify({question: question})
                 })
                 .then(response => {
