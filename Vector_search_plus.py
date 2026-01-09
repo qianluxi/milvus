@@ -5,22 +5,19 @@ import os
 import re
 import hashlib
 import logging
-import pythoncom
-import win32com.client as win32
+#import pythoncom
+#import win32com.client as win32
+from docx import Document  # 新增：用于处理Word文档的跨平台库
 from datetime import datetime
 import requests
 import json
 import time
 from openai import OpenAI
-#import urllib3
 from tenacity import retry, stop_after_attempt, wait_exponential, wait_fixed, retry_if_exception_type
-#import socket
-#import certifi
 import ssl
-#import http.client
 import httpx 
 from langchain_community.embeddings import ModelScopeEmbeddings
-from typing import Set, List, Dict, Optional, Tuple
+from typing import Set, List, Dict, Optional, Tuple, Any
 import uuid
 
 # 启用详细日志记录（调试时使用）
@@ -42,7 +39,7 @@ MODEL_CONFIG = {
     },
     'llm': {
         #'model_id': 'deepseek-ai/DeepSeek-R1-Distill-Qwen-7B',
-        'model_id': 'deepseek-ai/DeepSeek-R1-0528',
+        'model_id': 'Qwen/Qwen3-Next-80B-A3B-Instruct',
         'api_base': 'https://api-inference.modelscope.cn/v1/',
         'api_key': 'a008e17e-882d-4622-ae01-150918799925'
     }
@@ -74,22 +71,26 @@ class ModelScopeLLM:
         return full_response
 
 class VectorSearchSystem:
-    def __init__(self, collection_name="text_search", max_retries=5):
+    def __init__(self, collection_name="text_searchLC", max_retries=5):
         self.collection_name = collection_name
-        self.dim = 1024  # 初始值，实际由嵌入模型决定
+        self.dim = 1024
         self.collection = None
         self.max_retries = max_retries
         self.reranker_model = None
         self.metadata_dict = {}
+
         self.field_handlers = {
             'filename': {'max_len': 256, 'truncate': 'hash'},
             'chapter_title': {'max_len': 300, 'truncate': 'hash'},
             'subsection_title': {'max_len': 500, 'truncate': 'simple'},
             'content': {'max_len': 65535, 'truncate': 'reject'}
         }
-        self.project_metadata = {}  # 项目元数据存储 {project_name: metadata}
-        
-        # 初始化ModelScope组件
+
+        # 项目元数据持久化
+        self.metadata_file = "project_metadata.json"
+        self.project_metadata = self._load_persistent_metadata()
+
+        # ModelScope 组件初始化
         self.embeddings = ModelScopeEmbeddings(
             model_id=MODEL_CONFIG['embedding']['model_id']
         )
@@ -98,35 +99,296 @@ class VectorSearchSystem:
             api_key=MODEL_CONFIG['llm']['api_key'],
             model_id=MODEL_CONFIG['llm']['model_id']
         )
-        
-        # 新增：上下文状态管理
+
+        # 上下文状态管理
         self.context_manager = {
             "current_project_set": None,
-            "constraints": [],  # 初始化为空列表（而非None）
+            "constraints": [],
             "session_id": str(uuid.uuid4())
         }
 
-        # 初始化
+        # 初始化集合
         self._initialize()
 
-    @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_fixed(3),
-        retry=retry_if_exception_type((httpx.NetworkError, 
-                                     httpx.TimeoutException,
-                                     ssl.SSLError)),
-        reraise=True
-    )
+    def _load_persistent_metadata(self):
+        """从文件加载持久化的项目元数据"""
+        try:
+            if os.path.exists(self.metadata_file):
+                with open(self.metadata_file, 'r', encoding='utf-8') as f:
+                    metadata = json.load(f)
+                    logger.info(f"从文件加载了 {len(metadata)} 个项目元数据")
+                    return metadata
+        except Exception as e:
+            logger.error(f"加载持久化元数据失败: {e}")
+        return {}
+
+    def _save_persistent_metadata(self):
+        """保存项目元数据到文件"""
+        try:
+            with open(self.metadata_file, 'w', encoding='utf-8') as f:
+                json.dump(self.project_metadata, f, ensure_ascii=False, indent=2)
+            logger.debug("项目元数据已保存到文件")
+        except Exception as e:
+            logger.error(f"保存持久化元数据失败: {e}")
+
+    def _initialize(self):
+        """初始化并验证 API"""
+        logger.info("初始化ModelScope组件...")
+        
+        for attempt in range(self.max_retries + 1):
+            try:
+                # 1. 测试嵌入模型
+                test_vector = self.text_to_vector("test")
+                self.dim = len(test_vector)
+                logger.info(f"嵌入模型测试成功，向量维度: {self.dim}")
+                
+                # 2. 测试问答模型
+                test_response = self.generate_answer("你好")
+                logger.info(f"问答模型测试响应: {test_response[:50]}...")
+                
+                # 3. 连接Milvus
+                self._connect_milvus()
+             
+                logger.info("系统初始化完成")
+                return
+                
+            except Exception as e:
+                logger.error(f"初始化尝试 {attempt+1}/{self.max_retries} 失败: {str(e)}")
+                if attempt < self.max_retries:
+                    wait_time = min(2 ** attempt, 30)
+                    logger.warning(f"等待 {wait_time} 秒后重试...")
+                    time.sleep(wait_time)
+                else:
+                    logger.critical("所有初始化尝试均失败")
+                    raise RuntimeError("系统无法初始化") from e
+                
+    def _recover_metadata_from_milvus(self):
+        """从Milvus恢复项目元数据"""
+        try:
+            if not self.collection:
+                logger.warning("集合未初始化，无法恢复元数据")
+                return
+            
+            # 获取所有不重复的项目
+            all_projects = self._get_distinct_projects_from_milvus()
+            logger.info(f"从Milvus发现 {len(all_projects)} 个项目")
+            
+            # 为每个项目构建元数据
+            for project_name in all_projects:
+                if project_name not in self.project_metadata:
+                    # 从Milvus获取项目基本信息
+                    project_info = self._get_project_info_from_milvus(project_name)
+                    
+                    # 创建新的元数据记录
+                    self.project_metadata[project_name] = {
+                        "project_code": project_info.get("project_code", "未知编号"),
+                        "file_count": project_info.get("file_count", 0),
+                        "files": project_info.get("files", []),
+                        "start_date": project_info.get("start_date", "未知日期"),
+                        "last_updated": project_info.get("last_updated", datetime.now().isoformat()),
+                        "description": project_info.get("description", "")
+                    }
+            
+            # 保存恢复的元数据
+            self._save_persistent_metadata()
+            logger.info(f"从Milvus成功恢复 {len(all_projects)} 个项目元数据")
+            
+        except Exception as e:
+            logger.error(f"从Milvus恢复元数据失败: {str(e)}")
+
+    def _get_distinct_projects_from_milvus(self):
+        """从Milvus获取所有不重复的项目名称"""
+        try:
+            results = self.collection.query(
+                expr="",
+                output_fields=["project_name"],
+                limit=10000
+            )
+            
+            project_names = set()
+            for item in results:
+                project_name = item.get("project_name")
+                if project_name:
+                    project_names.add(project_name)
+            
+            return list(project_names)
+            
+        except Exception as e:
+            logger.error(f"获取项目列表失败: {e}")
+            return []
+        
+    def _get_project_info_from_milvus(self, project_name):
+        """从Milvus获取项目详细信息"""
+        try:
+            # 获取项目文档数量
+            expr = f'project_name == "{project_name}"'
+            doc_count = self.collection.query(expr=expr, count_only=True)
+            
+            # 获取项目文件列表
+            files_expr = f'project_name == "{project_name}"'
+            file_results = self.collection.query(
+                expr=files_expr,
+                output_fields=["filename"],
+                limit=1000
+            )
+            
+            files = list(set([item.get("filename", "") for item in file_results if item.get("filename")]))
+            
+            # 获取项目编号和日期
+            info_expr = f'project_name == "{project_name}"'
+            info_results = self.collection.query(
+                expr=info_expr,
+                output_fields=["project_code", "date"],
+                limit=1
+            )
+            
+            project_code = "未知编号"
+            start_date = "未知日期"
+            if info_results:
+                project_code = info_results[0].get("project_code", "未知编号")
+                start_date = info_results[0].get("date", "未知日期")
+            
+            return {
+                "project_code": project_code,
+                "file_count": len(files),
+                "files": files,
+                "start_date": start_date,
+                "last_updated": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"获取项目 {project_name} 信息失败: {e}")
+            return {}
+        
+    def get_all_projects_with_stats(self):
+        """直接从 Milvus 查询所有项目信息"""
+        try:
+            # 查询所有向量，输出需要字段
+            results = self.collection.query(
+                expr="",  # 查询全部
+                output_fields=["project_name", "project_code", "date", "metadata"],
+                limit=10000  # 根据项目数量调整
+            )
+
+            projects = {}
+            for item in results:
+                name = item.get("project_name")
+                if not name:
+                    continue
+                # metadata 里可以存文件数量、文档数量等
+                meta = item.get("metadata") or {}
+                projects[name] = {
+                    "project_code": item.get("project_code", "无"),
+                    "document_count": meta.get("document_count", 0),
+                    "file_count": meta.get("file_count", 0),
+                    "start_date": item.get("date", "未知"),
+                    "last_updated": item.get("date", "未知")
+                }
+
+            return projects
+
+        except Exception as e:
+            logger.error(f"获取项目列表失败: {e}")
+            return {}
+
+    def _get_project_vector_count(self, project_name: str) -> int:
+        """
+        统计某个项目在 Milvus 中的向量条目数量。
+        """
+        try:
+            expr = f'project == "{project_name}"'
+            res = self.collection.query(expr=expr, output_fields=["project"])
+            return len(res)
+        except Exception as e:
+            print(f"[ERROR] Failed to count vectors for project {project_name}: {e}")
+            return 0
+        
+    def _get_project_doc_count(self, project_name):
+        """获取项目文档数量"""
+        try:
+            expr = f'project_name == "{project_name}"'
+            return self.collection.query(expr=expr, count_only=True)
+        except Exception as e:
+            logger.error(f"获取项目 {project_name} 文档数量失败: {e}")
+            return 0
+        
+    def add_project_metadata(self, project_name: str, metadata: dict):
+        """添加或更新项目元数据（自动保存到文件）"""
+        # 确保包含必要字段
+        if "project_code" not in metadata:
+            metadata["project_code"] = "NO_CODE"
+            
+        if "start_date" not in metadata or not metadata["start_date"]:
+            metadata["start_date"] = datetime.now().strftime("%Y-%m-%d")
+        
+        # 更新元数据
+        if project_name not in self.project_metadata:
+            self.project_metadata[project_name] = {}
+        
+        self.project_metadata[project_name].update(metadata)
+        
+        # 自动保存到文件
+        self._save_persistent_metadata()
+        
+        logger.info(f"项目 '{project_name}' 元数据已更新")
+
+    def get_project_metadata(self, project_name: str) -> Optional[dict]:
+        """获取项目元数据（带fallback机制）"""
+        # 优先从内存元数据获取
+        meta = self.project_metadata.get(project_name, {})
+        
+        # 如果内存中没有，尝试从Milvus恢复
+        if not meta and self.collection:
+            try:
+                project_info = self._get_project_info_from_milvus(project_name)
+                if project_info:
+                    self.project_metadata[project_name] = project_info
+                    self._save_persistent_metadata()
+                    return project_info
+            except Exception as e:
+                logger.error(f"从Milvus恢复项目 {project_name} 元数据失败: {e}")
+        
+        return meta
+    
+    def delete_projects(self, project_names: List[str]) -> Dict[str, Any]:
+        if not project_names:
+            return {"success": False, "message": "未提供项目名称"}
+
+        try:
+            expr = f"project_name in {json.dumps(project_names)}"
+
+            count_result = self.collection.query(expr=expr, count_only=True)
+
+            delete_result = self.collection.delete(expr)
+
+            # 删除元数据
+            for project in project_names:
+                if project in self.project_metadata:
+                    del self.project_metadata[project]
+
+            self._save_persistent_metadata()
+
+            # 清空上下文缓存
+            self.context_manager["current_project_set"] = None
+
+            logger.info(f"成功删除项目: {project_names}, 共删除 {count_result} 条记录")
+
+            return {
+                "success": True,
+                "message": f"成功删除 {len(project_names)} 个项目",
+                "deleted_count": count_result,
+                "deleted_projects": project_names
+            }
+
+        except Exception as e:
+            logger.error(f"删除项目失败: {str(e)}")
+            return {
+                "success": False,
+                "message": f"删除失败: {str(e)}",
+                "deleted_projects": []
+            }
 
     def update_context(self, constraint_type: str, value: any):
-        """
-        更新上下文约束条件（支持多格式时间范围，自动去重，避免全集约束）
-        
-        参数:
-            constraint_type: 约束类型（project_name/time_range/feature）
-            value: 约束值（如项目名列表、时间字符串等）
-        """
-        # 关键修复：确保context_manager不为None
         if self.context_manager is None:
             self.context_manager = {
                 "current_project_set": None,
@@ -134,79 +396,60 @@ class VectorSearchSystem:
                 "session_id": str(uuid.uuid4())
             }
 
-        # 1. 基础校验：空值直接跳过
         if value is None:
-            logger.warning("跳过空约束值")
             return
         if isinstance(value, str) and not value.strip():
-            logger.warning("跳过空字符串约束")
             return
 
-        # 2. 处理时间范围约束（支持多种格式）
+        # 时间范围解析
         if constraint_type == "time_range":
             parsed_value = None
             value_str = value.strip() if isinstance(value, str) else str(value)
 
-            # 匹配"2011-2015年"格式（优化正则，兼容空格和特殊字符）
             range_match = re.match(r"^(\d{4})\s*-\s*(\d{4})\s*年$", value_str)
             if range_match:
-                start_year = int(range_match.group(1))
-                end_year = int(range_match.group(2))
-                if start_year <= end_year:
-                    parsed_value = (start_year, end_year)
+                y1, y2 = int(range_match.group(1)), int(range_match.group(2))
+                if y1 <= y2:
+                    parsed_value = (y1, y2)
                 else:
-                    logger.warning(f"时间范围无效（开始年份>结束年份）: {value_str}")
                     return
 
-            # 匹配"2015年以后"格式（优化空格处理）
             after_match = re.match(r"^(\d{4})\s*年\s*以后$", value_str)
             if after_match and not parsed_value:
-                start_year = int(after_match.group(1))
-                parsed_value = (start_year, None)
+                parsed_value = (int(after_match.group(1)), None)
 
-            # 匹配"2015年以前"格式（优化空格处理）
             before_match = re.match(r"^(\d{4})\s*年\s*以前$", value_str)
             if before_match and not parsed_value:
-                end_year = int(before_match.group(1))
-                parsed_value = (None, end_year)
+                parsed_value = (None, int(before_match.group(1)))
 
-            # 校验时间格式是否有效
             if not parsed_value:
-                logger.warning(f"不支持的时间格式: {value_str}（支持：YYYY-YYYY年/YYYY年以后/YYYY年以前）")
-                return
-            value = parsed_value  # 替换为标准化元组（start_year, end_year）
-
-        # 3. 去重校验：避免添加重复约束
-        for existing in self.context_manager["constraints"]:
-            if (existing["type"] == constraint_type and 
-                existing["value"] == value):
-                logger.info(f"约束已存在，跳过添加: {constraint_type}={value}")
                 return
 
-        # 4. 避免"全集约束"（如项目名包含所有项目时，无需显示）
+            value = parsed_value
+
+        # 去重
+        for ex in self.context_manager["constraints"]:
+            if ex["type"] == constraint_type and ex["value"] == value:
+                return
+
+        # 避免全集约束
         if constraint_type == "project_name":
             all_projects = set(self.get_all_projects())
-            target_projects = set(value if isinstance(value, list) else [value])
-            if target_projects == all_projects:
-                logger.info("跳过全集项目约束（无需显示）")
+            target = set(value if isinstance(value, list) else [value])
+            if target == all_projects:
                 return
 
-        # 5. 正式添加约束（记录时间戳，便于前端排序）
         self.context_manager["constraints"].append({
             "type": constraint_type,
             "value": value,
-            "timestamp": datetime.now().isoformat()  # 用于前端展示顺序
+            "timestamp": datetime.now().isoformat()
         })
 
-        # 6. 重置缓存的项目集合（下次查询将重新计算）
         self.context_manager["current_project_set"] = None
-        logger.info(f"成功添加约束: {constraint_type}={value}")
 
     # 2. 修复remove_constraint方法（增加安全校验）
     def remove_constraint(self, index: int):
-        """移除指定索引的约束（避免NoneType错误）"""
         try:
-            # 关键修复：确保context_manager不为None
             if self.context_manager is None:
                 self.context_manager = {
                     "current_project_set": None,
@@ -214,200 +457,147 @@ class VectorSearchSystem:
                     "session_id": str(uuid.uuid4())
                 }
 
-            # 确保constraints是列表（防止初始化错误）
             constraints = self.context_manager.get("constraints", [])
             if not isinstance(constraints, list):
                 self.context_manager["constraints"] = []
                 raise IndexError("约束列表未初始化")
-            
-            # 检查索引有效性
+
             if 0 <= index < len(constraints):
-                removed = constraints.pop(index)
-                self.context_manager["current_project_set"] = None  # 重置缓存
-                logger.info(f"已移除约束: {removed['type']}={removed['value']}")
+                constraints.pop(index)
+                self.context_manager["current_project_set"] = None
             else:
                 raise IndexError(f"无效的约束索引: {index}")
-            
-            return self._get_context_info()  # 返回更新后的上下文
+
+            return self._get_context_info()
+
         except Exception as e:
             logger.error(f"移除约束失败: {str(e)}")
-            raise  # 抛给前端处理     
+            raise   
 
     def clear_context(self):
-        """清除所有上下文约束"""
         self.context_manager = {
             "current_project_set": None,
             "constraints": [],
-            "session_id": str(uuid.uuid4())  # 生成新会话ID
+            "session_id": str(uuid.uuid4())
         }
         logger.info("Context cleared")
 
     # 增强get_current_project_set方法，处理所有约束条件
     def get_current_project_set(self) -> Set[str]:
-        """
-        获取当前符合所有上下文约束条件的项目集合（多约束取交集）
-        增强错误处理和空值保护
-        
-        返回:
-            符合所有约束条件的项目名称集合（Set[str]），没有项目时返回空集合
-        """
         try:
-            # 1. 检查缓存，避免重复计算
+            # 使用缓存
             if self.context_manager["current_project_set"] is not None:
-                cached_set = self.context_manager["current_project_set"]
-                logger.debug(f"使用缓存的项目集合，包含 {len(cached_set)} 个项目")
-                return cached_set or set()  # 确保返回集合类型
+                return self.context_manager["current_project_set"] or set()
 
-            # 2. 初始化项目集合为所有项目（使用安全方法）
-            all_projects = self.get_all_projects()
+            # 获取所有项目初始集合
+            all_projects = self._get_distinct_projects_from_milvus()
             current_set = set(all_projects) if all_projects else set()
-            logger.debug(f"初始项目集合大小: {len(current_set)} 个项目")
 
-            # 3. 遍历所有约束条件，依次过滤（取交集）
-            for constraint in self.context_manager["constraints"]:
-                constraint_type = constraint["type"]
-                constraint_value = constraint["value"]
-                logger.debug(f"处理约束条件: {constraint_type} = {constraint_value}")
+            # ---------------------------
+            # 1️⃣ 先处理 project_name / project_code 并集
+            # ---------------------------
+            project_union = set()
+            for c in self.context_manager["constraints"]:
+                if c["type"] == "project_name":
+                    target_list = c["value"] if isinstance(c["value"], list) else [c["value"]]
+                    matched = set()
 
-                # 3.1 项目名称约束（支持项目名和编号搜索）
-                if constraint_type == "project_name":
-                    # 标准化输入为列表
-                    target_list = constraint_value if isinstance(constraint_value, list) else [constraint_value]
-                    
-                    # 构建项目名和编号的映射
-                    project_name_to_code = {}
-                    project_code_to_name = {}
-                    for project in current_set:
-                        meta = self.get_project_metadata(project)
+                    # 构建 project -> code 映射
+                    mapping = {}
+                    reverse = {}
+                    for p in current_set:
+                        meta = self.get_project_metadata(p)
                         if meta and "project_code" in meta:
-                            code = meta["project_code"]
-                            project_name_to_code[project] = code
-                            project_code_to_name[code] = project
-                    
-                    # 查找匹配的项目（支持项目名和编号）
-                    matched_projects = set()
-                    for target in target_list:
-                        # 1. 直接匹配项目名称
-                        if target in current_set:
-                            matched_projects.add(target)
-                        
-                        # 2. 匹配项目编号
-                        elif target in project_code_to_name:
-                            matched_projects.add(project_code_to_name[target])
-                        
-                        # 3. 模糊匹配（项目名或编号包含目标字符串）
-                        else:
-                            for project in current_set:
-                                code = project_name_to_code.get(project, "")
-                                if target in project or target in code:
-                                    matched_projects.add(project)
-                    
-                    # 取交集
-                    filtered_set = current_set.intersection(matched_projects)
-                    logger.debug(f"项目约束后，匹配项目: {len(filtered_set)} 个")
-                    current_set = filtered_set
+                            mapping[p] = meta["project_code"]
+                            reverse[meta["project_code"]] = p
 
-                # 3.2 时间范围约束（基于项目开始年份）
-                elif constraint_type == "time_range":
-                    start_year, end_year = constraint_value
-                    filtered_set = set()
-                    
-                    # 获取所有项目的日期信息
+                    for tname in target_list:
+                        # 完全匹配 name
+                        if tname in current_set:
+                            matched.add(tname)
+                        # 完全匹配 code
+                        elif tname in reverse:
+                            matched.add(reverse[tname])
+                        else:
+                            # 包含匹配 name 或 code
+                            for p in current_set:
+                                code = mapping.get(p, "")
+                                if tname in p or tname in code:
+                                    matched.add(p)
+
+                    # 并集累加
+                    project_union.update(matched)
+
+            # 如果有 project_name / project_code 筛选，使用并集结果
+            if project_union:
+                current_set = project_union
+
+            # ---------------------------
+            # 2️⃣ 处理时间范围筛选（交集）
+            # ---------------------------
+            for c in self.context_manager["constraints"]:
+                if c["type"] == "time_range":
+                    start_year, end_year = c["value"]
+                    filtered = set()
+
                     project_dates = self._get_project_dates_from_milvus(current_set)
 
-                    for project_name in current_set:
-                        # 从查询结果中获取项目日期
-                        start_date = project_dates.get(project_name)
-                        
-                        if not start_date:
-                            logger.debug(f"项目 '{project_name}' 无日期信息，跳过时间筛选")
+                    for p in current_set:
+                        d = project_dates.get(p)
+                        if not d:
                             continue
-                        
-                        # 提取年份（增强格式兼容性）
                         try:
-                            # 处理多种日期格式：YYYY, YYYY-MM, YYYY-MM-DD
-                            if len(start_date) == 4 and start_date.isdigit():
-                                project_year = int(start_date)
-                            else:
-                                # 尝试解析日期字符串
-                                project_year = int(start_date.split("-")[0])
-                        except (ValueError, IndexError, TypeError) as e:
-                            logger.warning(f"项目 '{project_name}' 的日期格式无效: {start_date} ({str(e)})")
+                            py = int(d.split("-")[0])
+                        except:
                             continue
-                        
-                        # 检查是否在时间范围内
+
                         in_range = True
-                        if start_year is not None and project_year < start_year:
+                        if start_year is not None and py < start_year:
                             in_range = False
-                        if end_year is not None and project_year > end_year:
+                        if end_year is not None and py > end_year:
                             in_range = False
-                        
-                        logger.debug(f"项目 '{project_name}': 年份={project_year}, 范围={start_year}-{end_year}, 在范围内={in_range}")
-                        
+
                         if in_range:
-                            filtered_set.add(project_name)
-                    
-                    logger.debug(f"时间范围约束后，集合大小: {len(filtered_set)} 个项目")
-                    current_set = filtered_set
+                            filtered.add(p)
 
-                # 3.3 特征约束（基于向量搜索的语义匹配）
-                elif constraint_type == "feature":
+                    current_set = filtered
+
+            # ---------------------------
+            # 3️⃣ 处理特征语义筛选（交集）
+            # ---------------------------
+            for c in self.context_manager["constraints"]:
+                if c["type"] == "feature":
                     try:
-                        # 对特征描述生成向量，搜索相关项目
-                        query_vector = self.text_to_vector(constraint_value)
-                        search_params = {"metric_type": "COSINE", "params": {"ef": 50}}
+                        vec = self.text_to_vector(c["value"])
+                        params = {"metric_type": "COSINE", "params": {"ef": 50}}
 
-                        # 搜索相关项目（限制返回1000个）
-                        if not self.collection:
-                            logger.error("集合未初始化，无法执行特征搜索")
-                            continue
-                            
-                        search_results = self.collection.search(
-                            data=[query_vector],
+                        res = self.collection.search(
+                            data=[vec],
                             anns_field="embedding",
-                            param=search_params,
+                            param=params,
                             limit=1000,
                             output_fields=["project_name"]
                         )
 
-                        # 提取匹配的项目名称（去重）
-                        feature_matched_projects = set()
-                        for hits in search_results:
+                        matched = set()
+                        for hits in res:
                             for hit in hits:
-                                project_name = hit.entity.get("project_name")
-                                if project_name:
-                                    feature_matched_projects.add(project_name)
-                        
-                        logger.debug(f"特征搜索匹配到 {len(feature_matched_projects)} 个项目")
-                        
-                        # 取交集：保留当前集合中在特征匹配结果中的项目
-                        filtered_set = current_set.intersection(feature_matched_projects)
-                        logger.debug(f"特征约束后，集合大小: {len(filtered_set)} 个项目")
-                        current_set = filtered_set
+                                pn = hit.entity.get("project_name")
+                                if pn:
+                                    matched.add(pn)
 
-                    except Exception as e:
-                        logger.error(f"特征约束处理失败: {str(e)}，跳过该约束")
-                        # 失败时保留当前集合继续处理其他约束
+                        current_set = current_set.intersection(matched)
 
-                # 3.4 未知约束类型（跳过）
-                else:
-                    logger.warning(f"未知约束类型: {constraint_type}，跳过处理")
-                    # 保持当前集合不变
+                    except:
+                        pass
 
-                # 提前退出：如果集合已为空，无需继续处理其他约束
-                if not current_set:
-                    logger.debug("约束处理后集合为空，提前退出")
-                    break
+            # 缓存结果
+            self.context_manager["current_project_set"] = current_set or set()
+            return current_set or set()
 
-            # 4. 缓存结果，避免重复计算
-            self.context_manager["current_project_set"] = current_set or set()  # 确保缓存的是集合
-            logger.info(f"最终符合所有约束的项目集合大小: {len(current_set)} 个项目")
-
-            return current_set or set()  # 确保返回集合类型
-            
         except Exception as e:
             logger.error(f"获取当前项目集合失败: {str(e)}", exc_info=True)
-            return set()  # 返回空集合保证前端不崩溃
+            return set()
         
     def _get_project_dates_from_milvus(self, project_names: Set[str]) -> Dict[str, str]:
         """从Milvus获取项目的日期信息（使用聚合查询）"""
@@ -450,50 +640,6 @@ class VectorSearchSystem:
             logger.error(f"从Milvus获取项目日期失败: {str(e)}")
             return {}
 
-
-    def add_project_metadata(self, project_name: str, metadata: dict):
-        """添加或更新项目元数据（确保日期字段存在）"""
-        # 确保包含项目编号
-        if "project_code" not in metadata:
-            metadata["project_code"] = "NO_CODE"
-            
-        self.project_metadata[project_name] = metadata
-        logger.info(f"Added metadata for project: {project_name} (Code: {metadata['project_code']})")
-        # 确保包含时间信息
-        if "start_date" not in metadata or not metadata["start_date"]:
-            # 尝试从已有数据获取日期
-            existing_meta = self.project_metadata.get(project_name, {})
-            existing_date = existing_meta.get("start_date")
-            
-            if existing_date:
-                metadata["start_date"] = existing_date
-                logger.info(f"使用已有日期填充项目 '{project_name}' 元数据: {existing_date}")
-            else:
-                metadata["start_date"] = datetime.now().strftime("%Y-%m-%d")
-                logger.warning(f"项目 '{project_name}' 无日期信息，使用当前日期: {metadata['start_date']}")
-        
-        self.project_metadata[project_name] = metadata
-        logger.info(f"项目 '{project_name}' 元数据已更新")
-        
-    def get_project_metadata(self, project_name: str) -> Optional[dict]:
-        """获取项目元数据（确保包含项目编号）"""
-        meta = self.project_metadata.get(project_name, {})
-        # 确保元数据中包含项目编号
-        if "project_code" not in meta:
-            # 尝试从Milvus中获取项目编号
-            try:
-                expr = f"project_name == '{project_name}'"
-                res = self.collection.query(
-                    expr=expr, 
-                    output_fields=["project_code"],
-                    limit=1
-                )
-                if res and "project_code" in res[0]:#########################################
-                    meta["project_code"] = res[0]["project_code"]
-            except Exception:
-                meta["project_code"] = "未知编号"
-        return meta
-
     def text_to_vector(self, text: str) -> List[float]:
         """使用ModelScopeEmbeddings进行文本向量化"""
         try:
@@ -507,49 +653,34 @@ class VectorSearchSystem:
         """使用ModelScope LLM生成回答"""
         return self.llm.generate(prompt)
 
-    def _initialize(self):
-        """初始化并验证 API"""
-        logger.info("初始化ModelScope组件...")
-        
-        for attempt in range(self.max_retries + 1):
-            try:
-                # 1. 测试嵌入模型
-                test_vector = self.text_to_vector("test")
-                self.dim = len(test_vector)
-                logger.info(f"嵌入模型测试成功，向量维度: {self.dim}")
-                
-                # 2. 测试问答模型
-                test_response = self.generate_answer("你好")
-                logger.info(f"问答模型测试响应: {test_response[:50]}...")
-                
-                # 3. 连接Milvus
-                self._connect_milvus()
-                logger.info("系统初始化完成")
-                return
-                
-            except Exception as e:
-                logger.error(f"初始化尝试 {attempt+1}/{self.max_retries} 失败: {str(e)}")
-                if attempt < self.max_retries:
-                    wait_time = min(2 ** attempt, 30)  # 指数退避
-                    logger.warning(f"等待 {wait_time} 秒后重试...")
-                    time.sleep(wait_time)
-                else:
-                    logger.critical("所有初始化尝试均失败")
-                    raise RuntimeError("系统无法初始化") from e
-
     def _connect_milvus(self):
         """连接Milvus数据库"""
         try:
+            import os
             from pymilvus import connections
-            logger.info("正在连接Milvus数据库...")
-            connections.connect("default", host="localhost", port="19530")
-            logger.info("Milvus连接成功")
+
+            milvus_host = os.getenv("MILVUS_HOST", "localhost")
+            milvus_port = os.getenv("MILVUS_PORT", "19530")
+
+            logger.info(f"正在连接 Milvus: {milvus_host}:{milvus_port}")
+
+            connections.connect(
+                alias="default",
+                host=milvus_host,
+                port=milvus_port
+            )
+
+            logger.info("Milvus 连接成功")
             self._create_collection_if_not_exists()
+
+            if self.collection is None:
+                raise RuntimeError("Milvus 已连接，但 collection 未初始化")
+
         except ImportError:
-            logger.warning("pymilvus未安装，跳过数据库连接")
+            logger.warning("pymilvus 未安装，跳过数据库连接")
         except Exception as e:
-            logger.error(f"Milvus连接失败: {str(e)}")
-            # 非关键错误，允许继续运行
+            logger.error(f"Milvus 连接失败: {e}")
+            raise   # ⚠️ 这里建议直接抛出，别继续跑
     
     def _create_collection_if_not_exists(self):
         """如果不存在则创建Milvus集合"""
@@ -886,112 +1017,71 @@ class VectorSearchSystem:
         return "paragraph"
 
 
-    def read_docx_with_win32com(self, filepath: str) -> List[Dict]:
-        """增强版Word文档解析（解决final_text未定义问题）"""
-        pythoncom.CoInitialize()
-        word = None
-        doc = None
+    #def read_docx_with_win32com(self, filepath: str) -> List[Dict]:
+    def read_docx_with_python_docx(self, filepath: str) -> List[Dict]:
+        """使用 python-docx 解析 Word 文档（生产级跨平台方案）"""
         sections = []
 
         try:
-            word = win32.Dispatch("Word.Application")
-            word.Visible = False
-            word.DisplayAlerts = False
+            doc = Document(filepath)
 
-            doc = word.Documents.Open(
-                FileName=os.path.abspath(filepath),
-                ReadOnly=True,
-                ConfirmConversions=False,
-                AddToRecentFiles=False
-            )
-
-            for para in doc.Paragraphs:
-                try:
-                    # === 基础文本提取 ===
-                    raw_text = para.Range.Text.strip()
-                    if not raw_text:
-                        continue
-
-                    # === 编号检测 ===
-                    list_value = ""
-                    list_level = 0
-                    list_levels = []
-                    try:
-                        if para.Range.ListFormat.ListType != 0:
-                            list_level = para.Range.ListFormat.ListLevelNumber
-                            for level in range(1, list_level + 1):
-                                para.Range.ListFormat.ListLevelNumber = level
-                                list_levels.append(para.Range.ListFormat.ListString)
-                            list_value = ".".join(list_levels)
-                    except Exception as list_err:
-                        print(f"获取编号时出错：{list_err}")
-
-                    # === 样式检测 ===
-                    style_name = ""
-                    try:
-                        style_name = para.Style.NameLocal
-                    except:
-                        pass
-
-                    # === 智能文本生成 ===
-                    # 初始化final_text为raw_text
-                    final_text = raw_text
-                    
-                    # 检测手动编号（优先级高于自动编号）
-                    manual_number_match = re.match(
-                        r'^(\d+[、.)]|[(（][一二三四五六七八九十零\d]+[)）]|第?[一二三四五六七八九十零\d]+[章节条项])', 
-                        raw_text
-                    )
-                    
-                    if manual_number_match:
-                        # 情况1：存在手动编号 -> 直接使用原始文本
-                        final_text = raw_text
-                        list_value = ""  # 清空自动编号
-                    elif list_value:
-                        # 情况2：只有自动编号 -> 添加缩进
-                        indent = "\t" * (len(list_levels) - 1)
-                        final_text = f"{indent}{list_value} {raw_text}"
-                    # 情况3：无编号 -> 保持原样
-
-                    # === 类型判断 ===
-                    section_type = self.determine_section_type(
-                        text=final_text,
-                        style_name=style_name,
-                        list_value=list_value
-                    )
-
-                    # === 记录段落 ===
-                    sections.append({
-                        "type": section_type,
-                        "text": final_text,
-                        "number": list_value,
-                        "level": list_level,
-                        "style": style_name,
-                        "raw_text": raw_text  # 原始文本备份
-                    })
-
-                except Exception as para_error:
-                    print(f"段落处理出错（跳过）：{para_error}")
+            for para in doc.paragraphs:
+                raw_text = para.text.strip()
+                if not raw_text:
                     continue
+
+                style_name = para.style.name if para.style else ""
+
+                list_value = ""
+                list_level = 0
+
+                # === 1. 手动编号（最高优先级）===
+                manual_number_match = re.match(
+                    r'^(\d+[、.)]|[(（][一二三四五六七八九十零\d]+[)）]|第?[一二三四五六七八九十零\d]+[章节条项])',
+                    raw_text
+                )
+
+                if manual_number_match:
+                    list_value = manual_number_match.group(1)
+                    final_text = raw_text
+
+                else:
+                    # === 2. Word 自动列表（仅用于层级，不强求编号）===
+                    if para._p.pPr is not None and para._p.pPr.numPr is not None:
+                        list_level = 1
+                        try:
+                            indent = para.paragraph_format.left_indent
+                            if indent is not None:
+                                list_level = max(1, int(indent.pt / 36) + 1)
+                        except:
+                            pass
+
+                    # === 3. 根据层级做缩进 ===
+                    if list_level > 0:
+                        final_text = "\t" * (list_level - 1) + raw_text
+                    else:
+                        final_text = raw_text
+
+                section_type = self.determine_section_type(
+                    text=final_text,
+                    style_name=style_name,
+                    list_value=list_value
+                )
+
+                sections.append({
+                    "type": section_type,
+                    "text": final_text,
+                    "number": list_value,
+                    "level": list_level,
+                    "style": style_name,
+                    "raw_text": raw_text
+                })
 
             return sections
 
         except Exception as e:
             print(f"文档解析失败：{e}")
             raise
-        finally:
-            # 确保资源释放
-            try:
-                if doc:
-                    doc.Close(SaveChanges=False)
-            except:
-                pass
-            try:
-                if word:
-                    word.Quit()
-            except:
-                pass
-            pythoncom.CoUninitialize()
 
     def _calculate_segment_hash(self, content: str, filename: str, chapter_index: int, subsection_index: int) -> str:
         """为每个片段计算唯一的哈希值
@@ -1150,168 +1240,167 @@ class VectorSearchSystem:
             # 没有子章节则提交到章节内容
             chapter["content"].extend(buffer)
 
-    def insert_documents(self, file_dir: str, project_name: str = None, project_date: str = None, project_code: str = None):
-        """重构的数据插入方法（支持项目和项目元数据）"""
+    def insert_documents(
+        self,
+        file_dir: str,
+        project_name: str = None,
+        project_date: str = None,
+        project_code: str = None
+    ):
+        """跨平台版本的数据插入方法（不依赖 win32 / pythoncom）"""
+
         success_count = 0
         project_files = {}
-        
-        # 自动从目录结构推断项目名
+
+        # === 1. 项目名推断 ===
         if project_name is None:
             project_name = os.path.basename(os.path.normpath(file_dir))
             logger.info(f"Auto-detected project name: {project_name}")
         else:
-            # 确保项目名称不超过最大长度
             project_name = project_name[:256]
 
-        # 验证项目名称
         if not project_name or not isinstance(project_name, str):
-            raise ValueError("Invalid project name") 
-        
+            raise ValueError("Invalid project name")
+
+        # === 2. 项目日期处理 ===
         if not project_date:
             project_date = datetime.now().strftime("%Y-%m-%d")
-        elif len(project_date) == 4:  # 只有年份
-            project_date = f"{project_date}-01-01"    
-        # 验证项目编号
+        elif len(project_date) == 4:
+            project_date = f"{project_date}-01-01"
+
+        # === 3. 项目编号处理 ===
         if not project_code:
             project_code = "NO_CODE"
-            logger.warning(f"未提供项目编号，使用默认值: {project_code}")                        
-        
-        # 关键修复：在整个项目处理过程中使用同一个哈希集合
+            logger.warning(f"未提供项目编号，使用默认值: {project_code}")
+
+        # === 4. 全局内容哈希去重（项目级）===
         processed_hashes = set()
-        
+
         for filename in os.listdir(file_dir):
-            if not filename.endswith(".docx"):
+            if not filename.lower().endswith(".docx"):
                 continue
-                
+
             filepath = os.path.join(file_dir, filename)
+
             try:
-                pythoncom.CoInitialize()
-                sections = self.read_docx_with_win32com(filepath)
+                # ★★ 关键修改点：使用 python-docx 解析 ★★
+                sections = self.read_docx_with_python_docx(filepath)
+
                 chapters = self.parse_document_structure(sections)
-                
-                # 生成解析日志文件
+
                 log_path = self.log_subsections_to_file(filename, chapters)
                 logger.info(f"文档解析完成：{filename}，日志路径：{log_path}")
-                
-                # 记录项目文件关系
-                if project_name not in project_files:
-                    project_files[project_name] = []
-                project_files[project_name].append(filename)
-                
+
+                project_files.setdefault(project_name, []).append(filename)
+
                 for chap_idx, chapter in enumerate(chapters, 1):
-                    # 处理一级子章节
-                    for sub_idx, subsection in enumerate(chapter.get('subsections', []), 1):
-                        # 合并所有内容：一级子章节内容 + 其下的二级子章节内容
-                        all_content = subsection['content'][:]
-                        
-                        # 添加二级子章节内容
-                        if 'subsections' in subsection:
-                            for child_sub in subsection['subsections']:
-                                all_content.extend(child_sub['content'])
-                        
-                        subsection_content = '\n'.join(all_content)
-                        
-                        # 计算内容哈希，检查是否已处理（关键修复：使用全局哈希集合）
-                        content_hash = hashlib.sha256(subsection_content.encode()).hexdigest()
+                    for sub_idx, subsection in enumerate(chapter.get("subsections", []), 1):
+
+                        # === 合并一级 + 二级子章节内容 ===
+                        all_content = list(subsection.get("content", []))
+                        for child in subsection.get("subsections", []):
+                            all_content.extend(child.get("content", []))
+
+                        subsection_content = "\n".join(all_content).strip()
+                        if not subsection_content:
+                            continue
+
+                        # === 项目级内容去重 ===
+                        content_hash = hashlib.sha256(subsection_content.encode("utf-8")).hexdigest()
                         if content_hash in processed_hashes:
                             logger.debug(f"跳过重复内容: {filename} {chap_idx}.{sub_idx}")
                             continue
                         processed_hashes.add(content_hash)
-                        
+
                         try:
-                            # 使用一级子章节标题
-                            true_subsection_title = subsection['title']
-                            
-                            # 确保子章节标题与章节标题不同
-                            if true_subsection_title == chapter['title']:
+                            true_subsection_title = subsection.get("title") or f"子章节{sub_idx}"
+
+                            if true_subsection_title == chapter.get("title"):
                                 true_subsection_title = f"{chapter['title']} - 子章节{sub_idx}"
-                            
-                            sub_hash = self._calculate_segment_hash(subsection_content, filename, chap_idx, sub_idx)
-                            
-                            # 元数据记录层级信息
+
+                            sub_hash = self._calculate_segment_hash(
+                                subsection_content, filename, chap_idx, sub_idx
+                            )
+
                             metadata = {
                                 "section_type": "subsection",
-                                "original_title": subsection['title'],
-                                "parent_chapter": chapter['title'],
-                                "is_merged": subsection.get('is_merged', False),
-                                "level": subsection.get('level', 1),
+                                "original_title": subsection.get("title"),
+                                "parent_chapter": chapter.get("title"),
+                                "is_merged": subsection.get("is_merged", False),
+                                "level": subsection.get("level", 1),
                                 "log_path": log_path,
-                                "start_date": project_date  # 使用相同的项目日期
+                                "start_date": project_date
                             }
-                            
-                            # 添加二级子章节信息
-                            if 'subsections' in subsection:
+
+                            if subsection.get("subsections"):
                                 metadata["child_subsections"] = [
-                                    {"title": child['title'], "level": child.get('level', 2)} 
-                                    for child in subsection['subsections']
+                                    {
+                                        "title": c.get("title"),
+                                        "level": c.get("level", 2)
+                                    }
+                                    for c in subsection["subsections"]
                                 ]
-                            
-                            # 关键修复：添加 project_code 字段
+
                             doc = {
                                 "embedding": self.text_to_vector(subsection_content),
                                 "file_hash": sub_hash,
-                                "filename": self._process_field('filename', filename),
+                                "filename": self._process_field("filename", filename),
                                 "project_name": project_name,
-                                "chapter_title": self._process_field('chapter_title', chapter['title']),
-                                "subsection_title": self._process_field('subsection_title', true_subsection_title),
+                                "chapter_title": self._process_field(
+                                    "chapter_title", chapter.get("title")
+                                ),
+                                "subsection_title": self._process_field(
+                                    "subsection_title", true_subsection_title
+                                ),
                                 "content": subsection_content[:65535],
-                                "project_code": project_code,  # 修复：添加项目编号字段
-                                "date": project_date,  # 添加日期字段
+                                "project_code": project_code,
+                                "date": project_date,
                                 "metadata": metadata
                             }
+
                             self.collection.insert([doc])
                             success_count += 1
-                            logger.debug(f"插入子章节: {filename} {chap_idx}.{sub_idx} - {true_subsection_title[:30]}...")
-                        except Exception as e:
-                            logger.error(f"子章节插入失败: {filename} {chap_idx}.{sub_idx} - {str(e)}")
-                            
-            except Exception as e:
-                logger.error(f"文件处理错误（跳过）: {filename} - {str(e)}")
-            finally:
-                pythoncom.CoUninitialize()
 
-        # 保存项目元数据（确保start_date被正确设置）
+                        except Exception as e:
+                            logger.error(
+                                f"子章节插入失败: {filename} {chap_idx}.{sub_idx} - {str(e)}",
+                                exc_info=True
+                            )
+
+            except Exception as e:
+                logger.error(f"文件处理错误（跳过）: {filename} - {str(e)}", exc_info=True)
+
+        # === 5. 项目元数据写入 ===
         if project_files:
-            # 使用传入的project_date，如果没有则使用当前日期
-            if not project_date:
-                project_date = datetime.now().strftime("%Y-%m-%d")
-                logger.warning(f"未提供项目日期，使用当前日期: {project_date}")
-                
             for project, files in project_files.items():
                 self.add_project_metadata(project, {
                     "file_count": len(files),
                     "files": files,
                     "last_updated": datetime.now().isoformat(),
-                    "project_code": project_code,  # 存储项目编号
-                    "start_date": project_date  # 确保设置start_date
+                    "project_code": project_code,
+                    "start_date": project_date
                 })
-                logger.info(f"项目 '{project}' 元数据已更新: 开始日期={project_date}")
+                logger.info(f"项目 '{project}' 元数据已更新")
 
-        
         self.collection.load()
         logger.info(f"项目 '{project_name}' 处理完成: 成功插入 {success_count} 个片段")
-        return success_count
 
+        return success_count
     
-    def execute_search(self, query_text: str, top_k: int = 10, 
+    def execute_search(self, query_text: str, top_k: int = 10,
                     use_llm: bool = True, keyword_filter: str = None,
-                    project_names: Optional[List[str]] = None, 
+                    project_names: Optional[List[str]] = None,
                     time_range: Optional[Tuple[str, str]] = None,
                     feature_filter: str = None,
-                    rerank: bool = False) -> Dict:  # 添加 rerank 参数
-        """
-        统一的搜索接口，整合原answer_question、search和hybrid_search功能
-        添加 rerank 参数控制是否启用重排序
-        """
-        # 更新上下文约束
+                    rerank: bool = False) -> Dict:
+
         if project_names:
             self.update_context("project_name", project_names)
         if time_range:
             self.update_context("time_range", time_range)
         if feature_filter:
             self.update_context("feature", feature_filter)
-        
-        # 获取当前项目集合（基于上下文约束）
+
         project_set = self.get_current_project_set()
         if not project_set:
             return {
@@ -1320,84 +1409,76 @@ class VectorSearchSystem:
                 "context_info": self._get_context_info(),
                 "results": []
             }
-        
-        # 向量搜索
-        query_vector = self.text_to_vector(query_text)
-        search_params = {"metric_type": "COSINE", "params": {"ef": 50}}
-        candidate_k = top_k * 3 if rerank else top_k  # 重排序时多取一些候选结果
 
-        raw_results = self.collection.search(
-            data=[query_vector], 
-            anns_field="embedding", 
-            param=search_params, 
-            limit=candidate_k,  # 使用动态候选数量
-            expr=f"project_name in {json.dumps(list(project_set))}",  # 添加上下文过滤
-            output_fields=["id", "file_hash", "filename", "project_name", 
-                        "chapter_title", "subsection_title", "content","date","project_code"]
+        query_vec = self.text_to_vector(query_text)
+        params = {"metric_type": "COSINE", "params": {"ef": 50}}
+        candidate_k = top_k * 3 if rerank else top_k
+
+        raw = self.collection.search(
+            data=[query_vec],
+            anns_field="embedding",
+            param=params,
+            limit=candidate_k,
+            expr=f"project_name in {json.dumps(list(project_set))}",
+            output_fields=[
+                "id", "file_hash", "filename", "project_name",
+                "chapter_title", "subsection_title", "content",
+                "date", "project_code"
+            ]
         )
 
         candidates = []
-        for hits in raw_results:
-            for hit in hits:
+        for hits in raw:
+            for h in hits:
                 candidates.append({
-                    "id": hit.id,
-                    "file_hash": hit.entity.get("file_hash"),
-                    "filename": hit.entity.get("filename"),
-                    "project_name": hit.entity.get("project_name"),
-                    "project_code": hit.entity.get("project_code"),  # 添加项目编号
-                    "chapter_title": hit.entity.get("chapter_title"),
-                    "subsection_title": hit.entity.get("subsection_title"),
-                    "content": hit.entity.get("content"),
-                    "date": hit.entity.get("date"),  # 添加日期字段
-                    "distance": hit.distance  # 余弦距离（越小越相似）
+                    "id": h.id,
+                    "file_hash": h.entity.get("file_hash"),
+                    "filename": h.entity.get("filename"),
+                    "project_name": h.entity.get("project_name"),
+                    "project_code": h.entity.get("project_code"),
+                    "chapter_title": h.entity.get("chapter_title"),
+                    "subsection_title": h.entity.get("subsection_title"),
+                    "content": h.entity.get("content"),
+                    "date": h.entity.get("date"),
+                    "distance": h.distance
                 })
-        
-        # 处理重排序（新增逻辑）
+
+        # ======= 重排序 =======
         if rerank and len(candidates) > top_k:
             try:
                 from sentence_transformers import CrossEncoder
-                
-                # 初始化重排序模型（如果未初始化）
-                if not hasattr(self, 'reranker_model') or self.reranker_model is None:
-                    self.reranker_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")  # 通用重排序模型
-                
-                # 准备重排序输入（查询+文档内容）
-                pairs = [(query_text, doc['content']) for doc in candidates]
-                
-                # 计算重排序分数（分数越高越相关）
-                rerank_scores = self.reranker_model.predict(pairs)
-                
-                # 为候选结果添加重排序分数
-                for doc, score in zip(candidates, rerank_scores):
-                    doc['rerank_score'] = float(score)
-                
-                # 按重排序分数降序排列
-                candidates.sort(key=lambda x: x['rerank_score'], reverse=True)
-            
-            except ImportError:
-                logger.warning("未安装sentence_transformers，无法重排序，使用原始结果")
+
+                if self.reranker_model is None:
+                    self.reranker_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+                pairs = [(query_text, c["content"]) for c in candidates]
+                scores = self.reranker_model.predict(pairs)
+
+                for c, s in zip(candidates, scores):
+                    c["rerank_score"] = float(s)
+
+                candidates.sort(key=lambda x: x["rerank_score"], reverse=True)
+
             except Exception as e:
-                logger.error(f"重排序失败: {str(e)}，使用原始结果")
-        
-        # 应用关键词过滤
+                logger.error(f"重排序失败: {str(e)}")
+
+        # 关键词过滤
         if keyword_filter:
-            keyword = keyword_filter.lower()
+            kw = keyword_filter.lower()
             candidates = [
                 r for r in candidates
-                if (keyword in r['content'].lower() or
-                    keyword in r.get('chapter_title', '').lower() or
-                    keyword in r.get('subsection_title', '').lower())
+                if kw in r["content"].lower()
+                or kw in (r.get("chapter_title") or "").lower()
+                or kw in (r.get("subsection_title") or "").lower()
             ]
-        
-        # 截取最终结果
+
         final_results = candidates[:top_k]
-        
-        # 使用LLM生成统一答案
+
         if use_llm and final_results:
             answer = self._generate_unified_answer(query_text, final_results)
         else:
             answer = "找到以下相关结果" if final_results else "未找到相关信息"
-        
+
         return {
             "answer": answer,
             "type": "search",
@@ -1563,37 +1644,10 @@ class VectorSearchSystem:
         
         return results_by_project
     
-    def get_all_projects(self) -> List[str]:
-        """获取所有项目名称列表（增强安全性和错误处理）"""
-        try:
-            # 优先使用项目元数据中的键
-            if self.project_metadata:
-                return list(self.project_metadata.keys())
-            
-            # 如果元数据为空，从集合中获取
-            if not self.collection:
-                logger.warning("集合未初始化，无法获取项目列表")
-                return []
-                
-            # 执行查询获取所有项目名称
-            res = self.collection.query(
-                expr="",  # 空表达式表示所有文档
-                output_fields=["project_name"],
-                limit=10000  # 假设项目不超过10000个
-            )
-            
-            # 提取并去重项目名称
-            project_names = set()
-            for item in res:
-                project_name = item.get("project_name")
-                if project_name:
-                    project_names.add(project_name)
-                    
-            return list(project_names)
-            
-        except Exception as e:
-            logger.error(f"获取所有项目失败: {str(e)}", exc_info=True)
-            return []  # 返回空列表保证前端不崩溃
+    def get_all_projects(self):
+        """Always fetch distinct project names from Milvus."""
+        return self._get_distinct_projects_from_milvus()
+
 
     def get_project_description(self, project_name: str) -> str:
         """
@@ -1851,40 +1905,35 @@ class VectorSearchSystem:
         return None
 
     def _get_context_info(self) -> dict:
-        """获取当前上下文状态信息（仅显示非空约束）"""
         project_set = self.get_current_project_set()
-        
-        # 格式化约束条件（仅显示实际添加的约束）
-        formatted_constraints = []
-        for constraint in self.context_manager["constraints"]:
-            constraint_type = constraint["type"]
-            value = constraint["value"]
-            
-            # 处理时间范围显示
-            if constraint_type == "time_range":
-                start_year, end_year = value
-                if start_year and end_year:
-                    formatted_value = f"{start_year}-{end_year}年"
-                elif start_year:
-                    formatted_value = f"{start_year}年以后"
-                elif end_year:
-                    formatted_value = f"{end_year}年以前"
+
+        formatted = []
+        for c in self.context_manager["constraints"]:
+            t = c["type"]
+            v = c["value"]
+
+            if t == "time_range":
+                a, b = v
+                if a and b:
+                    text = f"{a}-{b}年"
+                elif a and not b:
+                    text = f"{a}年以后"
+                elif b and not a:
+                    text = f"{b}年以前"
                 else:
-                    continue  # 跳过空时间约束
+                    text = "时间范围未知"
             else:
-                formatted_value = value
-            
-            formatted_constraints.append({
-                "type": constraint_type,
-                "value": formatted_value,
-                "timestamp": constraint["timestamp"]
+                text = v
+
+            formatted.append({
+                "type": t,
+                "value": text,
+                "timestamp": c["timestamp"]
             })
-        
-        # 仅在有约束时显示，空约束时前端显示"无筛选条件"
+
         return {
-            "project_count": len(project_set),
-            "constraints": formatted_constraints,  # 空列表时前端不显示
-            "session_id": self.context_manager.get("session_id", str(uuid.uuid4()))
+            "projects": list(project_set),
+            "constraints": formatted
         }
     
     def stream_search(self, query_text, use_llm=True, rerank=False):

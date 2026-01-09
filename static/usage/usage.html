@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>使用说明</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<p><strong>（一）向量知识库检索系统的基本操作流程</strong></p>
+<p><strong>1.打开主页</strong></p>
+<p>文档管理页面</p>
+<p>文档删除</p>
+<p>问答与检索模块</p>
+<p>文档列表</p>
+<p>文档筛选模块</p>
+<p>API信息模块</p>
+<p>文档上传模块</p>
+<p>图1 前端交互主页</p>
+<p>对于云端部署版本，启动流程更加简化，无需本地 Docker
+环境。用户仅需直接访问系统对应的网址即可进入主页界面。</p>
+<p>HuggingFace Space部署版本（以下简称HF版）：</p>
+<p><a
+href="https://huggingface.co/spaces/qianluxi/PC-1">https://huggingface.co/spaces/qianluxi/PC-1</a></p>
+<blockquote>
+<p>HF 版的前端界面布局与图6完全一致。</p>
+<p>ModelScope 创空间部署版本（以下简称魔搭版）：</p>
+<p><a
+href="https://modelscope.cn/studios/qianluxi/MSPC22/">https://modelscope.cn/studios/qianluxi/MSPC22/</a></p>
+</blockquote>
+<p>魔搭版在界面布局上与 HF 版略有不同，其主页界面如图 2 所示。</p>
+<p><img src="/static/usage/media/image2.png"
+style="width:5.76806in;height:2.86806in" /></p>
+<p>图2 魔搭版主页</p>
+<p><strong>2．输入文档信息并上传文档</strong></p>
+<p>在“文档上传”模块中，用户需首先填写文档的基础信息，包括文档名称、项目编号、项目日期等。随后，可将本地工程文件拖入上传区域（虚线框），并点击“上传并处理”按钮完成提交（如图3所示）。</p>
+<p><img src="/static/usage/media/image3.png"
+style="width:5.3785in;height:2.5183in" /></p>
+<p>图3文档上传模块</p>
+<p>系统在接收到文件后，将在后台自动执行一系列预处理流程，包括：</p>
+<ul>
+<li><p>工程文档的文本解析（Text Parsing）</p></li>
+<li><p>文本切片（Chunking）与结构化分段</p></li>
+<li><p>向量嵌入计算（Embedding）</p></li>
+<li><p>元数据与向量数据入库（Milvus Collection Insert）</p></li>
+</ul>
+<p>待文件处理完成后，用户可访问本地可视化管理界面（Attu）以确认数据状态，访问地址为：</p>
+<p><a
+href="http://localhost:3000/"><strong>http://localhost:3000/</strong></a></p>
+<p>在 Attu
+向量数据库管理系统中，用户能够查看已写入的向量条目、元数据结构，以及各文档切片的向量化处理结果（如图4所示）。若发现文档切片不符合预期，例如段落划分不合理或信息缺失，可按照前文介绍的方法，在文档中手动加入“【】”符号，以引导系统进行自定义切片。调整后重新上传，用户可再次在
+Attu 中验证结果，并持续迭代，直至满足工程文档处理需求。</p>
+<p>切片文本</p>
+<p>子章节名</p>
+<p>章节名</p>
+<p>文档名称</p>
+<p>项目编号</p>
+<p>文件名</p>
+<p>图4 attu向量数据库可视化管理系统</p>
+<p><strong>3.API信息模块</strong></p>
+<p>API信息模块主要用于验证系统与大语言模型（LLM）之间的连接状态，是保障问答功能能够正常运行的重要环节。如图5所示，在该模块中，系统会实时显示当前
+API
+服务的连接结果。当页面提示“连接正常”时，表明后端已成功接入大语言模型接口，模型处于可随时被调用的待机状态，能够支持后续的检索增强生成（RAG）流程及智能问答任务。</p>
+<p>该模块不仅用于初次部署时的连通性测试，也可在系统运行期间用于诊断模型调用异常，为用户提供清晰、可视化的接口监控信息。</p>
+<p><img src="/static/usage/media/image5.png"
+style="width:5.76806in;height:1.34583in" /></p>
+<p>图5 API连接健康检测</p>
+<p><strong>4.筛选文档</strong></p>
+<p>文档筛选模块用于在进入向量嵌入及大语言模型检索流程之前，对数据库中的文档集合进行预处理与过滤。其主要目的在于依据用户的实际检索需求，尽可能缩小候选文档范围，从而显著提升后续向量检索与生成式问答的效率与准确性。</p>
+<p>系统支持多维度的筛选条件输入。用户可基于文档名称或项目编号进行筛选，例如输入“茅安前”或“kc2025”，并通过点击加号按钮确认筛选条件。在“当前筛选条件”区域中，系统会实时展示已生效的筛选条件（见图6）。在文档列表区域（见图7），刷新页面后仅显示满足当前筛选条件的文档条目。</p>
+<p>系统在设计上保证文档名称与项目编号的一一对应关系，因此无论用户选择哪个字段进行筛选，其筛选效果保持一致。</p>
+<p>除了上述字段外，用户还可以通过项目时间区间进行筛选，例如输入“2020–2021年”后，系统将自动激活并显示该时间段内的全部项目文档。</p>
+<p>此外，系统预留了基于项目特征属性的进一步筛选接口。该功能的初步构想包括按照结构体系类型（如混凝土框架、钢框架、剪力墙结构等）或建筑功能（如住宅、酒店、办公等）进行筛选。此类筛选具有潜在价值，但仍需在后续研究与大量测试验证后，决定最终的实现形式与使用方式。</p>
+<p>“项目集合初始化”按钮可以重置筛选条件，以便用户进行新一轮的检索问答。</p>
+<p><img src="/static/usage/media/image6.png"
+style="width:4.93556in;height:1.88188in" /></p>
+<p>图6文档筛选模块</p>
+<p><img src="/static/usage/media/image7.png"
+style="width:2.32921in;height:1.94101in" /></p>
+<p>图7 当前激活的文档列表</p>
+<p><strong>5.问答与检索</strong></p>
+<p>在完成数据的预筛选后，用户可在问答窗口中输入自然语言问题（例如：“本项目混凝土强度怎么取的？列表简要输出。”）。系统将首先对用户问题进行向量化处理，并与数据库中预筛选得到的向量数据进行相似度匹配。初步召回的结果将显示在“检索结果”区域，如图8所示。</p>
+<p>在本系统中，用户可根据需要启用“重排序（rerank）”与“AI整理”两项功能：</p>
+<ul>
+<li><p>启用重排序后，系统会依据向量间的余弦相似度，对召回结果进行进一步排序，以确保最相关的内容优先呈现；</p></li>
+<li><p>启用AI整理后，系统将调用大语言模型对检索到的文本片段进行抽取、推理、归纳与总结，以生成结构化且符合工程表达习惯的最终回答。</p></li>
+</ul>
+<p>对于每条检索结果，用户可以点击“查看原始内容”实现文档溯源，从而验证生成答案的依据及来源的准确性。系统当前默认设置Top-k=10，即对每次查询返回相似度最高的前10个片段，并将其解码后输入大语言模型用于最终回答生成。</p>
+<p>图8所示的问答示例中，系统根据用户输入的问题，自动生成了某工程项目主体结构不同部位混凝土强度等级的表格化说明，展示了检索增强生成（RAG）流程在结构设计文档解读中的高效性与实用价值。虽然示例来自结构专业，但系统底层基于向量语义检索与大语言模型推理能力，其适用范围并不局限于结构设计。在实际测试中，本系统在建筑、暖通、给排水、电气等专业同样表现出良好的应用效果，能够完成设计参数提取、构造要求梳理、材料选型对比、规范要点总结、多专业条件综合分析等任务，为设计人员在短时间内理解复杂技术资料、快速获知项目关键信息提供了显著助力。因此，该系统具有跨专业、通用化的工程技术文档智能理解能力，整体应用价值远超单一专业的知识辅助工具。</p>
+<p>综上，一次完整的智能检索流程包括：用户提问 → 向量匹配与召回 →
+可选的重排序与AI整理 → 文档溯源 →
+最终答案生成。用户可在对话窗口中持续输入新问题，系统亦将以相同方式实时响应，实现与日常智能助手一致的“对话式工程文档检索体验”。</p>
+<p>问题输入</p>
+<p>检索结果</p>
+<p>聊天内容窗口</p>
+<p>图8 问答与检索模块</p>
+<p><strong>6.文档删除</strong></p>
+<p>本系统提供三种文档删除方式，以支持用户在不同操作场景下高效管理数据库中文档记录。所有删除操作均会同步更新milvus向量数据库及相关元数据，确保数据一致性。</p>
+<p>（1）通过“文档列表”删除</p>
+<p>用户可在“文档列表”模块中定位待删除文档，点击对应的垃圾桶图标即可触发删除流程（如图9所示）。系统随后将在页面左下角弹出“确认删除”提示（见图15），经用户确认后，系统将同时删除该文档的元数据及所有相关向量条目。</p>
+<p>（2）通过筛选模块删除</p>
+<p>在“文档筛选”模块（图6）中，用户可根据文档名称、项目编号等条件筛选出目标文档，随后点击界面中的“确认删除”按钮（图10）。此方式适用于批量筛选后的集中删除操作。</p>
+<p><img src="/static/usage/media/image9.png"
+style="width:4.15625in;height:4.12389in" /></p>
+<p>图9 文档列表</p>
+<p><img src="/static/usage/media/image10.png"
+style="width:4.6011in;height:2.56091in" /></p>
+<p>图10 文档删除按钮</p>
+<p>（3）通过文档管理页面删除</p>
+<p>用户也可在系统主页顶部点击“文档管理”按钮，进入专用的文档管理页面（图11）。在该界面中，用户可对多份文档进行勾选，并执行批量删除操作。此页面适合进行较大规模的数据清理和集中管理。</p>
+<p><img src="/static/usage/media/image11.png"
+style="width:5.21333in;height:4.7928in" /></p>
+<p>图11 文档管理页面</p>
+<p><strong>（二）应用举例</strong></p>
+<p><strong>1.查询工程资料或设计参数</strong></p>
+<p>（1）以仁和地铁上盖项目为例，通用户可通过两种方式激活“仁和地铁上盖结构措施”相关的文档：其一，在文档列表中直接点击该文档条目旁的沙漏符号；其二，在“文档筛选”模块中输入关键词“仁和地铁上盖结构措施”（输入项目编号效果相同），并按右侧加号键确认。用户选定的筛选条件会呈现在“当前筛选条件”一栏，效果如图12所示，按“X”号可逐个删除筛选条件。</p>
+<p><img src="/static/usage/media/image12.png"
+style="width:2.52733in;height:5.58545in" /></p>
+<p>图12 文档筛选操作</p>
+<p>（2）随后，用户在对话框输入查询指令，如：“仁和项目的结构形式是什么？”并勾选“启用重排序”和“启用AI整理”功能，按回车或点击发送按钮触发提问过程，界面如图13所示。</p>
+<p><img src="/static/usage/media/image13.png"
+style="width:5.76806in;height:1.24375in" /></p>
+<p>图13 问题输入</p>
+<p>（3）当用户仅需了解项目中的某一具体细节，可通过调整提问方式获得更简洁、精准的结果，如图14所示。</p>
+<p><img src="/static/usage/media/image14.png"
+style="width:5.76806in;height:2.39306in" /></p>
+<p>图14 细节查询</p>
+<p><strong>2.工程对比</strong></p>
+<p>（1）通过系统的文档筛选功能，依次选中“茅安前”与“新中心项目”两个工程文档，如图15所示，从而限定后续检索的上下文范围。</p>
+<p><img src="/static/usage/media/image15.png"
+style="width:4.09375in;height:2.05208in" /></p>
+<p>图15 多文档筛选情况1——项目对比</p>
+<ol start="2" type="1">
+<li><p>在对话框中输入查询指令：“对比两个项目的地上单体主体结构的工程材料，简要输出。”</p></li>
+</ol>
+<p><strong>3.超限报告技术问答</strong></p>
+<p>（1）首先通过系统的筛选功能，依次选中并激活“苏州华贸”及“苏州华贸超限报告”，如图16所示。</p>
+<p><img src="/static/usage/media/image16.png"
+style="width:3.45211in;height:1.91568in" /></p>
+<p>图16多文档筛选情况2——扩初说明配合超限报告</p>
+<p>（2）在对话框中输入问题：“本项目共有几个地上单体楼栋，其中哪几栋超限了，尽量简洁列表回答。”</p>
+<p>（3）继续输入问题：“在进行大震弹塑性时程分析时，使用了哪几条地震波，列表输出。”</p>
+<p><strong>4.技术资料归纳总结</strong></p>
+<p>（1）通过系统的文档筛选功能，选中“再生混凝土应用方案”。在对话框中输入指令：“请梳理此技术文档的整体脉络，概述文章主要内容，篇幅尽量简短。</p>
+</body>
+</html>
